@@ -1,0 +1,31 @@
+From 6ae7e1a529f60fcd0de4abe5d83da1fff04165b9 Mon Sep 17 00:00:00 2001
+From: gary_gen <Gary_Gen@asus.com>
+Date: Fri, 17 Jan 2020 12:59:51 +0800
+Subject: [PATCH] weston.ini: auto adjust desktop shell size
+
+comment out shell size to auto adjust size from display prefer resolution.
+---
+ weston.ini.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ mode change 100644 => 100755 weston.ini.in
+
+diff --git a/weston.ini.in b/weston.ini.in
+old mode 100644
+new mode 100755
+index 7e9f62d..55bdde3
+--- a/weston.ini.in
++++ b/weston.ini.in
+@@ -12,8 +12,8 @@ touchscreen_calibrator=true
+ #mode=1920x1080@60
+ #transform=90
+ 
+-[shell]
+-size=1920x1080
++#[shell]
++#size=1920x1080
+ 
+ #[output]
+ #name=HDMI-A-2
+-- 
+2.7.4
+
