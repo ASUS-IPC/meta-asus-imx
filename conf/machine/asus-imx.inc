@@ -15,4 +15,10 @@ SDCARD_GENERATION_COMMAND_mx8 = "generate_imx_sdcard_mx8"
 
 DEFAULTTUNE_mx8 = "aarch64"
 
+MACHINE_EXTRA_RDEPENDS += " \
+	edgetpu \
+	python3-numpy \
+	python3-pip \
+"
+
 IMAGE_FSTYPES = "sdcard.bz2"
