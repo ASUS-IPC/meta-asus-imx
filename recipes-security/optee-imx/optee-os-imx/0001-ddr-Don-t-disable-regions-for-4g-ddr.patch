@@ -1,0 +1,27 @@
+From cf5be34daf24e0ead2bfd002749a1b22322da234 Mon Sep 17 00:00:00 2001
+From: Tzuhsuan_Chen <Tzuhsuan_Chen@asus.com>
+Date: Wed, 5 Feb 2020 14:20:21 +0800
+Subject: [PATCH] ddr: Don't disable regions for 4g ddr.
+
+---
+ core/arch/arm/plat-imx/tzasc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/arch/arm/plat-imx/tzasc.c b/core/arch/arm/plat-imx/tzasc.c
+index b2b76530..5cc817b0 100644
+--- a/core/arch/arm/plat-imx/tzasc.c
++++ b/core/arch/arm/plat-imx/tzasc.c
+@@ -326,8 +326,10 @@ static int board_imx_tzasc_configure(vaddr_t addr)
+ 	tzc_configure_region(1, 0x00000000,
+ 		TZC_ATTR_REGION_SIZE(TZC_REGION_SIZE_4G) |
+ 		TZC_ATTR_REGION_EN_MASK | TZC_ATTR_SP_NS_RW
++/*
+ 		| TZC_ATTR_SUBREGION_DIS(6)
+ 		| TZC_ATTR_SUBREGION_DIS(7)
++*/
+ 		);
+ 
+ 	tzc_configure_region(2, (CFG_TZDRAM_START - DRAM0_BASE),
+-- 
+2.17.1
+
