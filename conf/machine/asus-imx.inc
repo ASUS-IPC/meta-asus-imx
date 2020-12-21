@@ -21,4 +21,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	python3-pip \
 "
 
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
+
 IMAGE_FSTYPES = "sdcard.bz2"
