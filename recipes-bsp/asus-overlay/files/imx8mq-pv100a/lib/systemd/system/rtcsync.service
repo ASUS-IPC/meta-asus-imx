@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync system to MCU HW clock
+After=ntpsync.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/hwclock_mcu -w
+
+[Install]
+WantedBy=multi-user.target
