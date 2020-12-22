@@ -15,6 +15,10 @@ SDCARD_GENERATION_COMMAND_mx8 = "generate_imx_sdcard_mx8"
 
 DEFAULTTUNE_mx8 = "aarch64"
 
+VOLATILE_LOG_DIR = "no"
+
+PACKAGECONFIG_append_pn-gstreamer1.0-plugins-ugly = " x264"
+
 MACHINE_EXTRA_RDEPENDS += " \
 	asus-overlay \
 	edgetpu \
@@ -22,6 +26,21 @@ MACHINE_EXTRA_RDEPENDS += " \
 	python3-pip \
 	networkmanager \
 	networkmanager-nmtui \
+	gpsd \
+	samba \
+	exfat-utils \
+	fuse-exfat \
+	ntfs-3g \
+	gptfdisk \
+	vim \
+	whiptail \
+	gstreamer1.0-libav \
+	gstreamer1.0-plugins-ugly \
+	glibc-utils \
+	glibc-gconv-utf-16 \
+	localedef \
+	cmake \
+	packagegroup-core-buildessential \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
