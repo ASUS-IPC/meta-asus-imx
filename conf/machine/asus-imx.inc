@@ -19,6 +19,8 @@ MACHINE_EXTRA_RDEPENDS += " \
 	edgetpu \
 	python3-numpy \
 	python3-pip \
+	networkmanager \
+	networkmanager-nmtui \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
