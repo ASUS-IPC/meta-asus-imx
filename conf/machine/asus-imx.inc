@@ -41,6 +41,11 @@ MACHINE_EXTRA_RDEPENDS += " \
 	localedef \
 	cmake \
 	packagegroup-core-buildessential \
+	iotedge-daemon \
+	iotedge-cli \
+	docker \
+	docker-contrib \
+	ca-certificates \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
