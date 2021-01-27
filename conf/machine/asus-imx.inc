@@ -46,6 +46,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	docker \
 	docker-contrib \
 	ca-certificates \
+	ppp \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
