@@ -30,7 +30,7 @@ configfs_init()
 	echo $PID > ${USB_CONFIGFS_DIR}/idProduct
 	mkdir -p ${USB_STRINGS_DIR}   -m 0770
 
-	SERIAL=`cat /proc/cpuinfo | grep Serial | awk '{print $3}'`
+	SERIAL=`cat /sys/devices/soc0/soc_uid`
 	if [ -z $SERIAL ];then
 		SERIAL=0123456789ABCDEF
 	fi
