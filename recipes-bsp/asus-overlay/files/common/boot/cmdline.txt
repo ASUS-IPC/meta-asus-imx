@@ -1,1 +1,2 @@
 ##### Note: Each line must be less than 160 words #####
+console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200 

@@ -4,7 +4,7 @@ INTERACTIVE=True
 ASK_TO_REBOOT=0
 
 TOOL_VERSION="1.0.0"
-TOOL_NAME="Asus PE100A Software Configuration Tool (PE100A-config)"
+TOOL_NAME="Asus PV100A Software Configuration Tool (PV100A-config)"
 
 get_hostname() {
     cat /etc/hostname | tr -d " \t\n\r"
@@ -32,6 +32,30 @@ No other symbols, punctuation characters, or blank spaces are permitted.\
     sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\t$NEW_HOSTNAME/g" /etc/hosts
     ASK_TO_REBOOT=1
   fi
+}
+
+do_serial() {
+  whiptail --yesno "Would you like a login shell to be accessible over serial?" 20 60 2
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
+    sed -i /boot/cmdline.txt -e "s/earlycon=ec_imx6q,[A-Za-z0-9]\+,[0-9]\+ /earlycon=null /"
+    systemctl disable serial-getty@ttymxc0.service
+    whiptail --msgbox "Serial is now disabled" 20 60 1
+  elif [ $RET -eq 0 ]; then
+    # 1. set console to null
+    sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
+    sed -i /boot/cmdline.txt -e "s/earlycon=ec_imx6q,[A-Za-z0-9]\+,[0-9]\+ /earlycon=null /"
+    # 2. set console to assigned uart port
+    sed -i /boot/cmdline.txt -e "s/console=null\+ /console=ttymxc0,115200 /"
+    sed -i /boot/cmdline.txt -e "s/earlycon=null\+ /earlycon=ec_imx6q,0x30860000,115200 /"
+    systemctl enable serial-getty@ttymxc0.service
+    whiptail --msgbox "Serial is now enabled" 20 60 1
+  else
+    return $RET
+  fi
+
+  ASK_TO_REBOOT=1
 }
 
 do_change_watchdog_timer() {
@@ -111,7 +135,7 @@ do_audio() {
 }
 
 do_advanced_menu() {
-    FUN=$(whiptail --title "Asus PE100A Software Configuration Tool (PE100A-config)" --menu "Advanced Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+    FUN=$(whiptail --title "Asus PV100A Software Configuration Tool (PV100A-config)" --menu "Advanced Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
       "A1 HW watchdog timer" "Change HW watchdog timer ( 5~128s, default 60s )" \
       "A2 Resolution" "Set a specific screen resolution" \
       "A3 Audio" "Audio Settings " \
@@ -166,7 +190,7 @@ do_finish() {
 
 do_about() {
   whiptail --msgbox "\
-PE100A Software Configuration Tool v$TOOL_VERSION \n\nThis tool provides a straight-forward way of doing initial configuration of the Asus PE100A. Although it can be run at any time, some of the options may have difficulties if you have heavily customised your installation.\
+PV100A Software Configuration Tool v$TOOL_VERSION \n\nThis tool provides a straight-forward way of doing initial configuration of the Asus PV100A. Although it can be run at any time, some of the options may have difficulties if you have heavily customised your installation.\
   " 20 70 1
 }
 
@@ -176,7 +200,7 @@ PE100A Software Configuration Tool v$TOOL_VERSION \n\nThis tool provides a strai
 
 # Everything else needs to be run as root
 if [ $(id -u) -ne 0 ]; then
-  printf "Script must be run as root. Try 'sudo PE100A-config'\n"
+  printf "Script must be run as root. Try 'sudo PV100A-config'\n"
   exit 1
 fi
 
@@ -186,7 +210,7 @@ fi
 if [ "$INTERACTIVE" = True ]; then
   calc_wt_size
 
-  whiptail --msgbox "Welcome to Asus PE100A Software Configuration Tool (Experimental).
+  whiptail --msgbox "Welcome to Asus PV100A Software Configuration Tool (Experimental).
 
 This version is based off the popular version from the SBC (single board computer) community and is still in its development stage.
 
@@ -197,8 +221,11 @@ Currently some features may not be available as they were not originally designe
   while true; do
     FUN=$(whiptail --title "$TOOL_NAME" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
       "1 Hostname:" "Set the visible name for this board on a network" \
-      "2 Advanced Options" "Configure advanced settings" \
-      "3 About PE100A:" "Information about this configuration tool" \
+      "2 Watchdog" "Change HW watchdog timer ( 5~128s, default 60s )" \
+      "3 Serial" "Enable/Disable shell and kernel messages on the serial connection" \
+      "4 Resolution" "Set a specific screen resolution" \
+      "5 Audio" "Audio Settings " \
+      "6 About PV100A:" "Information about this configuration tool" \
       3>&1 1>&2 2>&3)
     RET=$?
     if [ $RET -eq 1 ]; then
@@ -206,8 +233,11 @@ Currently some features may not be available as they were not originally designe
     elif [ $RET -eq 0 ]; then
       case "$FUN" in
         1\ *) do_change_hostname ;;
-        2\ *) do_advanced_menu ;;
-        3\ *) do_about ;;
+        2\ *) do_change_watchdog_timer ;;
+        3\ *) do_serial ;;
+        4\ *) do_resolution ;;
+        5\ *) do_audio ;;
+        6\ *) do_about ;;
         *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;
       esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
     else
