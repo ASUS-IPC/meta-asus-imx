@@ -47,6 +47,8 @@ MACHINE_EXTRA_RDEPENDS += " \
 	docker-contrib \
 	ca-certificates \
 	ppp \
+	libqmi \
+	libmbim \
 	canopensocket \
 "
 
