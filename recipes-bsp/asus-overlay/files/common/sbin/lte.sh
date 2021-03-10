@@ -1,5 +1,7 @@
 #!/bin/sh
 
+AT_PORT=/dev/ttyUSB2
+ACK=/lte_ack
 CONFIG_PATH=/etc/lte
 CONFIG_FILE=${CONFIG_PATH}/lte.conf
 TAG="LTE"
@@ -41,6 +43,43 @@ start_quectel_tool() {
 	fi
 }
 
+send_at_command() {
+    if [ -e ${AT_PORT} ]; then
+        echo -ne "${1}\r" | microcom -t 2000 ${AT_PORT} > ${ACK}
+    else
+        log "ERROR device not found"
+    fi
+}
+
+check_sim_detect() {
+    send_at_command "AT+QSIMDET?"
+    res=`cat ${ACK} | tr -d '\r'`
+    res=`echo ${res##*\ }`
+    res=`echo ${res%%,*}`
+    echo $res
+}
+
+set_sim_detect() {
+    res=$(check_sim_detect)
+    if [ "$res" != "$1" ]; then
+        send_at_command "AT+QSIMDET=${1},0"
+        reboot
+    else
+        log "Already is ${1}"
+    fi
+}
+
+check_sim_slot() {
+    res=`echo $(ex_gpio -s)`
+    res=`echo ${res##*is}`
+    res=`echo ${res%%Co*}`
+    echo $res
+}
+
+reboot() {
+    echo -ne "AT+CFUN=1,1\r" | microcom ${AT_PORT}
+}
+
 log() {
 	echo ${1}
 	logger -t ${TAG} ${1}
@@ -48,7 +87,7 @@ log() {
 
 log "do ${1}"
 case $1 in
-set-apn) 
+set-apn)
     check_config
     sed -i "s/\(APN *= *\).*/\1$2/" $CONFIG_FILE
     ;;
@@ -57,7 +96,7 @@ set-pin)
     sed -i "s/\(PIN *= *\).*/\1$2/" $CONFIG_FILE
     ;;
 set-auto)
-    if [ $2 == "y" -o $2 == "n" ] ; then
+    if [ "$2" == "y" -o "$2" == "n" ] ; then
         check_config
         sed -i "s/\(AUTO_CONNECT *= *\).*/\1$2/" $CONFIG_FILE
     else
@@ -65,15 +104,36 @@ set-auto)
     fi
     ;;
 set-sim)
-    if [ "$2" == "0" -o "$2" == "1" ]; then
+    if [ "$2" == "0" ]; then
         ex_gpio -s ${2}
-        echo -ne "AT+CFUN=1,1\r" | microcom /dev/ttyUSB2
+        if [ "$?" == "0" ]; then
+            set_sim_detect 1
+        else
+            log "Set sim error"
+        fi
+    elif [ "$2" == "1" ]; then
+        ex_gpio -s ${2}
+        if [ "$?" == "0" ]; then
+            set_sim_detect 0
+        else
+            log "Set sim error"
+        fi
     else
         log "Parameter error"
     fi
     ;;
+set-sim-detect)
+    if [ "$2" == "0" -o "$2" == "1" ]; then
+        set_sim_detect $2
+    else
+        log "Parameter error"
+    fi
+    ;;
+check-sim-detect)
+    echo $(check_sim_detect)
+    ;;
 reboot-module)
-    echo -ne "AT+CFUN=1,1\r" | microcom /dev/ttyUSB2
+    reboot
     ;;
 reset)
     echo "APN=internet" > $CONFIG_FILE
@@ -81,8 +141,31 @@ reset)
     echo "AUTO_CONNECT=y" >> $CONFIG_FILE
     ;;
 start)
-    check_config
-    start_quectel_tool
+    version=`cat /proc/boardinfo`
+    log "Start as ${version}"
+    if [ "$version" == "PV100A" ]; then
+        enable=$(check_sim_detect)
+        log "Check sim detect = ${enable}"
+        slot=$(check_sim_slot)
+        log "Check sim slot = ${slot}"
+        if [ "$enable" == "0" ] && [ "$slot" == "0" ]; then
+            # enable sim detect when using sim slot 0
+            log "Set sim detect to 1"
+            set_sim_detect 1
+        elif [ "$enable" == "1" ] && [ "$slot" == "1" ]; then
+            # disable sim detect when using sim slot 1
+            log "Set sim detect to 0"
+            set_sim_detect 0
+        else
+            log "Check pass"
+            check_config
+            start_quectel_tool
+        fi
+    else
+        log "Not supported version = ${version}"
+        check_config
+        start_quectel_tool
+    fi
     ;;
 stop)
     log "=== Disconnect ==="
@@ -92,6 +175,7 @@ stop)
     fi
     ;;
 *)
-    echo "Usage: $0 {set-apn [apn]| set-pin [pin]| set-auto [y/n]| set-sim [0/1]| reset| reboot-module| start| stop}"
-    ;; 
+    echo "Connectivity: $0 {set-apn [apn]| set-pin [pin]| set-auto [y/n]| reset}"
+    echo "Setting: $0 {set-sim [0/1] | check-sim-detect | set-sim-detect[0/1] | reboot-module}"
+    ;;
 esac
