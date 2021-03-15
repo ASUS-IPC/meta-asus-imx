@@ -50,6 +50,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	libqmi \
 	libmbim \
 	canopensocket \
+	can-utils-j1939 \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
