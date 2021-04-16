@@ -174,8 +174,25 @@ stop)
         kill ${PID}
     fi
     ;;
+set-wakeup)
+    if [ "$2" == "0" ]; then
+        send_at_command 'AT+QCFG="risignaltype","respective"'
+        send_at_command 'AT+QCFG="urc/ri/ring","pulse"'
+        send_at_command 'AT+QCFG="urc/ri/smsincoming","off"'
+        send_at_command 'AT+QCFG="urc/ri/other","off"'
+        wakeup_source_test 0 7
+    elif [ "$2" == "1" ]; then
+        send_at_command 'AT+QCFG="risignaltype","physical"'
+        send_at_command 'AT+QCFG="urc/ri/ring","auto"'
+        send_at_command 'AT+QCFG="urc/ri/smsincoming","pulse"'
+        send_at_command 'AT+QCFG="urc/ri/other","off"'
+        wakeup_source_test 1 7
+    else
+        log "Parameter error"
+    fi
+    ;;
 *)
     echo "Connectivity: $0 {set-apn [apn]| set-pin [pin]| set-auto [y/n]| reset}"
-    echo "Setting: $0 {set-sim [0/1] | check-sim-detect | set-sim-detect[0/1] | reboot-module}"
+    echo "Setting: $0 {set-sim [0/1] | check-sim-detect | set-sim-detect [0/1] | reboot-module | set-wakeup [0/1]}"
     ;;
 esac
