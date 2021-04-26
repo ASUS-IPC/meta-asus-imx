@@ -7,7 +7,7 @@ Requires=reboot.target
 
 [Service]
 Type=oneshot
-ExecStart=/MCU_test_tool/power_off_delay 90 ; /sbin/system_test 1
+ExecStart=/sbin/system_test 1
 RemainAfterExit=yes
 
 [Install]
