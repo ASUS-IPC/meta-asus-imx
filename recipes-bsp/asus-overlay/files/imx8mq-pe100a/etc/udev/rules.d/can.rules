@@ -1,1 +1,0 @@
-SUBSYSTEM=="net", DEVPATH=="/devices/platform/30830000.ecspi/spi_master/spi1/spi1.0/net/can0", RUN+="/sbin/ip link set can0 up type can bitrate 125000"
