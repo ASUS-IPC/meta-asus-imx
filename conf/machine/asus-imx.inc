@@ -11,7 +11,7 @@ PREFERRED_VERSION_linux-asus-imx = "5.10"
 
 VOLATILE_LOG_DIR = "no"
 
-MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'firmware-qca6174-usb qca-tools', '', d)}"
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
 
 SOC_DEFAULT_WKS_FILE_asus = "asus-imx-boot-bootpart.wks.in"

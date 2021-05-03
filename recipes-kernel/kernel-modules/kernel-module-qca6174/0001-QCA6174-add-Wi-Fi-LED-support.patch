@@ -1,0 +1,39 @@
+From 712b51840962653788f652b917f6f2f068f0e144 Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Tue, 19 Jan 2021 10:39:08 +0800
+Subject: [PATCH] QCA6174: add Wi-Fi LED support
+
+---
+ CORE/HDD/inc/wlan_hdd_tx_rx.h | 1 +
+ CORE/HDD/src/wlan_hdd_tx_rx.c | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/CORE/HDD/inc/wlan_hdd_tx_rx.h b/CORE/HDD/inc/wlan_hdd_tx_rx.h
+index 2fd820c58..dfd0196a7 100644
+--- a/CORE/HDD/inc/wlan_hdd_tx_rx.h
++++ b/CORE/HDD/inc/wlan_hdd_tx_rx.h
+@@ -44,6 +44,7 @@
+ #include <linux/skbuff.h>
+ #include <wlan_qct_tl.h>
+ #include "tl_shim.h"
++#include <linux/leds.h>
+ 
+ /*---------------------------------------------------------------------------
+   Preprocessor definitions and constants
+diff --git a/CORE/HDD/src/wlan_hdd_tx_rx.c b/CORE/HDD/src/wlan_hdd_tx_rx.c
+index 5fa42f629..c138148fa 100644
+--- a/CORE/HDD/src/wlan_hdd_tx_rx.c
++++ b/CORE/HDD/src/wlan_hdd_tx_rx.c
+@@ -779,7 +779,9 @@ int hdd_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	int ret;
+ 
+ 	vos_ssr_protect(__func__);
++	ledtrig_led_func_ctrl(LED_FUNC_WIFI, LED_LIGHT_GREEN, 1);
+ 	ret = __hdd_hard_start_xmit(skb, dev);
++	ledtrig_led_func_ctrl(LED_FUNC_WIFI, LED_LIGHT_GREEN, 0);
+ 	vos_ssr_unprotect(__func__);
+ 	return ret;
+ }
+-- 
+2.17.1
+
