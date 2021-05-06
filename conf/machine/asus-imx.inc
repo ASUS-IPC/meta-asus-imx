@@ -14,6 +14,11 @@ VOLATILE_LOG_DIR = "no"
 IMAGE_INSTALL_append += " \
 	networkmanager \
 	networkmanager-nmtui \
+	iotedge-daemon \
+	iotedge-cli \
+	docker \
+	docker-ce \
+	ca-certificates \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
