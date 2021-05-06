@@ -1,0 +1,51 @@
+These files are required to flash the Yocto Linux OS to an attached 
+PE100A / IMX8P-IM-A using fastboot.
+
+Note: Do not power the board or connect any cables until instructed to do so.
+
+The factory settings only includes a U-Boot bootloader for the fastboot mode
+and does not include a system.
+
+Before you begin the flashing procedure, please ensure of the following:
+- The board is completely powered off.
+- The boot mode switches are set to eMMC mode.
+  (Switch 1 : Switch 2 : Switch 3 : Switch 4) = (ON : OFF : OFF : ON)
+
+1. Connect the USB Type-C cable to the USB Type-C ports on the board and your
+   host computer.
+2. Power on the board and the board should automatically boots into the
+   fastboot mode.
+3. Make sure the driver is installed if the host computer is equipped with
+   Windows.
+4. Run the `flashall.cmd` script for Windows or `flashall.sh` for Linux in this
+   directory.
+
+To reflash the system image, please launch weston-terminal on the board and
+run `sudo reboot-bootloader` to reboot the board into the fastboot mode.
+Then, follow the step 4 above.
+
+If you get unlucky and you can't even boot your board into the fastboot mode,
+then you can recover the system by booting into the serial download mode and then
+reflash the board from your host computer as follows.
+
+1. Power off the board and change the boot mode switches to serial download mode
+  (Switch 1 : Switch 2 : Switch 3 : Switch 4) = (OFF : ON : OFF : ON)
+2. Connect the USB Type-C cable to the USB Type-C ports on the board and your
+   host computer.
+3. Power on the board and the board should automatically boots into the
+   serial download mode.
+4. Make sure the driver is installed if the host computer is equipped with
+   Windows.
+5. Run the `flashall.cmd` script for Windows or `flashall.sh` for Linux in this
+   directory.
+6. When flashing is complete, your board will not boot up, because it stay in 
+   serial download mode. So please power off the board and reset the boot mode
+   switch to eMMC mode then power on the board.
+   (Switch 1 : Switch 2 : Switch 3 : Switch 4) = (ON : OFF : OFF : ON)
+
+* The driver for Windows could installed from Microsoft Update automatically or
+  local driver package manually.
+
+* If you meet VCRuntime140.dll missing issue, please install Visual C++ Redistributable 
+  for Visual Studio 2015 
+  https://www.microsoft.com/zh-TW/download/details.aspx?id=48145
