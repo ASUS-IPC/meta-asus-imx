@@ -12,6 +12,8 @@ PREFERRED_VERSION_linux-asus-imx = "5.10"
 VOLATILE_LOG_DIR = "no"
 
 IMAGE_INSTALL_append += " \
+	asus-overlay \
+	gptfdisk \
 	networkmanager \
 	networkmanager-nmtui \
 	iotedge-daemon \
