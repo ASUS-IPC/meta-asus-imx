@@ -11,12 +11,15 @@ PREFERRED_VERSION_linux-asus-imx = "5.10"
 
 VOLATILE_LOG_DIR = "no"
 
+PACKAGECONFIG_append_pn-gstreamer1.0-plugins-ugly = " x264"
+
 IMAGE_INSTALL_append += " \
 	asus-overlay \
 	gptfdisk \
 	exfat-utils \
 	fuse-exfat \
 	ntfs-3g \
+	gpsd \
 	networkmanager \
 	networkmanager-nmtui \
 	iotedge-daemon \
@@ -26,6 +29,16 @@ IMAGE_INSTALL_append += " \
 	ca-certificates \
 	canopensocket \
 	can-utils-j1939 \
+	vim \
+	whiptail \
+	glibc-utils \
+	glibc-gconv-utf-16 \
+	localedef \
+	cmake \
+	packagegroup-core-buildessential \
+	ppp \
+	libqmi \
+	libmbim \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
