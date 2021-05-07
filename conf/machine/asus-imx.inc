@@ -14,6 +14,9 @@ VOLATILE_LOG_DIR = "no"
 IMAGE_INSTALL_append += " \
 	asus-overlay \
 	gptfdisk \
+	exfat-utils \
+	fuse-exfat \
+	ntfs-3g \
 	networkmanager \
 	networkmanager-nmtui \
 	iotedge-daemon \
