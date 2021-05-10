@@ -15,7 +15,7 @@
 #
 part u-boot --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --align ${IMX_BOOT_SEEK}
 part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 8192 --size 64
-part --size 8 --ondisk mmcblk --label misk --align 8192
+part --size 8 --ondisk mmcblk --label misc --align 8192
 part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 8192
 
 bootloader --ptable msdos
