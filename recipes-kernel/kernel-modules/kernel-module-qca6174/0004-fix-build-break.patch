@@ -1,7 +1,7 @@
-From 4d5eb8634b454f097d94226a930f6f92485fc3cd Mon Sep 17 00:00:00 2001
+From 30e25b275bc77ea97773ed7f7647a1775f3d8e3f Mon Sep 17 00:00:00 2001
 From: andy3_kuo <andy3_kuo@asus.com>
 Date: Fri, 30 Apr 2021 10:59:59 +0800
-Subject: [PATCH 2/2] fix build break
+Subject: [PATCH 4/5] fix build break
 
 ---
  CORE/CLD_TXRX/TXRX/ol_rx_defrag.c            | 2 +-
