@@ -16,8 +16,8 @@ INHIBIT_PACKAGE_STRIP = "1"
 inherit systemd
 
 do_package_qa[noexec] = "1"
-SYSTEMD_SERVICE_${PN} = "resize-helper.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service"
+SYSTEMD_SERVICE_${PN} = "resize-helper.service adbd.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service adbd.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
