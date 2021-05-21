@@ -21,6 +21,7 @@ IMAGE_INSTALL_append += " \
 	ntfs-3g \
 	gpsd \
 	networkmanager \
+	networkmanager-nmcli \
 	networkmanager-nmtui \
 	iotedge-daemon \
 	iotedge-cli \
