@@ -10,7 +10,7 @@ SRC_URI += "file://0001-QCA6174-disable-P2P-WFD.patch \
             file://0002-CORE-BMI-RF-align-the-utf-firmware-bin-name.patch \
             file://0003-Porting-the-LEA3.1-driver-to-support-kernel-5.10.patch \
             file://0004-fix-build-break.patch \
-            file://0005-CORE-bypass-load-athsetup.bin-for-load-firmare-fail.patch \
+            file://0001-wifi-avoid-60s-delay-caused-by-request_firmware-fail.patch \
 "
 
 SRC_URI_append_imx8mq-pv100a += " \

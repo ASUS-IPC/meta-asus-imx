@@ -1,0 +1,25 @@
+From 34e84374489872f0de42a2dee9c9d01e855f418a Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Tue, 11 May 2021 17:56:11 +0800
+Subject: [PATCH] wifi: avoid 60s delay caused by request_firmware fail
+
+---
+ CORE/VOSS/src/vos_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CORE/VOSS/src/vos_api.c b/CORE/VOSS/src/vos_api.c
+index 9d5ddcc98..5c7d78c85 100644
+--- a/CORE/VOSS/src/vos_api.c
++++ b/CORE/VOSS/src/vos_api.c
+@@ -3599,7 +3599,7 @@ int qca_request_firmware(const struct firmware **firmware_p,
+ #ifdef CUSTOMIZED_FIRMWARE_PATH
+     return customized_request_firmware(firmware_p, name,device);
+ #else
+-    return request_firmware(firmware_p, name,device);
++    return request_firmware_direct(firmware_p, name, device);
+ #endif
+ }
+ 
+-- 
+2.25.1
+
