@@ -1,4 +1,4 @@
-MACHINE_FEATURES += " pci bluetooth wifi optee rtl8822 qca6174"
+MACHINE_FEATURES += " pci bluetooth wifi optee rtl8822 qca6174 ax200"
 
 # ASUS BSP default providers
 ASUS_DEFAULT_UBOOT = "u-boot-asus-imx"
@@ -44,6 +44,7 @@ IMAGE_INSTALL_append += " \
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'ax200', 'firmware-intel', '', d)}"
 
 SOC_DEFAULT_WKS_FILE_asus = "asus-imx-boot-bootpart.wks.in"
 
