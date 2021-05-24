@@ -1,4 +1,6 @@
-MACHINE_FEATURES += " pci bluetooth wifi optee rtl8822 qca6174 ax200"
+MACHINE_FEATURES += " pci bluetooth wifi rtl8822 qca6174 ax200"
+
+MACHINE_FEATURES_remove = "optee"
 
 # ASUS BSP default providers
 ASUS_DEFAULT_UBOOT = "u-boot-asus-imx"
