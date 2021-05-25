@@ -24,7 +24,7 @@ def main():
         print('Can not reboot as a normal user. Please re-run with sudo.')
         sys.exit(1)
 
-    misc_path = os.path.join(os.sep, 'dev', 'disk', 'by-label', 'misc')
+    misc_path = os.path.join(os.sep, 'dev', 'disk', 'by-partlabel', 'misc')
     if not os.path.exists(misc_path):
         print('Could not find a misc partition! Giving up.')
         sys.exit(1)

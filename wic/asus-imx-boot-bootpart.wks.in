@@ -18,4 +18,4 @@ part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot
 part --size 8 --ondisk mmcblk --label misc --align 8192
 part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 8192
 
-bootloader --ptable msdos
+bootloader --ptable gpt
