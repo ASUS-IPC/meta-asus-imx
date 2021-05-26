@@ -15,6 +15,8 @@ SYSTEMD_POWEROFF = "systemd-poweroff.service"
 SYSTEMD_REBOOT_imx8mq-pv100a = "systemd-reboot.service.imx8mq-pv100a"
 SYSTEMD_POWEROFF_imx8mq-pv100a = "systemd-poweroff.service.imx8mq-pv100a"
 
+ALTERNATIVE_PRIORITY[resolv-conf] = "150"
+
 do_install_append () {
   install -m 0644 ${WORKDIR}/system.conf ${D}${sysconfdir}/systemd
   install -m 0644 ${WORKDIR}/logind.conf ${D}${sysconfdir}/systemd
