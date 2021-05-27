@@ -39,16 +39,13 @@ do_serial() {
   RET=$?
   if [ $RET -eq 1 ]; then
     sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
-    sed -i /boot/cmdline.txt -e "s/earlycon=ec_imx6q,[A-Za-z0-9]\+,[0-9]\+ /earlycon=null /"
     systemctl disable serial-getty@ttymxc0.service
     whiptail --msgbox "Serial is now disabled" 20 60 1
   elif [ $RET -eq 0 ]; then
     # 1. set console to null
     sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
-    sed -i /boot/cmdline.txt -e "s/earlycon=ec_imx6q,[A-Za-z0-9]\+,[0-9]\+ /earlycon=null /"
     # 2. set console to assigned uart port
     sed -i /boot/cmdline.txt -e "s/console=null\+ /console=ttymxc0,115200 /"
-    sed -i /boot/cmdline.txt -e "s/earlycon=null\+ /earlycon=ec_imx6q,0x30860000,115200 /"
     systemctl enable serial-getty@ttymxc0.service
     whiptail --msgbox "Serial is now enabled" 20 60 1
   else
