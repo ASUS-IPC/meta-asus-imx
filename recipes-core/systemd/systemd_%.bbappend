@@ -6,6 +6,7 @@ SRC_URI += "file://system.conf \
             file://poweroff.target \
             file://systemd-reboot.service \
             file://systemd-poweroff.service \
+            file://50-tpu-pm.sh \
 "
 
 do_install_append () {
@@ -15,4 +16,5 @@ do_install_append () {
   install -m 0644 ${WORKDIR}/poweroff.target ${D}${base_libdir}/systemd/system
   install -m 0644 ${WORKDIR}/systemd-reboot.service ${D}${base_libdir}/systemd/system
   install -m 0644 ${WORKDIR}/systemd-poweroff.service ${D}${base_libdir}/systemd/system
+  install -m 0755 ${WORKDIR}/50-tpu-pm.sh ${D}${base_libdir}/systemd/system-sleep
 }
