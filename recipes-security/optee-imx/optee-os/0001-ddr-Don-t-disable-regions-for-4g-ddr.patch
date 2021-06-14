@@ -1,0 +1,26 @@
+From 08ee7587caf11c87bb33732036bb98c6ea8233b4 Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Fri, 11 Jun 2021 14:54:47 +0800
+Subject: [PATCH] ddr: Don't disable regions for 4g ddr.
+
+---
+ core/drivers/tzc380.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/core/drivers/tzc380.c b/core/drivers/tzc380.c
+index fd229a7e..f646dcc2 100644
+--- a/core/drivers/tzc380.c
++++ b/core/drivers/tzc380.c
+@@ -273,6 +273,9 @@ int tzc_auto_configure(vaddr_t addr, vaddr_t size, uint32_t attr,
+ 					lsize -= sub_region_size;
+ 				}
+ 			}
++			mask &= ~TZC_ATTR_SUBREGION_DIS(6);
++			mask &= ~TZC_ATTR_SUBREGION_DIS(7);
++
+ 			tzc_configure_region(lregion, sub_address,
+ 					     TZC_ATTR_REGION_SIZE(pow - 1) |
+ 					     TZC_ATTR_REGION_EN_MASK |
+-- 
+2.25.1
+
