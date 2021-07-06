@@ -1,22 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " \
-	file://soc.mak.imx8mq-im-a \
-	file://soc.mak.imx8mq-pe100a \
-	file://soc.mak.imx8mq-pv100a \
-"
+SRC_URI_append_imx8mq-pv100a2g = " file://0001-imx-mkimage-imx8mq-add-2G-support.patch "
 
-do_compile_prepend_imx8mq-im-a () {
-	echo "Copying soc.mak"
-	cp ${WORKDIR}/soc.mak.imx8mq-im-a ${S}/iMX8M/soc.mak
-}
-
-do_compile_prepend_imx8mq-pe100a () {
-	echo "Copying soc.mak"
-	cp ${WORKDIR}/soc.mak.imx8mq-pe100a ${S}/iMX8M/soc.mak
-}
-
-do_compile_prepend_imx8mq-pv100a () {
-	echo "Copying soc.mak"
-	cp ${WORKDIR}/soc.mak.imx8mq-pv100a ${S}/iMX8M/soc.mak
+do_compile_prepend () {
+	cp ${DEPLOY_DIR_IMAGE}/${BOOT_TOOLS}/${UBOOT_DTB_NAME}   ${S}/${SOC_DIR}/fsl-imx8mq-evk.dtb
 }
