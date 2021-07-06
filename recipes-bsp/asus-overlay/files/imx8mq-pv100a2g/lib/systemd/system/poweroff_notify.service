@@ -1,0 +1,15 @@
+[Unit]
+Description=Power off notify service
+DefaultDependencies=no
+Conflicts=reboot.target
+Before=poweroff.target halt.target shutdown.target
+Requires=poweroff.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/system_test 0
+RemainAfterExit=yes
+
+[Install]
+WantedBy=shutdown.target
+

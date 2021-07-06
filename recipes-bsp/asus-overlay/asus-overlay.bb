@@ -4,6 +4,7 @@ SRC_URI = "file://common \
            file://imx8mq-im-a \
            file://imx8mq-pe100a \
            file://imx8mq-pv100a \
+           file://imx8mq-pv100a2g \
            file://COPYING \
 "
 LICENSE = "GPLv2"
@@ -18,12 +19,17 @@ inherit systemd
 do_package_qa[noexec] = "1"
 SYSTEMD_SERVICE_${PN} = "resize-helper.service fs-mount@.service adbd.service"
 SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service fs-mount@.service ntpsync.service rtcsync.service adbd.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "resize-helper.service fs-mount@.service ntpsync.service rtcsync.service adbd.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
   install -d ${D}
-  cp -rf ${WORKDIR}/common/* ${D}
-  cp -rf ${WORKDIR}/${MACHINE}/* ${D}
+  if [ -n "$(ls -A ${WORKDIR}/common)" ]; then
+    cp -rf ${WORKDIR}/common/* ${D}
+  fi
+  if [ -n "$(ls -A ${WORKDIR}/${MACHINE})" ]; then
+    cp -rf ${WORKDIR}/${MACHINE}/* ${D}
+  fi
 }
 
 FILES_${PN} += "/ "

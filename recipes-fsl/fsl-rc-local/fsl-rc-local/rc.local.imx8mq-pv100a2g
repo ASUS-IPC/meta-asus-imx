@@ -1,0 +1,29 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+
+echo 30000 >  /proc/sys/vm/min_free_kbytes
+/sbin/hwclock_mcu -s
+/sbin/can_init.sh can0
+sleep 1
+/sbin/can_init.sh can1
+echo "13" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio13/direction
+echo "0" > /sys/class/gpio/gpio13/value
+echo "13" > /sys/class/gpio/unexport
+
+#g-sensor: set the value of the register 0x19 to 0x02 for mapping high-g to INT1 pin.
+/usr/sbin/i2ctransfer -y 3 w9@0x10 0x02 0x07 0x06 0x52 0x00 0x30 0x00 0x19 0x02
+
+exit 0
+

@@ -48,4 +48,10 @@ do_copy_defconfig_append_imx8mq-pv100a () {
     cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/../defconfig
 }
 
+do_copy_defconfig_append_imx8mq-pv100a2g () {
+    install -d ${B}
+    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/.config
+    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/../defconfig
+}
+
 COMPATIBLE_MACHINE = "(mx8)"
