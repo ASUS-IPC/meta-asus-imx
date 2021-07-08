@@ -15,6 +15,7 @@ case "$1" in
 		;;
 	post)
 		logger -t TPU "after resume"
+		sleep 2
 		echo 1 > /sys/bus/pci/rescan
 		;;
 esac
