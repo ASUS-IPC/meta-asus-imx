@@ -1,0 +1,7 @@
+KERNEL!="cdc-wdm*", GOTO="asus_lte_manager_end"
+
+ACTION=="add", RUN+="/sbin/lte.sh start"
+
+ACTION=="remove", RUN+="/sbin/lte.sh stop"
+
+LABEL="asus_lte_manager_end"

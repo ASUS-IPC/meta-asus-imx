@@ -1,3 +1,0 @@
-SUBSYSTEM=="net", ACTION=="add", ATTRS{idVendor}=="2c7c", RUN+="/sbin/lte.sh start"
-
-SUBSYSTEM=="net", ACTION=="remove", ATTRS{idVendor}=="2c7c", RUN+="/sbin/lte.sh stop"

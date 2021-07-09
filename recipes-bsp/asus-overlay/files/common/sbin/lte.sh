@@ -14,32 +14,8 @@ check_config() {
 
     if [ ! -e ${CONFIG_FILE} ] ; then
         touch $CONFIG_FILE
-        echo "APN=internet" >> $CONFIG_FILE
         echo "PIN=0000" >> $CONFIG_FILE
         echo "AUTO_CONNECT=y" >> $CONFIG_FILE
-    fi
-}
-
-start_quectel_tool() {
-    . $CONFIG_FILE
-    if [ "$AUTO_CONNECT" == "y" ]; then
-        if [ "$APN" == "" ]; then
-            if [ "$PIN" == "" ]; then
-                quectel-CM &
-            else
-                quectel-CM -p $PIN &
-            fi
-        else
-            if [ "$PIN" == "" ]; then
-                quectel-CM -s $APN &
-            else
-                quectel-CM -s $APN -p $PIN &
-            fi
-        fi
-        PID=`pidof quectel-CM`
-        log "=== Start at ${PID} ==="
-    else
-        log "AUTO_CONNECT not enabled"
     fi
 }
 
@@ -87,10 +63,6 @@ log() {
 
 log "do ${1}"
 case $1 in
-set-apn)
-    check_config
-    sed -i "s/\(APN *= *\).*/\1$2/" $CONFIG_FILE
-    ;;
 set-pin)
     check_config
     sed -i "s/\(PIN *= *\).*/\1$2/" $CONFIG_FILE
@@ -136,8 +108,7 @@ reboot-module)
     reboot
     ;;
 reset)
-    echo "APN=internet" > $CONFIG_FILE
-    echo "PIN=0000" >> $CONFIG_FILE
+    echo "PIN=0000" > $CONFIG_FILE
     echo "AUTO_CONNECT=y" >> $CONFIG_FILE
     ;;
 start)
@@ -159,20 +130,17 @@ start)
         else
             log "Check pass"
             check_config
-            start_quectel_tool
+            lte_connect
         fi
     else
         log "Not supported version = ${version}"
         check_config
-        start_quectel_tool
+        lte_connect
     fi
     ;;
 stop)
     log "=== Disconnect ==="
-    PID=`pidof quectel-CM`
-    if [ "${PID}" != "" ]; then
-        kill ${PID}
-    fi
+    lte_disconnect
     ;;
 set-wakeup)
     if [ "$2" == "0" ]; then
@@ -192,7 +160,7 @@ set-wakeup)
     fi
     ;;
 *)
-    echo "Connectivity: $0 {set-apn [apn]| set-pin [pin]| set-auto [y/n]| reset}"
+    echo "Connectivity: $0 {set-pin [pin]| set-auto [y/n]| reset}"
     echo "Setting: $0 {set-sim [0/1] | check-sim-detect | set-sim-detect [0/1] | reboot-module | set-wakeup [0/1]}"
     ;;
 esac
