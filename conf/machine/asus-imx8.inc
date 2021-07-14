@@ -69,6 +69,7 @@ DEFAULTTUNE_mx8 = "aarch64"
 VOLATILE_LOG_DIR = "no"
 
 PACKAGECONFIG_append_pn-gstreamer1.0-plugins-ugly = " x264"
+PACKAGECONFIG_append_pn-networkmanager = " modemmanager ppp"
 
 MACHINE_EXTRA_RDEPENDS += " \
 	asus-overlay \
@@ -101,6 +102,7 @@ MACHINE_EXTRA_RDEPENDS += " \
 	libmbim \
 	canopensocket \
 	can-utils-j1939 \
+	modemmanager \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
