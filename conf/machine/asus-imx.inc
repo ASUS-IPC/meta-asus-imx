@@ -43,6 +43,7 @@ IMAGE_INSTALL_append += " \
 	libmbim \
 	edgetpu \
 	modemmanager \
+	opkg \
 "
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
