@@ -17,9 +17,9 @@ INHIBIT_PACKAGE_STRIP = "1"
 inherit systemd
 
 do_package_qa[noexec] = "1"
-SYSTEMD_SERVICE_${PN} = "resize-helper.service fs-mount@.service adbd.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service fs-mount@.service ntpsync.service rtcsync.service adbd.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "resize-helper.service fs-mount@.service ntpsync.service rtcsync.service adbd.service"
+SYSTEMD_SERVICE_${PN} = "fs-mount@.service adbd.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "fs-mount@.service ntpsync.service rtcsync.service adbd.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "fs-mount@.service ntpsync.service rtcsync.service adbd.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
@@ -30,6 +30,9 @@ do_install() {
   if [ -n "$(ls -A ${WORKDIR}/${MACHINE})" ]; then
     cp -rf ${WORKDIR}/${MACHINE}/* ${D}
   fi
+
+  install -d ${D}${sysconfdir}/systemd/system/basic.target.wants/
+  ln -sf ${systemd_unitdir}/system/resize-helper.service ${D}${sysconfdir}/systemd/system/basic.target.wants/resize-helper.service
 }
 
 FILES_${PN} += "/ "
