@@ -24,8 +24,8 @@
 #CtrlAltDelBurstAction=reboot-force
 #CPUAffinity=1 2
 #JoinControllers=cpu,cpuacct net_cls,net_prio
-#RuntimeWatchdogSec=60
-#ShutdownWatchdogSec=10min
+RuntimeWatchdogSec=60
+ShutdownWatchdogSec=10min
 #CapabilityBoundingSet=
 #SystemCallArchitectures=
 #TimerSlackNSec=
