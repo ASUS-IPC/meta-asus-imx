@@ -1,0 +1,12 @@
+[Unit]
+Description=ASUS ModemManager KeepAlive Service
+
+[Service]
+Type=simple
+ExecStart=/etc/lte/mm_keepalive start
+ExecStop=/etc/lte/mm_keepalive stop
+ExecReload=/etc/lte/mm_keepalive restart
+TimeoutSec=infinity
+
+[Install]
+WantedBy=multi-user.target

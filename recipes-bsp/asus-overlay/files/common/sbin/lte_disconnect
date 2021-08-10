@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 NETWORK_NAME="Cellular"
 TAG="LTE"
 
@@ -9,6 +9,7 @@ log() {
 
 nmcli connection show --active | grep ${NETWORK_NAME}
 if [ "${?}" == "0" ]; then
+	systemctl stop mm_keepalive
 	log "shut down ${NETWORK_NAME}"
 	nmcli c down ${NETWORK_NAME}
 	exit 0

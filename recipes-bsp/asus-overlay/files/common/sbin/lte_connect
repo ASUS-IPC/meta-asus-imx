@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 CONFIG_PATH=/etc/lte
 CONFIG_FILE=${CONFIG_PATH}/lte.conf
 APN_LIST=${CONFIG_PATH}/apns-full.xml
@@ -98,12 +98,21 @@ nmcli c add type gsm con-name ${NETWORK_NAME} ifname '*' apn ${apn} autoconnect 
 # Bring up connection
 let count=0
 until nmcli c up ${NETWORK_NAME}; do
-	let count++
-	log "bring up network fail ${count} / ${CONNECT_RETRY}"
-	if ((count == ${CONNECT_RETRY})); then
-		exit 1
+	log "bring up network fail ${count}"
+	if ((count > ${#RETRY_TIME[@]}-1)); then
+		let count=${#RETRY_TIME[@]}-1
 	fi
-	sleep 1
+	next=`echo ${RETRY_TIME[$count]/,/} + $((RANDOM%${RETRY_RANDOM[$count]/,/})) | bc`
+	log "retry after $next sec"
+	sleep $next
+	let count++
 done
-log "bring up network success"
+
+log "bring up network success, start keepalive service"
+/etc/lte/mm_keepalive status
+if [ "${?}" == "0" ]; then
+	systemctl restart mm_keepalive
+else
+	systemctl start mm_keepalive
+fi
 exit 0
