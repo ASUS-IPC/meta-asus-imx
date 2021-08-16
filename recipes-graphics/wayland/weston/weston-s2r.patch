@@ -1,0 +1,25 @@
+diff --git a/libweston/compositor-drm.c b/libweston/compositor-drm.c
+index 3365d29b..426fff7e 100644
+--- a/libweston/compositor-drm.c
++++ b/libweston/compositor-drm.c
+@@ -6822,7 +6822,9 @@ session_notify(struct wl_listener *listener, void *data)
+ 	struct drm_output *output;
+ 
+ 	if (compositor->session_active) {
+-		weston_log("activating session\n");
++		weston_log("activating session and sleep 1s\n");
++		sleep(1);
++		weston_log("activating session sleep done\n");
+ 		weston_compositor_wake(compositor);
+ 		weston_compositor_damage_all(compositor);
+ 		b->state_invalid = true;
+@@ -6860,6 +6862,9 @@ session_notify(struct wl_listener *listener, void *data)
+ 					output->crtc_id, 0, 0,
+ 					0, 0, 0, 0, 0, 0, 0, 0);
+ 		}
++		weston_log("deactivating session done, and sleep 1s\n");
++		sleep(1);
++		weston_log("deactivating session sleep done\n");
+ 	}
+ }
+ 
