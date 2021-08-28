@@ -1,0 +1,9 @@
+[Unit]
+Description=ttyGPS Daemon
+After=network.target
+
+[Service]
+ExecStart=/etc/init.d/tpm2-tss.sh start
+
+[Install]
+WantedBy=multi-user.target
