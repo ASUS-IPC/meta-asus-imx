@@ -125,18 +125,18 @@ do_configure_prepend() {
 }
 
 do_install_append() {
-    install -d "${D}${sysconfdir}/init.d"
-    install -m 0755 "${WORKDIR}/tpm2-tss.sh" "${D}${sysconfdir}/init.d"
- 
-    install -d "${D}${systemd_system_unitdir}"
-    install -m 0644 "${WORKDIR}/tpm2-tss.service" "${D}${systemd_system_unitdir}"
-
-    install -d "${D}/etc/systemd/system/multi-user.target.wants"
-    (cd ${D}/etc/systemd/system/multi-user.target.wants; \
-     ln -s ${systemd_system_unitdir}/tpm2-tss.service tpm2-tss.service; \
-    )
-    install -d "${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/asus-overlay/imx8mqpe100a/overlay/usr/lib"
-    cp -pdR ${WORKDIR}/../../tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib/lib*.so* "${WORKDIR}/../../../../../../build_imx8mq-pe100a_DEBUG/tmp/work/imx8mq_pe100a-poky-linux/fsl-image-qt5-validation-imx/1.0-r0/rootfs/usr/lib"
+#    install -d "${D}${sysconfdir}/init.d"
+#    install -m 0755 "${WORKDIR}/tpm2-tss.sh" "${D}${sysconfdir}/init.d"
+# 
+#    install -d "${D}${systemd_system_unitdir}"
+#    install -m 0644 "${WORKDIR}/tpm2-tss.service" "${D}${systemd_system_unitdir}"
+#
+#    install -d "${D}/etc/systemd/system/multi-user.target.wants"
+#    (cd ${D}/etc/systemd/system/multi-user.target.wants; \
+#     ln -s ${systemd_system_unitdir}/tpm2-tss.service tpm2-tss.service; \
+#    )
+#    install -d "${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/asus-overlay/imx8mqpe100a/overlay/usr/lib"
+#    cp -pdR ${WORKDIR}/../../tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib/lib*.so* "${WORKDIR}/../../../../../../build_imx8mq-pe100a_DEBUG/tmp/work/imx8mq_pe100a-poky-linux/fsl-image-qt5-validation-imx/1.0-r0/rootfs/usr/lib"
 }
 
 SYSTEMD_SERVICE_${PN} = "tpm2-tss.service"
