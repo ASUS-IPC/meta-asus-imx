@@ -1,7 +1,7 @@
 #!/bin/bash
 TAG="mm_keepalive[$$]"
 CONFIG_PATH=/etc/lte
-PID_FILE=${CONFIG_PATH}/mm_keepalive.pid
+LOCK_FILE=${CONFIG_PATH}/mm_keepalive.lock
 
 log() {
     echo "${1}"
@@ -20,14 +20,10 @@ check_connection() {
 
 case "$1" in
 start)
-    if [ -e ${PID_FILE} ]; then
-        log "Keepalive service already exists"
-        exit 1
-    fi
     log "Start keepalive service"
-    echo $$ > ${PID_FILE}
+    echo $$ > ${LOCK_FILE}
     dbus-monitor --system "interface='org.freedesktop.ModemManager1.Modem',member='StateChanged'" |
-    while read -r line; do
+    while read -r line && [ -e ${LOCK_FILE} ]; do
         log "${line}"
         if check_connection; then
             log "Check state is $state, reconnecting"
@@ -37,28 +33,13 @@ start)
     done
     ;;
 stop)
-    if [ -e ${PID_FILE} ]; then
-        log "Stop keepalive service"
-        kill `cat ${PID_FILE}`
-        rm ${PID_FILE}
-    else
-        log "Keepalive service not exists"
-        exit 1
-    fi
+    log "Stop keepalive service"
+    rm ${LOCK_FILE}
     ;;
 restart)
     ;;
-status)
-    if [ -e ${PID_FILE} ]; then
-        pid=`cat ${PID_FILE}`
-        log "Keepalive service is running, pid=${pid}"
-    else
-        log "Keepalive service is NOT running"
-        exit 1
-    fi
-    ;;
 *)
-    echo "Usage: $0 {start|stop|status}"
+    echo "Usage: $0 {start|stop|restart}"
     exit 1
     ;;
 esac

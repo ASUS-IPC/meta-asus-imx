@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 AT_PORT=/dev/ttyUSB2
 ACK=/lte_ack
@@ -21,7 +21,7 @@ check_config() {
 
 send_at_command() {
     if [ -e ${AT_PORT} ]; then
-        echo -ne "${1}\r" | microcom -t 2000 ${AT_PORT} > ${ACK}
+        echo -ne "${1}\r" | busybox microcom -t 2000 ${AT_PORT} > ${ACK}
     else
         log "ERROR device not found"
     fi
@@ -47,13 +47,13 @@ set_sim_detect() {
 
 check_sim_slot() {
     res=`echo $(ex_gpio -s)`
-    res=`echo ${res##*is}`
-    res=`echo ${res%%Co*}`
+    res=`echo ${res##*use\ }`
+    res=`echo ${res%%slot*}`
     echo $res
 }
 
 reboot() {
-    echo -ne "AT+CFUN=1,1\r" | microcom ${AT_PORT}
+    echo -ne "AT+CFUN=1,1\r" | busybox microcom ${AT_PORT}
 }
 
 log() {
@@ -76,14 +76,14 @@ set-auto)
     fi
     ;;
 set-sim)
-    if [ "$2" == "0" ]; then
+    if [ "$2" == "sim1" ]; then
         ex_gpio -s ${2}
         if [ "$?" == "0" ]; then
             set_sim_detect 1
         else
             log "Set sim error"
         fi
-    elif [ "$2" == "1" ]; then
+    elif [ "$2" == "sim2" ]; then
         ex_gpio -s ${2}
         if [ "$?" == "0" ]; then
             set_sim_detect 0
@@ -112,31 +112,69 @@ reset)
     echo "AUTO_CONNECT=y" >> $CONFIG_FILE
     ;;
 start)
-    version=`cat /proc/boardinfo`
-    log "Start as ${version}"
-    if [ "$version" == "PV100A" ]; then
+    board=$(cat /proc/boardinfo)
+    log "Start as ${board}, stop modemmanager first..."
+    systemctl stop ModemManager
+    while mmcli -B; do
+        log "Waiting for modemmanager stops"
+        sleep 1
+    done
+
+    case "$board" in
+    "PV100A")
         enable=$(check_sim_detect)
         log "Check sim detect = ${enable}"
         slot=$(check_sim_slot)
         log "Check sim slot = ${slot}"
-        if [ "$enable" == "0" ] && [ "$slot" == "0" ]; then
+        if [ "$enable" == "0" ] && [ "$slot" == "sim1" ]; then
             # enable sim detect when using sim slot 0
-            log "Set sim detect to 1"
+            log "Enable sim detect"
             set_sim_detect 1
-        elif [ "$enable" == "1" ] && [ "$slot" == "1" ]; then
+            exit 1
+        elif [ "$enable" == "1" ] && [ "$slot" == "sim2" ]; then
             # disable sim detect when using sim slot 1
-            log "Set sim detect to 0"
+            log "Disable sim detect"
             set_sim_detect 0
-        else
-            log "Check pass"
-            check_config
-            lte_connect
+            exit 1
         fi
-    else
-        log "Not supported version = ${version}"
-        check_config
-        lte_connect
-    fi
+        ;;
+    "Tinker Edge R")
+        boardVer=$(cat /proc/boardver)
+        log "boardVer = ${boardVer}"
+        enable=$(check_sim_detect)
+        log "Check sim detect = ${enable}"
+        check=$(echo "${boardVer} >= 1.04" | bc)
+        if [ "$check" == "1" ]; then
+            # enable sim detect when board version >= 1.04
+            if [ "$enable" == "0" ]; then
+                log "Enable sim detect"
+                set_sim_detect 1
+                exit 1
+            fi
+        else
+            # disable sim detect when board version < 1.04
+            if [ "$enable" == "1" ]; then
+                log "Disable sim detect"
+                set_sim_detect 0
+                exit 1
+            fi
+        fi
+        ;;
+    *)
+        log "Nothing to do with board = ${board}"
+        ;;
+    esac
+
+    log "Check pass"
+    log "Start modemmanager..."
+    systemctl start ModemManager
+    until mmcli -B; do
+        log "Waiting for modemmanager starts"
+        sleep 1
+    done
+
+    check_config
+    lte_connect
     ;;
 stop)
     log "=== Disconnect ==="
@@ -161,6 +199,6 @@ set-wakeup)
     ;;
 *)
     echo "Connectivity: $0 {set-pin [pin]| set-auto [y/n]| reset}"
-    echo "Setting: $0 {set-sim [0/1] | check-sim-detect | set-sim-detect [0/1] | reboot-module | set-wakeup [0/1]}"
+    echo "Setting: $0 {set-sim [sim1/sim2] | check-sim-detect | set-sim-detect [0/1] | reboot-module | set-wakeup [0/1]}"
     ;;
 esac

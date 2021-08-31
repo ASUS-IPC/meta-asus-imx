@@ -25,7 +25,7 @@ if [ "${AUTO_CONNECT}" != "y" ]; then
 fi
 until mmcli -B; do
     log "waiting for modem manager"
-    sleep 15
+    sleep 3
 done
 
 # Get modem
@@ -109,7 +109,7 @@ until nmcli c up ${NETWORK_NAME}; do
 done
 
 log "bring up network success, start keepalive service"
-/etc/lte/mm_keepalive status
+systemctl is-active mm_keepalive &> /dev/null
 if [ "${?}" == "0" ]; then
 	systemctl restart mm_keepalive
 else
