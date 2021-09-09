@@ -14,7 +14,6 @@
 
 echo 30000 >  /proc/sys/vm/min_free_kbytes
 /sbin/wifi_init.sh
-/sbin/can_init.sh can0
 
 exit 0
 
