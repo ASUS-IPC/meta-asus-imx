@@ -42,6 +42,7 @@ IMAGE_INSTALL_append += " \
 	libqmi \
 	libmbim \
 	edgetpu \
+    mraa \ 
 	modemmanager \
 	opkg \
 	tpm2-tools \
