@@ -7,6 +7,7 @@ SRC_URI += "file://0001-QCA6174-disable-P2P-WFD.patch \
             file://0001-CORE-HIF-PCIe-only-support-one-instance.patch \
             file://0002-CORE-HIF-enable-pcie-MSI-feature.patch \
             file://0001-CORE-BMI-RF-align-the-utf-firmware-bin-name.patch \
+            file://0001-CORE-add-pcie-multi_if_name-support.patch \
 "
 
 SRC_URI_append_imx8mq-pv100a += " \
