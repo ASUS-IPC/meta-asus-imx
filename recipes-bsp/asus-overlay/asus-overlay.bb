@@ -29,7 +29,8 @@ do_install() {
   cp -rf ${WORKDIR}/${MACHINE}/* ${D}
 
   if [ -n "$(ls -A ${WORKDIR}/../../../cortexa53-crypto-poky-linux/tpm2-tss/3.0.0-r0/sysroot-destdir/usr/lib)" ]; then
-    cp -rf ${WORKDIR}/../../../cortexa53-crypto-poky-linux/tpm2-tss/3.0.0-r0/sysroot-destdir/usr/lib/lib* ${D}/lib
+    install -d ${D}/usr/lib
+    cp -rf ${WORKDIR}/../../../cortexa53-crypto-poky-linux/tpm2-tss/3.0.0-r0/sysroot-destdir/usr/lib/lib* ${D}/usr/lib
   fi
 }
 
