@@ -1,5 +1,5 @@
 [Unit]
-Description=ttyGPS Daemon
+Description=tpm2-tss init
 After=network.target
 
 [Service]

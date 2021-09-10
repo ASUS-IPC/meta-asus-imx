@@ -105,8 +105,6 @@ MACHINE_EXTRA_RDEPENDS += " \
 	modemmanager \
 	opkg \
 	busybox \
-	cmocka \
-	tpm2-tss \
 	tpm2-tools \
 "
 

@@ -17,6 +17,8 @@ case "${1}" in
 		(cd /usr/lib; ln -s libtss2-tcti-device.so.0.0.0 libtss2-tcti-device.so; )
 		(cd /usr/lib; ln -s libtss2-tctildr.so.0.0.0 libtss2-tctildr.so; )
 		(cd /usr/lib; ln -s libtss2-tcti-mssim.so.0.0.0 libtss2-tcti-mssim.so; )
+		export TPM2TOOLS_TCTI="device:/dev/tpm0"
+		tpm2_startup -c
 		;;
 	*)
 		echo "Usage: ${NAME} {start}" >&2

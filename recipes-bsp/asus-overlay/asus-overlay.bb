@@ -35,8 +35,8 @@ do_install() {
   ln -sf ${systemd_unitdir}/system/resize-helper.service ${D}${sysconfdir}/systemd/system/basic.target.wants/resize-helper.service
   
   if [ -n "$(ls -A ${WORKDIR}/../../../aarch64-poky-linux/tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib)" ]; then
-  install -d ${D}/usr/lib
-    cp -rf ${WORKDIR}/../../../aarch64-poky-linux/tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib/lib* ${D}/lib
+    install -d ${D}/usr/lib
+    cp -rf ${WORKDIR}/../../../aarch64-poky-linux/tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib/lib* ${D}/usr/lib
   fi
 }
 
