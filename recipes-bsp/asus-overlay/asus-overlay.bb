@@ -20,7 +20,7 @@ do_package_qa[noexec] = "1"
 SYSTEMD_SERVICE_${PN} = "fs-mount@.service adbd.service"
 SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "fs-mount@.service ntpsync.service rtcsync.service adbd.service"
 SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "fs-mount@.service ntpsync.service rtcsync.service adbd.service"
-RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted tpm2-tss"
+RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
   install -d ${D}
@@ -33,11 +33,6 @@ do_install() {
 
   install -d ${D}${sysconfdir}/systemd/system/basic.target.wants/
   ln -sf ${systemd_unitdir}/system/resize-helper.service ${D}${sysconfdir}/systemd/system/basic.target.wants/resize-helper.service
-  
-  if [ -n "$(ls -A ${WORKDIR}/../../../aarch64-poky-linux/tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib)" ]; then
-    install -d ${D}/usr/lib
-    cp -rf ${WORKDIR}/../../../aarch64-poky-linux/tpm2-tss/2.3.2-r0/sysroot-destdir/usr/lib/lib* ${D}/usr/lib
-  fi
 }
 
 FILES_${PN} += "/ "

@@ -91,7 +91,11 @@ FILES_libtss2-tcti-mssim-dev = " \
     ${libdir}/libtss2-tcti-mssim.so"
 FILES_libtss2-tcti-mssim-staticdev = "${libdir}/libtss2-tcti-mssim.*a"
 
-FILES_libtss2-mu = "${libdir}/libtss2-mu.so.*"
+FILES_libtss2-mu = " \
+    ${libdir}/libtss2-mu.so.* \
+    ${libdir}/libtss2-tcti-device.so.* \
+    ${libdir}/libtss2-tcti-mssim.so.* \
+"
 FILES_libtss2-mu-dev = " \
     ${includedir}/tss2/tss2_mu.h \
     ${libdir}/pkgconfig/tss2-mu.pc \
@@ -135,15 +139,6 @@ do_install_append() {
     (cd ${D}/etc/systemd/system/multi-user.target.wants; \
      ln -s ${systemd_system_unitdir}/tpm2-tss.service tpm2-tss.service; \
     )
-
-    if [ -n "$(ls -A ${WORKDIR}/image/usr/lib)" ]; then
-        install -d ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-im-a/usr/lib
-        cp -pdR ${WORKDIR}/image/usr/lib/lib*.so* ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-im-a/usr/lib
-        install -d ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a/usr/lib
-        cp -pdR ${WORKDIR}/image/usr/lib/lib*.so* ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a/usr/lib
-        install -d ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/usr/lib
-        cp -pdR ${WORKDIR}/image/usr/lib/lib*.so* ${WORKDIR}/../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/usr/lib
-    fi
 }
 
 SYSTEMD_SERVICE_${PN} = "tpm2-tss.service"
