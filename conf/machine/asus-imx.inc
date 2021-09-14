@@ -44,8 +44,6 @@ IMAGE_INSTALL_append += " \
 	edgetpu \
 	modemmanager \
 	opkg \
-	cmocka \
-	tpm2-tss \
 	tpm2-tools \
 "
 
