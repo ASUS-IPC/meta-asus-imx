@@ -3,6 +3,7 @@ PR = "r2"
 SRC_URI = "file://common \
            file://imx8mq-im-a \
            file://imx8mq-pe100a \
+           file://imx8mq-pe100a2g \
            file://imx8mq-pv100a \
            file://imx8mq-pv100a2g \
            file://COPYING \

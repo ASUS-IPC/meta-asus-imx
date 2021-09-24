@@ -22,36 +22,21 @@ SRCREV = "${AUTOREV}"
 S = "${WORKDIR}/git"
 
 addtask copy_defconfig after do_unpack before do_preconfigure
+
+IMX_KERNEL_CONFIG_AARCH64 = "defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-im-a = "ima_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a = "pe100a_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a2g = "pe100a_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a = "pv100a_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a2g = "pv100a_defconfig"
+
+
 do_copy_defconfig () {
     install -d ${B}
     # copy latest defconfig to use for mx8
     mkdir -p ${B}
-    cp ${S}/arch/arm64/configs/defconfig ${B}/.config
-    cp ${S}/arch/arm64/configs/defconfig ${B}/../defconfig
-}
-
-do_copy_defconfig_append_imx8mq-im-a () {
-    install -d ${B}
-    cp ${S}/arch/arm64/configs/ima_defconfig ${B}/.config
-    cp ${S}/arch/arm64/configs/ima_defconfig ${B}/../defconfig
-}
-
-do_copy_defconfig_append_imx8mq-pe100a () {
-    install -d ${B}
-    cp ${S}/arch/arm64/configs/pe100a_defconfig ${B}/.config
-    cp ${S}/arch/arm64/configs/pe100a_defconfig ${B}/../defconfig
-}
-
-do_copy_defconfig_append_imx8mq-pv100a () {
-    install -d ${B}
-    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/.config
-    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/../defconfig
-}
-
-do_copy_defconfig_append_imx8mq-pv100a2g () {
-    install -d ${B}
-    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/.config
-    cp ${S}/arch/arm64/configs/pv100a_defconfig ${B}/../defconfig
+    cp ${S}/arch/arm64/configs/${IMX_KERNEL_CONFIG_AARCH64} ${B}/.config
+    cp ${S}/arch/arm64/configs/${IMX_KERNEL_CONFIG_AARCH64} ${B}/../defconfig
 }
 
 COMPATIBLE_MACHINE = "(mx8)"
