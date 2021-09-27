@@ -13,9 +13,8 @@ SRC_URI += "file://0001-QCA6174-disable-P2P-WFD.patch \
             file://0001-wifi-avoid-60s-delay-caused-by-request_firmware-fail.patch \
 "
 
-SRC_URI_append_imx8mq-pv100a += " \
-    file://0001-QCA6174-add-Wi-Fi-LED-support.patch \
-"
+SRC_URI_append += "${@bb.utils.contains_any('MACHINE', 'imx8mq-pv100a', 'file://0001-QCA6174-add-Wi-Fi-LED-support.patch', '', d)}"
+SRC_URI_append += "${@bb.utils.contains_any('MACHINE', 'imx8mq-pv100a2g', 'file://0001-QCA6174-add-Wi-Fi-LED-support.patch', '', d)}"
 
 EXTRA_OEMAKE += " \
     CONFIG_ROME_IF=pci \

@@ -1,0 +1,218 @@
+#!/bin/bash
+
+INTERACTIVE=True
+ASK_TO_REBOOT=0
+
+TOOL_VERSION="1.0.0"
+TOOL_NAME="Asus PE100A Software Configuration Tool (PE100A-config)"
+
+get_hostname() {
+    cat /etc/hostname | tr -d " \t\n\r"
+}
+
+do_change_hostname() {
+  if [ "$INTERACTIVE" = True ]; then
+  whiptail --msgbox "\
+Please note: RFCs mandate that a hostname's labels \
+may contain only the ASCII letters 'a' through 'z' (case-insensitive),
+the digits '0' through '9', and the hyphen.
+Hostname labels cannot begin or end with a hyphen.
+No other symbols, punctuation characters, or blank spaces are permitted.\
+" 20 70 1
+  fi
+  CURRENT_HOSTNAME=`cat /etc/hostname | tr -d " \t\n\r"`
+  if [ "$INTERACTIVE" = True ]; then
+    NEW_HOSTNAME=$(whiptail --inputbox "Please enter a hostname" 20 60 "$CURRENT_HOSTNAME" 3>&1 1>&2 2>&3)
+  else
+    NEW_HOSTNAME=$1
+    true
+  fi
+  if [ $? -eq 0 ]; then
+    echo $NEW_HOSTNAME > /etc/hostname
+    sed -i "s/127.0.1.1.*$CURRENT_HOSTNAME/127.0.1.1\t$NEW_HOSTNAME/g" /etc/hosts
+    ASK_TO_REBOOT=1
+  fi
+}
+
+do_serial() {
+  whiptail --yesno "Would you like a login shell to be accessible over serial?" 20 60 2
+  RET=$?
+  if [ $RET -eq 1 ]; then
+    sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
+    systemctl disable serial-getty@ttymxc0.service
+    whiptail --msgbox "Serial is now disabled" 20 60 1
+  elif [ $RET -eq 0 ]; then
+    # 1. set console to null
+    sed -i /boot/cmdline.txt -e "s/console=ttymxc[0-3],[0-9]\+ /console=null /"
+    # 2. set console to assigned uart port
+    sed -i /boot/cmdline.txt -e "s/console=null\+ /console=ttymxc0,115200 /"
+    systemctl enable serial-getty@ttymxc0.service
+    whiptail --msgbox "Serial is now enabled" 20 60 1
+  else
+    return $RET
+  fi
+
+  ASK_TO_REBOOT=1
+}
+
+do_change_watchdog_timer() {
+  CURRENT_WDT=`cat /etc/systemd/system.conf | grep RuntimeWatchdogSec | cut -f2 -d=`
+  if [ "$INTERACTIVE" = True ]; then
+    NEW_WDT=$(whiptail --inputbox "Please enter HW watchdog timer ( 5 ~ 128s )" 20 60 "$CURRENT_WDT" 3>&1 1>&2 2>&3)
+  else
+    NEW_WDT=$1
+    true
+  fi
+  if [ $? -eq 0 ]; then
+    if [ $NEW_WDT -lt 5 ] || [ $NEW_WDT -gt 128 ]; then
+        whiptail --msgbox "\
+        Un-supported value, supported HW watchdog range is \n
+		( 5 ~ 128 ) \n\n
+        Please enter HW watctdog timer again.\
+        " 20 70 1
+        do_change_watchdog_timer
+    else
+      sed -ir "s/^[#]*\s*RuntimeWatchdogSec=.*/RuntimeWatchdogSec=${NEW_WDT}/" /etc/systemd/system.conf
+      ASK_TO_REBOOT=1
+    fi
+  fi
+}
+
+do_resolution() {
+    Weston_PATH="/etc/xdg/weston/weston.ini"
+    Resolution=$(modetest -M imx-dcss | grep -A 3 CRTCs | sed -n 4p | awk '{print$2}')
+    Rate=$(modetest -M imx-dcss | grep -A 3 CRTCs | sed -n 4p | awk '{print$3}')
+    Current_Resolution_Rate="$Resolution@$Rate"
+    autoset=$(sed -n 17p $Weston_PATH | cut -c 1)
+    if [ "$INTERACTIVE" = True ]; then
+        Resolution_Rate=$(whiptail --title "< Set HDMI Resolution >" --inputbox "\
+Please set display support resolution.
+If you use not supported resolution or error format, device will auto set to display prferred resolution.
+Set Resolution format:  <width>x<height>@<refleshrate>
+Ex:                     1920x1080@60
+Current Resolution: \
+" 20 70 $Current_Resolution_Rate 3>&1 1>&2 2>&3)
+    else
+        Resolution_Rate=$1
+        true
+    fi
+    if [ $? -eq 0 ]; then
+        if [ $autoset = \# ]; then
+            sed -i '15s/^.//' $Weston_PATH
+            sed -i '16s/^.//' $Weston_PATH
+            sed -i '17s/^.//' $Weston_PATH
+        fi
+        sed -i "10cmode=$Resolution_Rate" $Weston_PATH
+        sed -i "17cmode=$Resolution_Rate" $Weston_PATH
+        systemctl restart weston@root.service
+    fi
+}
+
+do_advanced_menu() {
+    FUN=$(whiptail --title "Asus PE100A Software Configuration Tool (PE100A-config)" --menu "Advanced Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+      "A1 HW watchdog timer" "Change HW watchdog timer ( 5~128s, default 60s )" \
+      "A2 Resolution" "Set a specific screen resolution" \
+      3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        A1\ *) do_change_watchdog_timer ;;
+        A2\ *) do_resolution ;;
+        *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    fi
+}
+
+do_update() {
+  apt-get update
+}
+
+#
+# Other functions
+#
+
+calc_wt_size() {
+  # NOTE: it's tempting to redirect stderr to /dev/null, so supress error
+  # output from tput. However in this case, tput detects neither stdout or
+  # stderr is a tty and so only gives default 80, 24 values
+  WT_HEIGHT=20
+  WT_WIDTH=$(tput cols)
+
+  if [ -z "$WT_WIDTH" ] || [ "$WT_WIDTH" -lt 60 ]; then
+    WT_WIDTH=80
+  fi
+  if [ "$WT_WIDTH" -gt 178 ]; then
+    WT_WIDTH=120
+  fi
+  WT_MENU_HEIGHT=$(($WT_HEIGHT-10))
+}
+
+do_finish() {
+  if [ $ASK_TO_REBOOT -eq 1 ]; then
+    whiptail --yesno "Would you like to reboot now?" 20 60 2
+    if [ $? -eq 0 ]; then # yes
+      sync
+      reboot
+    fi
+  fi
+  exit 0
+}
+
+do_about() {
+  whiptail --msgbox "\
+PE100A Software Configuration Tool v$TOOL_VERSION \n\nThis tool provides a straight-forward way of doing initial configuration of the Asus PE100A. Although it can be run at any time, some of the options may have difficulties if you have heavily customised your installation.\
+  " 20 70 1
+}
+
+#
+# Main function
+#
+
+# Everything else needs to be run as root
+if [ $(id -u) -ne 0 ]; then
+  printf "Script must be run as root. Try 'sudo PE100A-config'\n"
+  exit 1
+fi
+
+#
+# Interactive use loop
+#
+if [ "$INTERACTIVE" = True ]; then
+  calc_wt_size
+
+  whiptail --msgbox "Welcome to Asus PE100A Software Configuration Tool (Experimental).
+
+This version is based off the popular version from the SBC (single board computer) community and is still in its development stage.
+
+Currently some features may not be available as they were not originally designed for this board or are still under development. Please understand that you may encounter situations where some features cannot be used.
+
+" $WT_HEIGHT $WT_WIDTH 1
+
+  while true; do
+    FUN=$(whiptail --title "$TOOL_NAME" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+      "1 Hostname:" "Set the visible name for this board on a network" \
+      "2 Watchdog" "Change HW watchdog timer ( 5~128s, default 60s )" \
+      "3 Serial" "Enable/Disable shell and kernel messages on the serial connection" \
+      "4 Resolution" "Set a specific screen resolution" \
+      "5 About PE100A:" "Information about this configuration tool" \
+      3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      do_finish
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        1\ *) do_change_hostname ;;
+        2\ *) do_change_watchdog_timer ;;
+        3\ *) do_serial ;;
+        4\ *) do_resolution ;;
+        5\ *) do_about ;;
+        *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    else
+      exit 1
+    fi
+  done
+fi
+
