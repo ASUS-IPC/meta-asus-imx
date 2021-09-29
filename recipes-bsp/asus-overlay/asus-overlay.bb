@@ -19,8 +19,8 @@ INSANE_SKIP_${PN} += "dev-so"
 inherit systemd
 
 do_package_qa[noexec] = "1"
-SYSTEMD_SERVICE_${PN} = "resize-helper.service adbd.service asus_failover.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service adbd.service asus_failover.service"
+SYSTEMD_SERVICE_${PN} = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
