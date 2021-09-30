@@ -61,13 +61,16 @@ do_serial() {
 do_change_watchdog_timer() {
   CURRENT_WDT=`cat /etc/systemd/system.conf | grep RuntimeWatchdogSec | cut -f2 -d=`
   if [ "$INTERACTIVE" = True ]; then
-    NEW_WDT=$(whiptail --inputbox "Please enter HW watchdog timer ( 5 ~ 128s )" 20 60 "$CURRENT_WDT" 3>&1 1>&2 2>&3)
+    NEW_WDT=$(whiptail --inputbox "Please enter HW watchdog timer ( 5~128s, 0 for disable )" 20 60 "$CURRENT_WDT" 3>&1 1>&2 2>&3)
   else
     NEW_WDT=$1
     true
   fi
   if [ $? -eq 0 ]; then
-    if [ $NEW_WDT -lt 5 ] || [ $NEW_WDT -gt 128 ]; then
+    if [ $NEW_WDT -eq 0 ]; then
+      sed -ir "s/^[#]*\s*RuntimeWatchdogSec=.*/#RuntimeWatchdogSec=60/" /etc/systemd/system.conf
+      ASK_TO_REBOOT=1
+    elif [ $NEW_WDT -lt 5 ] || [ $NEW_WDT -gt 128 ]; then
         whiptail --msgbox "\
         Un-supported value, supported HW watchdog range is \n
 		( 5 ~ 128 ) \n\n
