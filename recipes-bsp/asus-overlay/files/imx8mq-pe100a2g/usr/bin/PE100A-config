@@ -134,6 +134,29 @@ do_update() {
   apt-get update
 }
 
+do_change_uart_protocol() {
+    FUN=$(whiptail --title "$TOOL_NAME" --menu "Protocol Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+      "1 RS232" " " \
+      "2 RS485" " " \
+      3>&1 1>&2 2>&3)
+    RET=$?
+    if [ $RET -eq 1 ]; then
+      return 0
+    elif [ $RET -eq 0 ]; then
+      case "$FUN" in
+        1\ *) sed -i /boot/config.txt -e "s/pe100a-rs485-overlay/pe100a-rs232-overlay/" 
+        whiptail --msgbox "Protocol is now rs232" 20 60 1
+        ;;
+        2\ *) sed -i /boot/config.txt -e "s/pe100a-rs232-overlay/pe100a-rs485-overlay/" 
+        whiptail --msgbox "Protocol is now rs485" 20 60 1
+        ;;
+        *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;
+      esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    else
+      exit 1
+    fi
+}
+
 #
 # Other functions
 #
@@ -201,7 +224,8 @@ Currently some features may not be available as they were not originally designe
       "2 Watchdog" "Change HW watchdog timer ( 5~128s, default 60s )" \
       "3 Serial" "Enable/Disable shell and kernel messages on the serial connection" \
       "4 Resolution" "Set a specific screen resolution" \
-      "5 About PE100A:" "Information about this configuration tool" \
+      "5 UART:" "Change protocol (rs232\rs485)" \
+      "6 About PE100A:" "Information about this configuration tool" \
       3>&1 1>&2 2>&3)
     RET=$?
     if [ $RET -eq 1 ]; then
@@ -212,7 +236,8 @@ Currently some features may not be available as they were not originally designe
         2\ *) do_change_watchdog_timer ;;
         3\ *) do_serial ;;
         4\ *) do_resolution ;;
-        5\ *) do_about ;;
+        5\ *) do_change_uart_protocol ;;
+        6\ *) do_about ;;
         *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;
       esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
     else
