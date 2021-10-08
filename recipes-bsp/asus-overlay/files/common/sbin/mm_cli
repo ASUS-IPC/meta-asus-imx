@@ -1,10 +1,10 @@
 #!/bin/bash
-
+# VERSION=1.0_20211007
 AT_PORT=/dev/ttyUSB2
-ACK=/lte_ack
-CONFIG_PATH=/etc/lte
-CONFIG_FILE=${CONFIG_PATH}/lte.conf
-TAG="LTE"
+ACK=/mm_ack
+CONFIG_PATH=/etc/mm
+CONFIG_FILE=${CONFIG_PATH}/mm.conf
+TAG="mm_cli"
 
 check_config() {
     # Check config exists
@@ -13,9 +13,7 @@ check_config() {
     fi
 
     if [ ! -e ${CONFIG_FILE} ] ; then
-        touch $CONFIG_FILE
-        echo "PIN=0000" >> $CONFIG_FILE
-        echo "AUTO_CONNECT=y" >> $CONFIG_FILE
+        $0 reset
     fi
 }
 
@@ -24,6 +22,7 @@ send_at_command() {
         echo -ne "${1}\r" | busybox microcom -t 2000 ${AT_PORT} > ${ACK}
     else
         log "ERROR device not found"
+        exit 1
     fi
 }
 
@@ -39,9 +38,31 @@ set_sim_detect() {
     res=$(check_sim_detect)
     if [ "$res" != "$1" ]; then
         send_at_command "AT+QSIMDET=${1},0"
-        reboot
+        send_at_command "AT+CFUN=1,1"
     else
         log "Already is ${1}"
+    fi
+}
+
+stop_modem_manager() {
+    if systemctl stop ModemManager &> /dev/null; then
+        while mmcli -B &> /dev/null; do
+            sleep 1
+        done
+    else
+        log "Error, please try again later"
+        exit 1
+    fi
+}
+
+start_modem_manager() {
+    if systemctl start ModemManager &> /dev/null; then
+        until mmcli -B &> /dev/null; do
+            sleep 1
+        done
+    else
+        log "Error, please try again later"
+        exit 1
     fi
 }
 
@@ -53,73 +74,88 @@ check_sim_slot() {
 }
 
 reboot() {
-    echo -ne "AT+CFUN=1,1\r" | busybox microcom ${AT_PORT}
+    if mmcli -L -K | grep 'modem-list.value' &>/dev/null; then
+        modem=$(mmcli -L -K | grep 'modem-list.value' | awk -F ": " '{ print $2 }')
+        mmcli -m $modem -r
+        mmcli -m $modem -w &> /dev/null
+        until mmcli -L -K | grep 'modem-list.value' &>/dev/null; do
+            sleep 1
+        done
+    else
+        log "Modem not found"
+    fi
 }
 
 log() {
-	echo ${1}
-	logger -t ${TAG} ${1}
+    echo ${1}
+    logger -t ${TAG} ${1}
 }
 
-log "do ${1}"
 case $1 in
-set-pin)
-    check_config
-    sed -i "s/\(PIN *= *\).*/\1$2/" $CONFIG_FILE
-    ;;
-set-auto)
-    if [ "$2" == "y" -o "$2" == "n" ] ; then
-        check_config
-        sed -i "s/\(AUTO_CONNECT *= *\).*/\1$2/" $CONFIG_FILE
+pin)
+    if [ "$2" == "" ]; then
+        . $CONFIG_FILE
+        echo $PIN
     else
-        log "Parameter error"
+        check_config
+        sed -i "s/\(PIN *= *\).*/\1$2/" $CONFIG_FILE
     fi
     ;;
 set-sim)
+    if [ ! -e /sbin/ex_gpio ]; then
+        log "Not supported"
+        exit 1
+    fi
     if [ "$2" == "sim1" ]; then
-        ex_gpio -s ${2}
-        if [ "$?" == "0" ]; then
+        if ex_gpio -s ${2}; then
+            stop_modem_manager
             set_sim_detect 1
-        else
-            log "Set sim error"
+            start_modem_manager
         fi
     elif [ "$2" == "sim2" ]; then
-        ex_gpio -s ${2}
-        if [ "$?" == "0" ]; then
+        if ex_gpio -s ${2}; then
+            stop_modem_manager
             set_sim_detect 0
-        else
-            log "Set sim error"
+            start_modem_manager
         fi
     else
         log "Parameter error"
     fi
     ;;
-set-sim-detect)
-    if [ "$2" == "0" -o "$2" == "1" ]; then
-        set_sim_detect $2
-    else
-        log "Parameter error"
-    fi
-    ;;
-check-sim-detect)
-    echo $(check_sim_detect)
+sim-detect)
+    case "$2" in
+        "0"|"1")
+            stop_modem_manager
+            set_sim_detect $2
+            start_modem_manager
+            ;;
+        *)
+            stop_modem_manager
+            echo $(check_sim_detect)
+            start_modem_manager
+            ;;
+    esac
     ;;
 reboot-module)
     reboot
     ;;
 reset)
+    touch $CONFIG_PATH
     echo "PIN=0000" > $CONFIG_FILE
-    echo "AUTO_CONNECT=y" >> $CONFIG_FILE
+    echo "RETRY_TIME=(2, 5, 10, 20, 40, 80, 160, 320, 640, 1280, 1800)" >> $CONFIG_FILE
+    echo "RETRY_RANDOM=(1, 1, 1, 1, 1, 5, 5, 5, 5, 5, 5)" >> $CONFIG_FILE
+    echo "USER_ACTION_FLAG=y" >> $CONFIG_FILE
     ;;
 start)
+    . /etc/os-release
+    if [[ "$BUILD_VERSION" =~ "FACTORY" ]]; then
+        log "build version is factory, stop modem manager"
+        systemctl stop ModemManager
+        exit 0
+    fi
     board=$(cat /proc/boardinfo)
     log "Start as ${board}, stop modemmanager first..."
-    systemctl stop ModemManager
-    while mmcli -B; do
-        log "Waiting for modemmanager stops"
-        sleep 1
-    done
-
+    stop_modem_manager
     case "$board" in
     "PV100A")
         enable=$(check_sim_detect)
@@ -167,38 +203,45 @@ start)
 
     log "Check pass"
     log "Start modemmanager..."
-    systemctl start ModemManager
-    until mmcli -B; do
-        log "Waiting for modemmanager starts"
-        sleep 1
-    done
-
-    check_config
-    lte_connect
+    start_modem_manager
     ;;
 stop)
     log "=== Disconnect ==="
-    lte_disconnect
     ;;
 set-wakeup)
     if [ "$2" == "0" ]; then
+        stop_modem_manager
         send_at_command 'AT+QCFG="risignaltype","respective"'
         send_at_command 'AT+QCFG="urc/ri/ring","pulse"'
         send_at_command 'AT+QCFG="urc/ri/smsincoming","off"'
         send_at_command 'AT+QCFG="urc/ri/other","off"'
         wakeup_source_test 0 7
+        start_modem_manager
     elif [ "$2" == "1" ]; then
+        stop_modem_manager
         send_at_command 'AT+QCFG="risignaltype","physical"'
         send_at_command 'AT+QCFG="urc/ri/ring","auto"'
         send_at_command 'AT+QCFG="urc/ri/smsincoming","pulse"'
         send_at_command 'AT+QCFG="urc/ri/other","off"'
         wakeup_source_test 1 7
+        start_modem_manager
     else
         log "Parameter error"
     fi
     ;;
 *)
-    echo "Connectivity: $0 {set-pin [pin]| set-auto [y/n]| reset}"
-    echo "Setting: $0 {set-sim [sim1/sim2] | check-sim-detect | set-sim-detect [0/1] | reboot-module | set-wakeup [0/1]}"
+    echo "Usage: mm_cli [COMMAND]"
+    echo ""
+    echo "Commands:"
+    echo "  pin                   :           Get current default pin"
+    echo "  pin [pin]             :           Set pin for unlock if needed when bootup"
+    echo "  reset                 :           Reset to default pin 0000"
+    echo "  set-sim [sim1/sim2]   :           Set sim slot and reboot module, only available at PV100A"
+    echo "  reboot-module         :           Reboot module"
+    echo "  set-wakeup [0/1]      :           Set wakeup function"
+    echo "  sim-detect            :           Get sim-detect status"
+    echo "  sim-detect [0/1]      :           Set sim-detect status"
+    echo ""
+    exit 1
     ;;
 esac
