@@ -7,7 +7,7 @@ Requires=reboot.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/system_test 1
+ExecStart=/sbin/mcu_notify reboot
 RemainAfterExit=yes
 
 [Install]

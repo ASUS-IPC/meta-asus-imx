@@ -19,8 +19,8 @@ inherit systemd
 
 do_package_qa[noexec] = "1"
 SYSTEMD_SERVICE_${PN} = "fs-mount@.service adbd.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service mcu_daemon.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service mcu_daemon.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
