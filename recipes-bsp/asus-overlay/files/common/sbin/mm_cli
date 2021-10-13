@@ -56,7 +56,11 @@ stop_modem_manager() {
 }
 
 start_modem_manager() {
-    if systemctl start ModemManager &> /dev/null; then
+    . /etc/os-release
+    if [[ "$BUILD_VERSION" =~ "FACTORY" ]]; then
+        log "build version is factory, no modemmanager needed"
+        exit 0
+    elif systemctl start ModemManager &> /dev/null; then
         until mmcli -B &> /dev/null; do
             sleep 1
         done
@@ -147,12 +151,6 @@ reset)
     echo "USER_ACTION_FLAG=y" >> $CONFIG_FILE
     ;;
 start)
-    . /etc/os-release
-    if [[ "$BUILD_VERSION" =~ "FACTORY" ]]; then
-        log "build version is factory, stop modem manager"
-        systemctl stop ModemManager
-        exit 0
-    fi
     board=$(cat /proc/boardinfo)
     log "Start as ${board}, stop modemmanager first..."
     stop_modem_manager
