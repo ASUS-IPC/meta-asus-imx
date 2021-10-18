@@ -1,0 +1,4 @@
+#!/bin/bash
+export COMPlus_LTTng=0
+export DOTNET_BUNDLE_EXTRACT_BASE_DIR=$HOME/.net/bundling
+/etc/fo/focli $@
