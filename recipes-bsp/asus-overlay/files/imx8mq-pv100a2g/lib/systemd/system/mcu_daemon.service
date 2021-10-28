@@ -1,6 +1,5 @@
 [Unit]
 Description=MCU daemon to control mcu control
-After=network.target
 
 [Service]
 ExecStart=/sbin/mcu_daemon
