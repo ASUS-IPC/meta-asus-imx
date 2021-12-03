@@ -5,7 +5,7 @@ counter=0
 while [ $counter -le 3 ]
 do
 	/sbin/ip link set $iface up type can bitrate 125000 listen-only on
-	if [[ $( ifconfig -s | grep $iface ) ]]; then
+	if [ $( ifconfig -s | grep $iface ) ]; then
 		echo "$iface is up!"
 		exit
 	fi
