@@ -1,0 +1,37 @@
+From 6abf566050d00d8bcb10bbe62f56fc5f94359f33 Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Fri, 10 Dec 2021 12:39:01 +0800
+Subject: [PATCH] imx-optee-os: imx8mq: add 4g support
+
+---
+ core/arch/arm/plat-imx/conf.mk | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index c1907500..ad28ab02 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -333,8 +333,10 @@ CFG_UART_BASE ?= UART7_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mqevk))
+-CFG_DDR_SIZE ?= 0xc0000000
++CFG_DDR_SIZE ?= 0x100000000ULL
+ CFG_UART_BASE ?= UART1_BASE
++$(call force,CFG_CORE_LARGE_PHYS_ADDR,y)
++$(call force,CFG_CORE_ARM64_PA_BITS,36)
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mmevk))
+@@ -461,7 +463,7 @@ ifeq ($(CFG_ARM64_core),y)
+ CFG_DT ?= y
+ CFG_EXTERNAL_DTB_OVERLAY = y
+ #few special case to handle
+-ifneq (,$(filter y, $(CFG_MX8MN) $(CFG_MX8MP) $(CFG_MX8DX) $(CFG_MX8DXL)))
++ifneq (,$(filter y, $(CFG_MX8MQ) $(CFG_MX8MN) $(CFG_MX8MP) $(CFG_MX8DX) $(CFG_MX8DXL)))
+ # New device will have base addresses within the first 1GB of DDR
+ CFG_TZDRAM_START ?= ($(CFG_DRAM_BASE) + 0x16000000)
+ else
+-- 
+2.25.1
+
