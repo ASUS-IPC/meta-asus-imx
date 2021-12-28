@@ -13,13 +13,13 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 DEPENDS += "lzop-native bc-native"
 
-SRCBRANCH = "yocto-sumo-imx_8m"
+SRCBRANCH = "yocto-3.2-imx_8m"
 LOCALVERSION = "-1.0.0"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH} \
 "
 
-SRCREV = "${AUTOREV}"
+SRCREV = "0449fe7163bf0d924f06961dbfa395eba114a9b7"
 
 LINUX_VERSION = "5.10.9"
 
