@@ -21,9 +21,9 @@ INSANE_SKIP_${PN} += "dev-so"
 inherit systemd
 
 do_package_qa[noexec] = "1"
-SYSTEMD_SERVICE_${PN} = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service EdgeX.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service"
-SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service"
+SYSTEMD_SERVICE_${PN} = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service EdgeX.service PruneDocker.timer"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service PruneDocker.timer"
+SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service PruneDocker.timer"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
