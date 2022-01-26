@@ -15,6 +15,9 @@ INSANE_SKIP_${PN} = "stripped"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
+FILES_SOLIBSDEV = ""
+INSANE_SKIP_${PN} += "dev-so"
+
 inherit systemd
 
 do_package_qa[noexec] = "1"
