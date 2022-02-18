@@ -2,5 +2,5 @@
 Description=PruneDocker
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/docker image prune -f
+ExecStart=/usr/bin/docker image prune -af
 WorkingDirectory=/tmp
