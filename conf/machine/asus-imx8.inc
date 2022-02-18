@@ -103,7 +103,6 @@ IMAGE_INSTALL_append += " \
 	mraa \
 	modemmanager \
 	opkg \
-	tpm2-tools \
         python3-docker-compose \
 "
 
