@@ -30,6 +30,7 @@ fi
 echo 7 > /proc/sys/kernel/printk
 
 /sbin/wifi_init.sh
+/sbin/eth1_fw/eth1_fw.sh
 
 exit 0
 
