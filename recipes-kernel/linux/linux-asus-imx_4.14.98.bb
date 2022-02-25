@@ -13,11 +13,11 @@ DEPENDS += "lzop-native bc-native"
 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "yocto-sumo-imx_8m"
+SRCBRANCH = "yocto-sumo-imx_8m-pv100a-yocto-1.0.0"
 LOCALVERSION = "-imx8mq"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "69393b8451aaeb06cd7312475d75bac08545b720"
+SRCREV = "a09bf55cc3756d26187230afc479f0f90d4e777b"
 
 S = "${WORKDIR}/git"
 

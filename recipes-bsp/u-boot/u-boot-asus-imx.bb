@@ -12,10 +12,10 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
-SRCBRANCH = "yocto-sumo-imx_8m"
+SRCBRANCH = "yocto-sumo-imx_8m-pv100a-yocto-1.0.0"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
-SRCREV = "6d9aadd56d1349cd844a0da601e98849779e5fcd"
+SRCREV = "0f9902d228983d6f28c61d959b784541739203c3"
 
 S = "${WORKDIR}/git"
 
