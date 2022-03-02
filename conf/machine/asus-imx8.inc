@@ -112,3 +112,8 @@ MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'q
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
 
 IMAGE_FSTYPES = "sdcard.bz2"
+
+# ADD the Additional Recipe Variable replacements
+SRC_URI_remove_pn-linux-firmware = " git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git \"
+SRC_URI_append_pn-linux-firmware = " git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git;branch=main \"
+
