@@ -51,7 +51,7 @@ do_install() {
 
   install -d ${D}/${libdir}
   install -m 755 ${WORKDIR}/libedgetpu.so.1.0 ${D}/${libdir}/
-  ln -sf ${D}/${libdir}/libedgetpu.so.1.0 ${D}/${libdir}/libedgetpu.so.1
+  lnr ${D}/${libdir}/libedgetpu.so.1.0 ${D}/${libdir}/libedgetpu.so.1
 
   install -d ${D}${sysconfdir}/udev/rules.d
   install -m 0644 ${WORKDIR}/libedgetpu/edgetpu-accelerator.rules \
