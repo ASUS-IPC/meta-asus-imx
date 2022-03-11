@@ -1,0 +1,1 @@
+PACKAGECONFIG_remove_imx8mp-blizzard = "x11"
