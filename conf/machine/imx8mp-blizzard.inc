@@ -32,11 +32,6 @@ PREFERRED_VERSION_linux-asus-imx = "5.10"
 
 UBOOT_SUFFIX = "bin"
 
-UBOOT_CONFIG ??= "sd"
-UBOOT_CONFIG[sd]      = "${UBOOT_CONFIG_BASENAME}_defconfig,sdcard"
-UBOOT_CONFIG[ecc]     = "${UBOOT_CONFIG_BASENAME}_inline_ecc_defconfig"
-UBOOT_CONFIG[mfgtool] = "${UBOOT_CONFIG_BASENAME}_defconfig"
-
 SPL_BINARY = "spl/u-boot-spl.bin"
 
 ATF_PLATFORM = "imx8mp"
