@@ -8,6 +8,7 @@ SRC_URI = "file://common \
            file://imx8mq-pv100a2g \
            file://imx8mp-blizzard \
            file://imx8mp-blizzard4g \
+           file://imx8mp-blizzard2g \
            file://COPYING \
 "
 LICENSE = "GPLv2"
