@@ -1,1 +1,1 @@
-PACKAGECONFIG_remove_imx8mp-blizzard = "x11"
+PACKAGECONFIG_remove_asus= "x11"
