@@ -1,0 +1,1 @@
+GIT_protobuf = "git://github.com/google/protobuf.git;branch=main;name=protobuf"
