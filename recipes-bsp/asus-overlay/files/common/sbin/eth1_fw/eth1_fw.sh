@@ -12,8 +12,10 @@ fi
 sleep 10
 eth1_ret=`sudo ifconfig | grep eth1`
 
+sku_ret=`sudo cat /proc/sku`
+echo "SKU ID is "$sku_ret
 
-if [ "$eth1_ret" = "" ]
+if [ "$eth1_ret" = "" ] && [ $sku_ret -lt 8 ]
 then
     echo "eth1 fw empty" | tee -a ${script_path}/eth1.log
     NIC_value=$(sudo /usr/bin/EepromAccessTool | grep -ie "INVM" | awk 'FNR == 1 {print$1}')
