@@ -17,13 +17,12 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 DEPENDS += "lzop-native bc-native"
 
-SRCBRANCH = "yocto-3.2-imx_8m"
-#SRCBRANCH = "yocto-3.3-imx_8m"
+SRCBRANCH = "yocto-3.3-imx_8m"
 LOCALVERSION = "-lts-5.10.y"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
-SRCREV = "a68e31b63f864ff71cd4adb40fbc9e1edc75c250"
+SRCREV = "bbdbf3bdd2ef5c6c71cff713dc7f1b5047a2d402"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
@@ -51,9 +50,9 @@ IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a = "imx_v8_pe100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a2g = "imx_v8_pe100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a = "imx_v8_pv100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a2g = "imx_v8_pv100a_defconfig"
-IMX_KERNEL_CONFIG_AARCH64_imx8mq-blizzard = "imx_v8_blizzard_defconfig"
-IMX_KERNEL_CONFIG_AARCH64_imx8mq-blizzard4g = "imx_v8_blizzard_defconfig"
-IMX_KERNEL_CONFIG_AARCH64_imx8mq-blizzard2g = "imx_v8_blizzard_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mp-blizzard = "imx_v8_blizzard_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mp-blizzard4g = "imx_v8_blizzard_defconfig"
+IMX_KERNEL_CONFIG_AARCH64_imx8mp-blizzard2g = "imx_v8_blizzard_defconfig"
 KBUILD_DEFCONFIG ?= ""
 KBUILD_DEFCONFIG_mx6= "${IMX_KERNEL_CONFIG_AARCH32}"
 KBUILD_DEFCONFIG_mx7= "${IMX_KERNEL_CONFIG_AARCH32}"
