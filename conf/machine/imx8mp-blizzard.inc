@@ -19,8 +19,11 @@ KERNEL_DEVICETREE = " \
 UBOOT_DTB_NAME = "${KERNEL_DEVICETREE_BASENAME}.dtb"
 
 # ASUS BSP default providers
+#IMX_DEFAULT_MFGTOOL = "${@bb.utils.contains('IMX_DEFAULT_BOOTLOADER', 'u-boot-imx','u-boot-imx-mfgtool', 'u-boot-fslc', d)}"
 ASUS_DEFAULT_UBOOT = "u-boot-asus-imx"
 PREFERRED_PROVIDER_u-boot_asus = "${ASUS_DEFAULT_UBOOT}"
+# PREFERRED_PROVIDER_u-boot-mfgtool ??= "${IMX_DEFAULT_MFGTOOL}"
+PREFERRED_PROVIDER_u-boot-mfgtool_asus = "u-boot-asus-imx-mfgtool"
 PREFERRED_PROVIDER_virtual/bootloader_asus  = "${ASUS_DEFAULT_UBOOT}"
 
 ASUS_DEFAULT_KERNEL = "linux-asus-imx"
