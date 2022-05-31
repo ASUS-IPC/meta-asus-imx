@@ -1,10 +1,8 @@
 DESCRIPTION = "Init config package"
 HOMEPAGE = "https://coral.googlesource.com/edgetpu"
-SRC_URI = "file://libedgetpu/edgetpu-accelerator.rules \
-           file://libedgetpu.so.1 \
-           file://libedgetpu.so.1.0 \
-	   file://swig \
-	   git://github.com/google-coral/edgetpu.git;protocol=https;branch=master "
+SRC_URI = "file://swig \
+           file://edgetpu_runtime_20220308.zip \
+	       git://github.com/google-coral/pycoral.git;protocol=https;branch=master "
 
 SRCREV ?= "${AUTOREV}"
 LICENSE = "GPLv2"
@@ -24,6 +22,10 @@ RDEPENDS_${PN} = "python3 \
                   python3-pip \
 		  python3-pillow \
 		  python3-numpy \
+          glibc \
+          libgcc \
+          libstdc++ \
+          libusb1 \
 "
 
 
@@ -37,43 +39,28 @@ PYTHON3_SITEPACKAGES_DIR_ARGS = "${libdir}/python3.8/site-packages"
 
 DIRFILES = "1"
 
-inherit setuptools3
+inherit setuptools3 python3native 
+
+DEPENDS = "python3 python3-pip-native python3-wheel-native curl"
+DEPENDS_class-native = "curl-native"
 
 do_install() {
-  ${STAGING_BINDIR_NATIVE}/python3-native/python3 ${S}/setup.py develop --no-deps
-  install -d ${D}${PYTHON3_SITEPACKAGES_DIR_ARGS}/
-  install -d ${D}${PYTHON3_SITEPACKAGES_DIR_ARGS}/edgetpu
-  cp -R --no-dereference --preserve=mode,links -v ${S}/edgetpu \
-  ${D}${libdir}/python3.8/site-packages/
-  cp -R --no-dereference --preserve=mode,links -v ${WORKDIR}/swig \
-  ${D}${libdir}/python3.8/site-packages/edgetpu
-  touch ${D}${PYTHON3_SITEPACKAGES_DIR_ARGS}/easy-install.pth
-  echo "./edgetpu" > ${D}${PYTHON3_SITEPACKAGES_DIR_ARGS}/easy-install.pth
+  ${STAGING_BINDIR_NATIVE}/pip3 install --disable-pip-version-check -v --no-deps \
+        -t ${D}/${PYTHON_SITEPACKAGES_DIR} --no-cache-dir ${WORKDIR}/swig/pycoral-2.0.0-cp38-cp38-linux_aarch64.whl
+  ${STAGING_BINDIR_NATIVE}/pip3 install --disable-pip-version-check -v --no-deps \
+        -t ${D}/${PYTHON_SITEPACKAGES_DIR} --no-cache-dir ${WORKDIR}/swig/tflite_runtime-2.5.0.post1-cp38-cp38-linux_aarch64.whl
 
+  bash ${WORKDIR}/edgetpu_runtime/install.sh
+  
   install -d ${D}/${libdir}
-  install -m 755 ${WORKDIR}/libedgetpu.so.1.0 ${D}/${libdir}/
-  install -m 755 ${WORKDIR}/libedgetpu.so.1 ${D}/${libdir}/
-
-  install -d ${D}${sysconfdir}/udev/rules.d
-  install -m 0644 ${WORKDIR}/libedgetpu/edgetpu-accelerator.rules \
-                  ${D}${sysconfdir}/udev/rules.d/99-edgetpu-accelerator.rules
-
-  install -d ${D}/${datadir}/edgetpu/examples/
-  install -d ${D}/${datadir}/edgetpu/examples/models
-  install -d ${D}/${datadir}/edgetpu/examples/images
-
-  cp -R --no-dereference --preserve=mode,links -v ${S}/test_data/*.jpg \
-        ${D}/${datadir}/edgetpu/examples/images
-
-  cp -R --no-dereference --preserve=mode,links -v ${S}/test_data/*_edgetpu.tflite \
-        ${D}/${datadir}/edgetpu/examples/models
-
-  cp -R --no-dereference --preserve=mode,links -v ${S}/test_data/*.txt \
-        ${D}/${datadir}/edgetpu/examples/models
-
-  cp -R --no-dereference --preserve=mode,links -v ${S}/examples/*  ${D}/${datadir}/edgetpu/examples/
+  install -m 755 ${WORKDIR}/edgetpu_runtime/libedgetpu/throttled/aarch64/libedgetpu.so.1.0 ${D}/${libdir}/
+  lnr ${D}/${libdir}/libedgetpu.so.1.0 ${D}/${libdir}/libedgetpu.so.1
+  
+  install -d ${D}/${datadir}/pycoral/
+  install -d ${D}/${datadir}/pycoral/test_data
+  cp -R --no-dereference --preserve=mode,links -v ${S}/examples ${D}/${datadir}/pycoral/
 }
 
-FILES_${PN} += "${libdir}/"
+FILES_${PN} += "${libdir}/* ${datadir}"
 FILES_SOLIBSDEV = ""
 INSANE_SKIP_${PN} += "dev-so"
