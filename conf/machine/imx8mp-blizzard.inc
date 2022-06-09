@@ -3,7 +3,7 @@ MACHINEOVERRIDES =. "imx-boot-container:mx8:mx8m:mx8mp:asus:"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
 
-MACHINE_FEATURES += "pci wifi bluetooth"
+MACHINE_FEATURES += "pci wifi bluetooth qca6174"
 
 # NXP BSP can consume proprietary jailhouse and Marvell drivers
 # OP-TEE is also applicable to NXP BSP, mainline BSP seems not to have
@@ -61,3 +61,10 @@ TEE_LOAD_ADDR = "0x56000000"
 
 # Add additional firmware
 MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
+IMAGE_INSTALL_append += " \
+	networkmanager \
+	networkmanager-nmcli \
+	networkmanager-nmtui \
+"
+
+MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
