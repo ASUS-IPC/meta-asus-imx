@@ -62,6 +62,7 @@ TEE_LOAD_ADDR = "0x56000000"
 # Add additional firmware
 MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
 IMAGE_INSTALL_append += " \
+	can-utils \
 	networkmanager \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
