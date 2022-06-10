@@ -31,5 +31,8 @@ echo 7 > /proc/sys/kernel/printk
 
 /sbin/wifi_init.sh
 
+# Enable WOL for LAN1
+/usr/sbin/ethtool -s eth0 wol g
+
 exit 0
 
