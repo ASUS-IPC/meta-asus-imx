@@ -63,16 +63,6 @@ VOLATILE_LOG_DIR = "no"
 
 # Add additional firmware
 MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
-IMAGE_INSTALL_append += " \
-	can-utils \
-	networkmanager \
-	networkmanager-nmcli \
-	networkmanager-nmtui \
-	asus-overlay \
-	gptfdisk \
-	vim \
-	glibc-gconv-utf-16 \
-"
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
