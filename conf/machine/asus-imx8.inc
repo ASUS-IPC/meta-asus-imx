@@ -81,12 +81,6 @@ MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
 # Set Serial console
 SERIAL_CONSOLES = "115200;ttymxc0"
 
-IMAGE_INSTALL_append += " \
-	asus-overlay \
-	gptfdisk \
-	vim \
-"
-
 SOC_DEFAULT_WKS_FILE_asus = "asus-imx-boot-bootpart.wks.in"
 
 IMAGE_FSTYPES = "wic.bz2"
