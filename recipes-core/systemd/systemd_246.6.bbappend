@@ -10,6 +10,7 @@ SRC_URI += "file://system.conf \
             file://systemd-poweroff.service.imx8mq-pv100a \
             file://50-tpu-pm.sh \
             file://40-wifi-pm.sh \
+            file://60-tpm-pm.sh \
 "
 
 SYSTEMD_REBOOT = "systemd-reboot.service"
@@ -28,4 +29,5 @@ do_install_append () {
   install -m 0644 ${WORKDIR}/${SYSTEMD_POWEROFF} ${D}${base_libdir}/systemd/system/systemd-poweroff.service
   install -m 0755 ${WORKDIR}/50-tpu-pm.sh ${D}${base_libdir}/systemd/system-sleep
   install -m 0755 ${WORKDIR}/40-wifi-pm.sh ${D}${base_libdir}/systemd/system-sleep
+  install -m 0755 ${WORKDIR}/60-tpm-pm.sh ${D}${base_libdir}/systemd/system-sleep
 }
