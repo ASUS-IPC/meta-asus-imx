@@ -59,6 +59,8 @@ IMX_BOOT_SEEK = "32"
 OPTEE_BIN_EXT = "8mp"
 TEE_LOAD_ADDR = "0x56000000"
 
+VOLATILE_LOG_DIR = "no"
+
 # Add additional firmware
 MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
 IMAGE_INSTALL_append += " \

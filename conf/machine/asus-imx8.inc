@@ -81,6 +81,8 @@ MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
 # Set Serial console
 SERIAL_CONSOLES = "115200;ttymxc0"
 
+VOLATILE_LOG_DIR = "no"
+
 IMAGE_INSTALL_append += " \
 	asus-overlay \
 	gptfdisk \
