@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a
 UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 SRCBRANCH = "yocto-3.3-imx_8m"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
-SRCREV = "def96a10f6f9c86f455091a55d58511b09d9b89a"
+SRCREV = "649cdcbc5fc9e28f7407927bc28863d72c91cde9"
 
 LOCALVERSION = "-${SRCBRANCH}"
 
