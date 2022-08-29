@@ -5,6 +5,7 @@ SRC_URI += "file://rc.local.imx8mq-im-a \
             file://rc.local.imx8mq-pe100a2g \
             file://rc.local.imx8mq-pv100a \
             file://rc.local.imx8mq-pv100a2g \
+            file://rc.local.imx8mq-p100ivm \
 "
 
 do_install_append () {

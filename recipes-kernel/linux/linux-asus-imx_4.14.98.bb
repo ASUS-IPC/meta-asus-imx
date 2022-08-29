@@ -29,7 +29,7 @@ IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a = "pe100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pe100a2g = "pe100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a = "pv100a_defconfig"
 IMX_KERNEL_CONFIG_AARCH64_imx8mq-pv100a2g = "pv100a_defconfig"
-
+IMX_KERNEL_CONFIG_AARCH64_imx8mq-p100ivm = "p100ivm_defconfig"
 
 do_copy_defconfig () {
     install -d ${B}

@@ -6,6 +6,7 @@ SRC_URI = "file://common \
            file://imx8mq-pe100a2g \
            file://imx8mq-pv100a \
            file://imx8mq-pv100a2g \
+           file://imx8mq-p100ivm \
            file://COPYING \
 "
 LICENSE = "GPLv2"
@@ -24,6 +25,7 @@ do_package_qa[noexec] = "1"
 SYSTEMD_SERVICE_${PN} = "fs-mount@.service adbd.service mm_keepalive.service asus_failover.service"
 SYSTEMD_SERVICE_${PN}_imx8mq-pv100a = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service asus_failover.service mcu_daemon.service"
 SYSTEMD_SERVICE_${PN}_imx8mq-pv100a2g = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service asus_failover.service mcu_daemon.service"
+SYSTEMD_SERVICE_${PN}_imx8mq-p100ivm = "fs-mount@.service ntpsync.service rtcsync.service adbd.service mm_keepalive.service asus_failover.service mcu_daemon.service"
 RDEPENDS_${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install() {
