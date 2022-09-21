@@ -22,7 +22,7 @@ LOCALVERSION = "-lts-5.10.y"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
-SRCREV = "106da9f0d083c28b7badbbd4b97370a0fd01af13"
+SRCREV = "777e874de4b2bb547dbd6ec7f054421a53a103d6"
 
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
