@@ -1,2 +1,2 @@
 ##### Note: Each line must be less than 160 words #####
-console=null earlycon=null 
+console=ttymxc1,115200 earlycon=null 
