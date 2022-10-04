@@ -26,5 +26,8 @@ sleep 1
 
 /sbin/hwclock_mcu -s
 
+#g-sensor BMA422: set the value of the register 0x7D to 0x04 for enabling g-sensor while booting.
+/usr/sbin/i2ctransfer -y 3 w9@0x10 0x02 0x07 0x06 0x52 0x00 0x30 0x00 0x7d 0x04
+
 exit 0
 
