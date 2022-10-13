@@ -15,7 +15,7 @@ UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 SRCBRANCH = "yocto-sumo-imx_8m"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 
-SRCREV = "0f945d412b292af65b6d4cc9b269655b3a6466e0"
+SRCREV = "676e02fa409e9db747e2f32e4942f1845510d077"
 
 S = "${WORKDIR}/git"
 
