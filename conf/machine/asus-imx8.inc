@@ -83,12 +83,6 @@ SERIAL_CONSOLES = "115200;ttymxc0"
 
 VOLATILE_LOG_DIR = "no"
 
-IMAGE_INSTALL_append += " \
-	asus-overlay \
-	gptfdisk \
-	vim \
-"
-
 SOC_DEFAULT_WKS_FILE_asus = "asus-imx-boot-bootpart.wks.in"
 
 IMAGE_FSTYPES = "wic.bz2"
