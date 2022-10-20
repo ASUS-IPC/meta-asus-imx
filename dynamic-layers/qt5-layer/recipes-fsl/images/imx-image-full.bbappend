@@ -13,4 +13,5 @@ IMAGE_INSTALL += " \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
 	vim \
+	phytool \
 "
