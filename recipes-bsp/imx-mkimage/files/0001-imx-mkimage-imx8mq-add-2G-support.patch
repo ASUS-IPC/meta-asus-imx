@@ -1,0 +1,25 @@
+From cf025ed451f7aee08011408864e552908bc68e6b Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Mon, 27 Sep 2021 13:37:45 +0800
+Subject: [PATCH] imx-mkimage: imx8mq: add 2G support
+
+---
+ iMX8M/soc.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/iMX8M/soc.mak b/iMX8M/soc.mak
+index 30ecefd..c926b83 100644
+--- a/iMX8M/soc.mak
++++ b/iMX8M/soc.mak
+@@ -67,7 +67,7 @@ else
+ PLAT = imx8mq
+ HDMI = yes
+ SPL_LOAD_ADDR = 0x7E1000
+-TEE_LOAD_ADDR = 0xfe000000
++TEE_LOAD_ADDR = 0xbe000000
+ ATF_LOAD_ADDR = 0x00910000
+ VAL_BOARD = val
+ #define the F(Q)SPI header file
+-- 
+2.25.1
+

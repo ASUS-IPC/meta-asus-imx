@@ -1,0 +1,47 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Set THP as madvise mode
+if [ -e /sys/kernel/mm/transparent_hugepage/enabled ]
+then
+    echo madvise >/sys/kernel/mm/transparent_hugepage/enabled
+fi
+
+# Set min_free_kbyte to avoid kernel dump from eth for 4K video playback use case
+CPUREV=$(cat /sys/devices/soc0/soc_id)
+if [ $CPUREV == "i.MX8QM" ] || [ $CPUREV == "i.MX8QXP" ] || [ $CPUREV == "i.MX8MQ" ]
+then
+    echo 80000 >  /proc/sys/vm/min_free_kbytes
+else
+    echo 30000 >  /proc/sys/vm/min_free_kbytes
+fi
+
+# set printk to 7 to dump kernel message to console
+echo 7 > /proc/sys/kernel/printk
+
+echo "13" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio13/direction
+echo "0" > /sys/class/gpio/gpio13/value
+echo "13" > /sys/class/gpio/unexport
+
+/sbin/hwclock_mcu -s
+/sbin/wifi_init.sh
+
+#g-sensor: set the value of the register 0x19 to 0x02 for mapping high-g to INT1 pin.
+/usr/sbin/i2ctransfer -y 3 w9@0x10 0x02 0x07 0x06 0x52 0x00 0x30 0x00 0x19 0x02
+
+# gps-led-g init
+echo "1" > /sys/class/leds/ttymxc3-rxtx-g/brightness
+
+exit 0
+

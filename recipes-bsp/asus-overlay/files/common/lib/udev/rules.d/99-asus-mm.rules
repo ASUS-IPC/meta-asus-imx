@@ -1,0 +1,9 @@
+KERNEL!="cdc-wdm*", GOTO="asus_mm_end"
+
+ACTION=="add", ATTRS{idVendor}=="2c7c", RUN+="/etc/mm/quectel_modem_configure.sh %E{DEVPATH}"
+
+ACTION=="add", RUN+="/sbin/mm_cli start"
+
+ACTION=="remove", RUN+="/sbin/mm_cli stop"
+
+LABEL="asus_mm_end"

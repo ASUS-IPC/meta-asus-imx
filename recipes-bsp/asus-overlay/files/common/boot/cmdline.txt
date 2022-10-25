@@ -1,0 +1,2 @@
+##### Note: Each line must be less than 160 words #####
+console=ttymxc0,115200 

@@ -1,0 +1,11 @@
+[Unit]
+Description=Check ntp status, only return when system time synchronized
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/sbin/check_time_synced.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
