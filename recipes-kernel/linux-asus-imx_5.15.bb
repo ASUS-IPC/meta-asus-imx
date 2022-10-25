@@ -16,8 +16,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 DEPENDS += "lzop-native bc-native"
 
-SRCBRANCH = "lf-5.15.y"
-#SRCBRANCH = "yocto-4.0-imx_8m"
+SRCBRANCH = "yocto-4.0-imx_8m"
 LOCALVERSION = "-lts-next"
 KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
 KBRANCH = "${SRCBRANCH}"
