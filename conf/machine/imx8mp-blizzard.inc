@@ -14,6 +14,7 @@ MACHINE_FEATURES_append_use-nxp-bsp = " optee jailhouse mrvl8997"
 # imx8mpevk machine
 KERNEL_DEVICETREE = " \
     freescale/${KERNEL_DEVICETREE_BASENAME}.dtb \
+    freescale/imx8mp-blizzard-evt.dtb \
 "
 
 UBOOT_DTB_NAME = "${KERNEL_DEVICETREE_BASENAME}.dtb"
