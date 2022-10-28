@@ -72,40 +72,6 @@ VOLATILE_LOG_DIR = "no"
 PACKAGECONFIG_append_pn-gstreamer1.0-plugins-ugly = " x264"
 PACKAGECONFIG_append_pn-networkmanager = " modemmanager ppp"
 
-IMAGE_INSTALL_append += " \
-	asus-overlay \
-	gptfdisk \
-	exfat-utils \
-	fuse-exfat \
-	ntfs-3g \
-	gpsd \
-	networkmanager \
-	networkmanager-nmcli \
-	networkmanager-nmtui \
-	iotedge-daemon \
-	iotedge-cli \
-	docker \
-	docker-ce \
-	ca-certificates \
-	canopensocket \
-	can-utils-j1939 \
-	vim \
-	whiptail \
-	glibc-utils \
-	glibc-gconv-utf-16 \
-	localedef \
-	cmake \
-	packagegroup-core-buildessential \
-	ppp \
-	libqmi \
-	libmbim \
-	edgetpu \
-	mraa \
-	modemmanager \
-	opkg \
-        python3-docker-compose \
-"
-
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'ax200', 'firmware-intel', '', d)}"
