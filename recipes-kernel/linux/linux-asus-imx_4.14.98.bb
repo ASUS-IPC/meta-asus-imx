@@ -17,7 +17,7 @@ SRCBRANCH = "yocto-sumo-imx_8m"
 LOCALVERSION = "-imx8mq"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
-SRCREV = "0e4e3f25eb257e3e5868ec4efb05dc08563ebd94"
+SRCREV = "50385fea265af776c2a1b0dbffeefc33cc461cb1"
 
 S = "${WORKDIR}/git"
 
