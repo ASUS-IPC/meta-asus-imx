@@ -104,6 +104,9 @@ IMAGE_INSTALL:append = " \
 	asus-overlay \
 	gptfdisk \
 	vim \
+	networkmanager \
+	networkmanager-nmcli \
+	networkmanager-nmtui \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
