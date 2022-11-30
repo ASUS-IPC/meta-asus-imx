@@ -95,7 +95,7 @@ IMX_BOOT_SEEK = "33"
 OPTEE_BIN_EXT = "8mq"
 
 # Add additional firmware
-MACHINE_FIRMWARE:append = " linux-firmware-ath10k"
+MACHINE_FIRMWARE:append = " linux-firmware-ath10k linux-firmware-rtw88"
 
 # Set Serial console
 SERIAL_CONSOLES = "115200;ttymxc0"
