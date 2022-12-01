@@ -1,3 +1,11 @@
+##### Hardware Interface Config #####
+
+#intf:i2c2=off
+#intf:i2c3=off
+#intf:pwm3=off
+#intf:pwm4=off
+#intf:sai2=off
+
 ##### Driver Config #####
 
 conf:eth_wakeup=on
