@@ -60,7 +60,7 @@ read_modem() {
     if mmcli -L -K | grep 'modem-list.value' &>/dev/null; then
         modem=$(mmcli -L -K | grep 'modem-list.value' | awk -F ": " '{ print $2 }')
         bearer=$(get_data $modem 'modem.generic.bearers.value')
-        sim=$(get_data $modem 'modem.generic.sim')
+        sim=$(get_data $modem 'modem.generic.sim ')
         return 0
     else
         return 1
