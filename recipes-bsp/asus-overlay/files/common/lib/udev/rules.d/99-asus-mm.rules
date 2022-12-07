@@ -1,9 +1,17 @@
-KERNEL!="cdc-wdm*", GOTO="asus_mm_end"
+ACTION=="bind", SUBSYSTEM=="usb", DRIVERS=="usb", ENV{DEVTYPE}=="usb_device", GOTO="asus_mm_bind_start"
+ACTION=="unbind", SUBSYSTEM=="usb", DRIVERS=="usb", ENV{DEVTYPE}=="usb_device", GOTO="asus_mm_unbind_start"
 
-ACTION=="add", ATTRS{idVendor}=="2c7c", RUN+="/etc/mm/quectel_modem_configure.sh %E{DEVPATH}"
+GOTO="asus_mm_end"
 
-ACTION=="add", RUN+="/sbin/mm_cli start"
+LABEL="asus_mm_bind_start"
+ATTRS{idVendor}=="2c7c", ATTR{power/control}="auto"
+ATTRS{idVendor}=="2c7c", ATTR{power/autosuspend_delay_ms}="3000"
+ATTRS{idVendor}=="2c7c", ATTR{power/persist}="0"
+ATTRS{idVendor}=="2c7c", ATTR{avoid_reset_quirk}="1"
+ATTRS{idVendor}=="2c7c", RUN+="/sbin/mm_cli start"
+GOTO="asus_mm_end"
 
-ACTION=="remove", RUN+="/sbin/mm_cli stop"
+LABEL="asus_mm_unbind_start"
+ATTRS{idVendor}=="2c7c", RUN+="/sbin/mm_cli stop"
 
 LABEL="asus_mm_end"
