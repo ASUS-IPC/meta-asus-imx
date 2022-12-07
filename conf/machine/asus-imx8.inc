@@ -100,6 +100,9 @@ MACHINE_FIRMWARE:append = " linux-firmware-ath10k linux-firmware-rtw88"
 # Set Serial console
 SERIAL_CONSOLES = "115200;ttymxc0"
 
+PACKAGECONFIG:append:pn-modemmanager = " at"
+PACKAGECONFIG:append:pn-networkmanager = " modemmanager ppp"
+
 IMAGE_INSTALL:append = " \
 	asus-overlay \
 	gptfdisk \
@@ -107,6 +110,8 @@ IMAGE_INSTALL:append = " \
 	networkmanager \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
+	networkmanager-wwan \
+	networkmanager-ppp \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
