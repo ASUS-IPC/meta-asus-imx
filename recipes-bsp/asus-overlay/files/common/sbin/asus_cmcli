@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION=1.0_20211007
+# VERSION=1.1_20221209
 TAG="asus_cmcli"
 NETWORK_NAME="Cellular"
 APN_LIST=/etc/mm/apns-full.xml
@@ -20,10 +20,9 @@ get_data() {
     else
         exit 1
     fi
-
-    rtn=$(mmcli $type $1 -K | grep $2 | awk -F ": " '{ print $2 }')
+    rtn=$(mmcli $type "${1}" -K | grep "${2}" | awk -F ": " '{ print $2 }')
     if [ "$rtn" == "" ]; then
-        exit 1
+        echo "--"
     else
         echo "$rtn"
     fi
@@ -114,10 +113,11 @@ case "$1" in
             $0 reset_profile
         fi
         log "connecting..."
-        if ! nmcli c up $NETWORK_NAME &> /dev/null; then
+        if ! nmcli c up $NETWORK_NAME &>/dev/null; then
             log "connect error"
             exit 1
         fi
+        log "connected!"
     else
         log "modem not detected"
         exit 1
@@ -127,7 +127,11 @@ case "$1" in
     if nmcli -t c show $NETWORK_NAME &>/dev/null; then
         if nmcli connection show --active | grep $NETWORK_NAME &>/dev/null; then
             log "disconnecting $NETWORK_NAME..."
-            nmcli c down $NETWORK_NAME
+            if ! nmcli c down $NETWORK_NAME; then
+                log "disconnect error"
+                exit 1
+            fi
+            log "disconnected!"
         else
             log "not connected"
         fi
@@ -144,16 +148,30 @@ case "$1" in
             log "power already on"
         elif [ "$current" == "off" ]; then
             log "reset modem to turn on"
-            mmcli -m $modem -r &> /dev/null
-            mmcli -m $modem -w &> /dev/null
-            until mmcli -m $modem &> /dev/null; do
+            id=$(get_data $modem 'modem.generic.equipment-identifier')
+            mmcli -m $modem -r &>/dev/null
+            mmcli -m $modem -w &>/dev/null
+            while true; do
+                if mmcli -L &>/dev/null; then
+                    list=$(mmcli -L -K | grep 'modem-list.value' | awk -F ": " '{ print $2 }')
+                    for m in $list; do
+                        log "found modem = $m"
+                        m_id=$(get_data $m 'modem.generic.equipment-identifier')
+                        if [ "$m_id" == "$id" ]; then
+                            log "$id match on $m"
+                            log "power on successfully"
+                            exit
+                        fi
+                    done
+                fi
                 sleep 1
             done
-            log "successfully reset"
         else
             log "set modem power state on"
-            mmcli -m $modem --set-power-state-on &> /dev/null
-            mmcli -m $modem -e &> /dev/null
+            mmcli -m $modem --set-power-state-on &>/dev/null
+            if mmcli -m $modem -e &>/dev/null; then
+                log "power enabled successfully"
+            fi
         fi
     else
         log "modem not detected"
@@ -167,11 +185,12 @@ case "$1" in
         if [ "$current" == "off" ]; then
             log "power already off"
         else
-            mmcli -m $modem -d &> /dev/null
-            if ! mmcli -m $modem --set-power-state-off &> /dev/null; then
-                mmcli -m $modem -e &> /dev/null
+            mmcli -m $modem -d &>/dev/null
+            if ! mmcli -m $modem --set-power-state-off &>/dev/null; then
+                mmcli -m $modem -e &>/dev/null
                 exit 1
             fi
+            log "power off successfully"
         fi
     else
         log "modem not detected"
@@ -186,7 +205,7 @@ case "$1" in
 "switch_sim")
     current="$(mmcli -B | awk -F " " '{ print $3 }')"
     required="1.16.0"
-    if printf '%s\n' "$required" "$current"| sort -cV &>/dev/null; then
+    if printf '%s\n' "$required" "$current" | sort -cV &>/dev/null; then
         # Only supported on ModemManager version >= 1.16.0
         if read_modem; then
             mmcli -m $modem --set-primary-sim-slot=$2
@@ -237,9 +256,13 @@ case "$1" in
             log "bearer not found"
             exit 1
         fi
+        for b in $bearer; do
+            bearer=$b
+            break
+        done
         connected=$(get_data $bearer 'bearer.status.connected')
         interface=$(get_data $bearer 'bearer.status.interface')
-        apn=$(get_data $bearer 'bearer.properties.apn')
+        apn=$(get_data $bearer 'bearer.properties.apn ')
         roaming=$(get_data $bearer 'bearer.properties.roaming')
 
         log "Connected: $connected"
@@ -293,15 +316,15 @@ case "$1" in
     if read_modem; then
         current=$(get_data $modem 'modem.generic.power-state')
         if [ "$2" == "on" ]; then
-            mmcli -m $modem -d &> /dev/null
-            if ! mmcli -m $modem --set-power-state-low &> /dev/null; then
-                mmcli -m $modem -e &> /dev/null
+            mmcli -m $modem -d &>/dev/null
+            if ! mmcli -m $modem --set-power-state-low &>/dev/null; then
+                mmcli -m $modem -e &>/dev/null
                 log "set flight mode error"
                 exit 1
             fi
         elif [ "$2" == "off" ]; then
-            mmcli -m $modem -d &> /dev/null
-            if ! mmcli -m $modem --set-power-state-on &> /dev/null; then
+            mmcli -m $modem -d &>/dev/null
+            if ! mmcli -m $modem --set-power-state-on &>/dev/null; then
                 log "set flight mode error"
                 exit 1
             fi
@@ -505,9 +528,9 @@ case "$1" in
         user=$(xmllint --xpath "string(//apn[@mcc=$mcc and @mnc=$mnc]/@user)" $APN_LIST)
         password=$(xmllint --xpath "string(//apn[@mcc=$mcc and @mnc=$mnc]/@password)" $APN_LIST)
         log "use connection settings with apn=$apn, user=$user, password=$password"
-        nmcli c delete $NETWORK_NAME &> /dev/null
-        nmcli c add type gsm con-name $NETWORK_NAME ifname '*' apn "$apn" user "$user" password "$password" autoconnect n &> /dev/null
-        echo "$imsi" > $CURRENT_MCC_MNC
+        nmcli c delete $NETWORK_NAME &>/dev/null
+        nmcli c add type gsm con-name $NETWORK_NAME ifname '*' apn "$apn" user "$user" password "$password" autoconnect n &>/dev/null
+        echo "$imsi" >$CURRENT_MCC_MNC
     else
         log "modem not detected"
         exit 1
@@ -557,71 +580,71 @@ case "$1" in
     ;;
 "keepalive")
     case "$2" in
-        "start")
-            log "Enable keepalive service"
-            focli set mm_keepalive on
-            ;;
-        "stop")
-            log "Disable keepalive service"
-            focli set mm_keepalive off
-            ;;
-        "status")
-            flag=$(focli show mm_keepalive)
-            log "Keepalive status: $flag"
-            ;;
-        *)
-            echo "Usage: asus_cmcli keepalive [COMMAND]"
-            echo ""
-            echo "Commands:"
-            echo "  start:                          Start keepalive service"
-            echo "  stop:                           Stop keepalive service"
-            echo "  status:                         Show keepalive service's status"
-            echo ""
-            exit 1
-            ;;
+    "start")
+        log "Enable keepalive service"
+        focli set mm_keepalive on
+        ;;
+    "stop")
+        log "Disable keepalive service"
+        focli set mm_keepalive off
+        ;;
+    "status")
+        flag=$(focli show mm_keepalive)
+        log "Keepalive status: $flag"
+        ;;
+    *)
+        echo "Usage: asus_cmcli keepalive [COMMAND]"
+        echo ""
+        echo "Commands:"
+        echo "  start:                          Start keepalive service"
+        echo "  stop:                           Stop keepalive service"
+        echo "  status:                         Show keepalive service's status"
+        echo ""
+        exit 1
+        ;;
     esac
     ;;
 "failover")
     case "$2" in
-        "set")
-            case "$3" in
-                "status")
-                    case "$4" in
-                        "on")
-                            focli set status on
-                            ;;
-                        "off")
-                            focli set status off
-                            ;;
-                        *)
-                            print_failover_set_command_usage
-                            ;;
-                    esac
-                    ;;
-                "group")
-                    focli set group ${@:4}
-                    ;;
-                *)
-                    print_failover_set_command_usage
-                    ;;
+    "set")
+        case "$3" in
+        "status")
+            case "$4" in
+            "on")
+                focli set status on
+                ;;
+            "off")
+                focli set status off
+                ;;
+            *)
+                print_failover_set_command_usage
+                ;;
             esac
             ;;
-        "show")
-            case "$3" in
-                "status")
-                    focli show status
-                    ;;
-                "group")
-                    focli show group
-                    ;;
-                *)
-                    print_failover_show_command_usage
-                    ;;
-            esac
+        "group")
+            focli set group ${@:4}
             ;;
         *)
-            print_failover_command_usage
+            print_failover_set_command_usage
             ;;
+        esac
+        ;;
+    "show")
+        case "$3" in
+        "status")
+            focli show status
+            ;;
+        "group")
+            focli show group
+            ;;
+        *)
+            print_failover_show_command_usage
+            ;;
+        esac
+        ;;
+    *)
+        print_failover_command_usage
+        ;;
     esac
     ;;
 *)

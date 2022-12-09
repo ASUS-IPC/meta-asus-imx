@@ -112,6 +112,7 @@ IMAGE_INSTALL:append = " \
 	networkmanager-nmtui \
 	networkmanager-wwan \
 	networkmanager-ppp \
+	bash-completion \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
