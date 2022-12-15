@@ -117,4 +117,4 @@ IMAGE_INSTALL:append = " \
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
 
-IMAGE_FSTYPES = "wic.bz2"
+# IMAGE_FSTYPES = "wic.bz2"
