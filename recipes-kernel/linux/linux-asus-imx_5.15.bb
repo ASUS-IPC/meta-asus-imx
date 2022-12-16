@@ -18,7 +18,8 @@ DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "yocto-4.0-imx_8m"
 LOCALVERSION = "-lts-next"
-KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
+#KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
+KERNEL_SRC = "git://${TOPDIR}/../linux-imx;protocol=file;branch=${SRCBRANCH}"
 KBRANCH = "${SRCBRANCH}"
 SRC_URI = "${KERNEL_SRC}"
 

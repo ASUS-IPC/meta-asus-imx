@@ -21,6 +21,16 @@ DEFAULTTUNE:use-mainline-bsp = "cortexa53-crypto"
 MACHINE_FEATURES += "pci wifi bluetooth bcm43455 bcm4356"
 MACHINE_FEATURES:append:use-nxp-bsp = " optee bcm4359"
 
+# ASUS BSP default providers
+ASUS_DEFAULT_UBOOT = "u-boot-asus-imx"
+PREFERRED_PROVIDER_u-boot:asus = "${ASUS_DEFAULT_UBOOT}"
+PREFERRED_PROVIDER_virtual/bootloader:asus  = "${ASUS_DEFAULT_UBOOT}"
+
+ASUS_DEFAULT_KERNEL = "linux-asus-imx"
+PREFERRED_PROVIDER_virtual/kernel:asus = "${ASUS_DEFAULT_KERNEL}"
+PREFERRED_VERSION_linux-asus-imx = "5.15"
+PREFERRED_RPROVIDER_kernel-module-imx-gpu-viv = "kernel-module-imx-gpu-viv"
+
 MACHINE_SOCARCH_FILTER:append:mx8mq = " virtual/libopenvg virtual/libgles1 virtual/libgles2 virtual/egl virtual/mesa virtual/libgl virtual/libg2d"
 
 KERNEL_DEVICETREE = " \
