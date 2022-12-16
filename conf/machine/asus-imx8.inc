@@ -26,6 +26,8 @@ ASUS_DEFAULT_UBOOT = "u-boot-asus-imx"
 PREFERRED_PROVIDER_u-boot:asus = "${ASUS_DEFAULT_UBOOT}"
 PREFERRED_PROVIDER_virtual/bootloader:asus  = "${ASUS_DEFAULT_UBOOT}"
 
+PREFERRED_PROVIDER_u-boot-mfgtool:asus = "u-boot-asus-imx-mfgtool"
+
 ASUS_DEFAULT_KERNEL = "linux-asus-imx"
 PREFERRED_PROVIDER_virtual/kernel:asus = "${ASUS_DEFAULT_KERNEL}"
 PREFERRED_VERSION_linux-asus-imx = "5.15"
