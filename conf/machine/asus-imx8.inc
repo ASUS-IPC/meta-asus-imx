@@ -126,6 +126,8 @@ IMAGE_INSTALL:append = " \
 	networkmanager-ppp \
 	bash-completion \
 	whiptail \
+	hdparm \
+	ntfs-3g \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
