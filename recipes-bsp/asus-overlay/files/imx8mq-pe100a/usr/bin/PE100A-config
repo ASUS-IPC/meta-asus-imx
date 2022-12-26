@@ -86,7 +86,7 @@ do_resolution() {
     Resolution=$(modetest -M imx-dcss | grep -A 3 CRTCs | sed -n 4p | awk '{print$2}')
     Rate=$(modetest -M imx-dcss | grep -A 3 CRTCs | sed -n 4p | awk '{print$3}')
     Current_Resolution_Rate="$Resolution@$Rate"
-    autoset=$(sed -n 17p $Weston_PATH | cut -c 1)
+    autoset=$(sed -n 19p $Weston_PATH | cut -c 1)
     if [ "$INTERACTIVE" = True ]; then
         Resolution_Rate=$(whiptail --title "< Set HDMI Resolution >" --inputbox "\
 Please set display support resolution.
@@ -101,13 +101,13 @@ Current Resolution: \
     fi
     if [ $? -eq 0 ]; then
         if [ $autoset = \# ]; then
-            sed -i '15s/^.//' $Weston_PATH
-            sed -i '16s/^.//' $Weston_PATH
             sed -i '17s/^.//' $Weston_PATH
+            sed -i '18s/^.//' $Weston_PATH
+            sed -i '19s/^.//' $Weston_PATH
         fi
-        sed -i "10cmode=$Resolution_Rate" $Weston_PATH
-        sed -i "17cmode=$Resolution_Rate" $Weston_PATH
-        systemctl restart weston@root.service
+        sed -i "12cmode=$Resolution_Rate" $Weston_PATH
+        sed -i "19cmode=$Resolution_Rate" $Weston_PATH
+        systemctl restart weston
     fi
 }
 
