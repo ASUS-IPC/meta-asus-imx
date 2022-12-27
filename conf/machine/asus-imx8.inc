@@ -57,6 +57,10 @@ KERNEL_DEVICETREE:append:use-nxp-bsp = " \
 	freescale/imx8mq-evk-rpmsg.dtb \
 	freescale/imx8mq-evk-usd-wifi.dtb \
 	freescale/imx8mq-evk-usdhc2-m2.dtb \
+	freescale/imx8mq-pe100a-rs232.dtbo \
+	freescale/imx8mq-pe100a-rs485.dtbo \
+	freescale/imx8mq-pv100a-rs232.dtbo \
+	freescale/imx8mq-pv100a-rs485.dtbo \
 "
 
 IMX_DEFAULT_BOOTLOADER:use-nxp-bsp = "u-boot-imx"
