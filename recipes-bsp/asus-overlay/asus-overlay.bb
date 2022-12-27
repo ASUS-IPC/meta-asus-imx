@@ -22,6 +22,8 @@ INHIBIT_PACKAGE_STRIP = "1"
 FILES_SOLIBSDEV = ""
 INSANE_SKIP:${PN} += "dev-so"
 
+do_fetch[depends] = "linux-asus-imx:do_compile"
+
 inherit systemd
 
 do_package_qa[noexec] = "1"
