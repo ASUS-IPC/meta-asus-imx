@@ -1,2 +1,2 @@
 ##### Note: Each line must be less than 160 words #####
-console=null 
+console=ttynull 
