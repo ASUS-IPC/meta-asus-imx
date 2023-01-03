@@ -116,6 +116,8 @@ MACHINE_FIRMWARE:append = " linux-firmware-ath10k linux-firmware-rtw88 linux-fir
 # Set Serial console
 SERIAL_CONSOLES = "115200;ttymxc0"
 
+VOLATILE_LOG_DIR = "no"
+
 PACKAGECONFIG:append:pn-modemmanager = " at"
 PACKAGECONFIG:append:pn-networkmanager = " modemmanager ppp"
 
