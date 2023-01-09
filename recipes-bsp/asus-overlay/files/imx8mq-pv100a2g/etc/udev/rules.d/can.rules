@@ -1,2 +1,0 @@
-SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc@0/30800000.bus/30820000.spi/spi_master/spi0/spi0.0/net/can0", RUN+="/sbin/can_init.sh can0"
-SUBSYSTEM=="net", DEVPATH=="/devices/platform/soc@0/30800000.bus/30830000.spi/spi_master/spi1/spi1.0/net/can1", RUN+="/sbin/can_init.sh can1"
