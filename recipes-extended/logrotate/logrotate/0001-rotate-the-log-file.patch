@@ -1,0 +1,58 @@
+From eaf27ab98b3458211e7bbab6701a56af281d0906 Mon Sep 17 00:00:00 2001
+From: singhome1_lee <singhome1_lee@asus.com>
+Date: Tue, 31 Jan 2023 13:25:37 +0800
+Subject: [PATCH] rotate the log file
+
+---
+ examples/rsyslog | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+ create mode 100755 examples/rsyslog
+
+diff --git a/examples/rsyslog b/examples/rsyslog
+new file mode 100755
+index 0000000..5022945
+--- /dev/null
++++ b/examples/rsyslog
+@@ -0,0 +1,39 @@
++/var/log/syslog
++{
++	rotate 7
++	daily
++	missingok
++	notifempty
++	delaycompress
++	compress
++}
++
++/var/log/mail.info
++/var/log/mail.warn
++/var/log/mail.err
++/var/log/mail.log
++/var/log/daemon.log
++/var/log/kern.log
++{
++	rotate 7
++	daily
++	missingok
++	notifempty
++	delaycompress
++	compress
++}
++/var/log/auth.log
++/var/log/user.log
++/var/log/lpr.log
++/var/log/cron.log
++/var/log/debug
++/var/log/messages
++{
++	rotate 4
++	weekly
++	missingok
++	notifempty
++	compress
++	delaycompress
++	sharedscripts
++}
+-- 
+2.25.1
+
