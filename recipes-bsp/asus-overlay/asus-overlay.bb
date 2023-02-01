@@ -41,6 +41,9 @@ do_install:append() {
 		cp -rf ${WORKDIR}/blizzard_common/* ${D}
 	fi
   else
+        if [ "${MACHINE}" = "imx8mq-pe100a2g" ] || [ "${MACHINE}" = "imx8mq-pe100a" ] || [ "${MACHINE}" = "imx8mq-im-a" ];then
+                cp -rf ${WORKDIR}/${MACHINE}/* ${D}
+        fi
 	if [ -n "$(ls -A ${WORKDIR}/common)" ]; then
 		cp -rf ${WORKDIR}/common/* ${D}
 	fi
