@@ -134,6 +134,9 @@ IMAGE_INSTALL:append = " \
 	whiptail \
 	hdparm \
 	ntfs-3g \
+	docker \
+	docker-ce \
+	python3-docker-compose \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
