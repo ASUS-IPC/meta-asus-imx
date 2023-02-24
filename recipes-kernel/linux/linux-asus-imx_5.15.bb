@@ -18,13 +18,13 @@ DEPENDS += "lzop-native bc-native"
 
 SRCBRANCH = "yocto-4.0-imx_8m"
 LOCALVERSION = "-lts-next"
-#KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
-KERNEL_SRC = "git://${TOPDIR}/../linux-imx;protocol=file;branch=${SRCBRANCH}"
+KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
+#KERNEL_SRC = "git://${TOPDIR}/../linux-imx;protocol=file;branch=${SRCBRANCH}"
 KBRANCH = "${SRCBRANCH}"
 SRC_URI = "${KERNEL_SRC}"
 
 
-SRCREV = "${AUTOREV}"
+SRCREV = "94c33f770ce874f7a2ee79a3ac4602c9c6baca18"
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
 #

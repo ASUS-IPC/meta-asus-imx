@@ -11,10 +11,10 @@ require recipes-bsp/u-boot/u-boot-imx-common_${PV}.inc
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
-UBOOT_SRC ?= "git://${TOPDIR}/../uboot-imx;protocol=file"
-#UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
+#UBOOT_SRC ?= "git://${TOPDIR}/../uboot-imx;protocol=file"
+UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 SRCBRANCH = "yocto-4.0-imx_8m"
-SRCREV = "${AUTOREV}"
+SRCREV = "96d1a33b0b1891c018be0d2d62b66cb2f3a8e9f7"
 LOCALVERSION = "-${SRCBRANCH}"
 
 DEPENDS += "gnutls-native xxd-native"
