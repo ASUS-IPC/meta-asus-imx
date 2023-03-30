@@ -3,7 +3,7 @@ MACHINEOVERRIDES =. "imx-boot-container:mx8:mx8m:mx8mp:asus:"
 require conf/machine/include/imx-base.inc
 require conf/machine/include/tune-cortexa53.inc
 
-MACHINE_FEATURES += "pci wifi bluetooth qca6174"
+MACHINE_FEATURES += "pci wifi bluetooth qca6174 rtl8822 "
 
 # NXP BSP can consume proprietary jailhouse and Marvell drivers
 # OP-TEE is also applicable to NXP BSP, mainline BSP seems not to have
