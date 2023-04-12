@@ -67,3 +67,7 @@ MACHINE_FIRMWARE_append = " linux-firmware-ath10k"
 
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'qca6174', 'kernel-module-qca6174 firmware-qca6174 firmware-qca6174-usb qca-tools', '', d)}"
 MACHINE_EXTRA_RRECOMMENDS_append = " ${@bb.utils.contains('MACHINE_FEATURES', 'rtl8822', 'rtk-bt-fw', '', d)}"
+
+QT_GIT_PROJECT := "qtmirror"
+QT_GIT := "git://gitlab.com/${QT_GIT_PROJECT}"
+QT_GIT_PROTOCOL := "https"
