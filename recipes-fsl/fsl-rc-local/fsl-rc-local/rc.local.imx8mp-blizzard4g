@@ -30,7 +30,7 @@ fi
 echo 7 > /proc/sys/kernel/printk
 
 # Enable WOL function
-/usr/sbin/ethtool -s eth0 wol g
+/etc/network/ethernet_wol.sh
 
 exit 0
 
