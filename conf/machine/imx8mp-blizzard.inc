@@ -1,4 +1,4 @@
-MACHINEOVERRIDES =. "mx8mp:asus"
+MACHINEOVERRIDES =. "mx8mp:asus:"
 
 # FIXME: u-boot-imx should be converted to `binman` and then we can
 # avoid this specific overrides and handle it in a generic way.
