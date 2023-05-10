@@ -1,0 +1,72 @@
+From 7b321b0720d49943b984df3cfda4ad56dee76a5f Mon Sep 17 00:00:00 2001
+From: Tzuhsuan_Chen <Tzuhsuan_Chen@asus.com>
+Date: Fri, 12 May 2023 10:11:58 +0800
+Subject: [PATCH] plat: imx8m: imx8mp add 2G support and disable FF-A.
+
+---
+ plat/imx/imx8m/imx8mp/include/platform_def.h | 2 +-
+ services/spd/trusty/shared-mem-smcall.c      | 2 +-
+ services/spd/trusty/trusty.c                 | 2 +-
+ services/spd/trusty/trusty.mk                | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/plat/imx/imx8m/imx8mp/include/platform_def.h b/plat/imx/imx8m/imx8mp/include/platform_def.h
+index 8a1f3bcdc..b7f6253fe 100644
+--- a/plat/imx/imx8m/imx8mp/include/platform_def.h
++++ b/plat/imx/imx8m/imx8mp/include/platform_def.h
+@@ -122,7 +122,7 @@
+ #define IMX_CAAM_RAM_BASE		U(0x100000)
+ #define IMX_CAAM_RAM_SIZE		U(0x10000)
+ #define IMX_DRAM_BASE			U(0x40000000)
+-#define IMX_DRAM_SIZE			U(0xc0000000)
++#define IMX_DRAM_SIZE			U(0x80000000)
+ #define IMX_DRAM2_BASE			U(0x100000000)
+ #define IMX_DRAM2_SIZE			U(0xc0000000)
+ #define IMX_VPU_BLK_BASE		U(0x38330000)
+diff --git a/services/spd/trusty/shared-mem-smcall.c b/services/spd/trusty/shared-mem-smcall.c
+index ff3ca0a9c..98c2240f0 100644
+--- a/services/spd/trusty/shared-mem-smcall.c
++++ b/services/spd/trusty/shared-mem-smcall.c
+@@ -111,7 +111,7 @@ static struct trusty_shmem_client_state trusty_shmem_client_state[2] = {
+ 	[true].secure = true,
+ 	[true].identity_mapped = true,
+ 	[true].receiver = true,
+-#if defined(PLAT_imx8mm) || defined(PLAT_imx8mn) || defined(PLAT_imx8mp)
++#if defined(PLAT_imx8mm) || defined(PLAT_imx8mn)
+ 	[false].identity_mapped = true,
+ #endif
+ };
+diff --git a/services/spd/trusty/trusty.c b/services/spd/trusty/trusty.c
+index 7de6633e1..ef4708ed1 100644
+--- a/services/spd/trusty/trusty.c
++++ b/services/spd/trusty/trusty.c
+@@ -541,7 +541,7 @@ DECLARE_RT_SVC(
+ 	trusty_smc_handler
+ );
+ 
+-#ifndef PLAT_imx8mq
++#if !defined(PLAT_imx8mq) && !defined(PLAT_imx8mp)
+ DECLARE_RT_SVC(
+ 	trusty_fast_uuid,
+ 
+diff --git a/services/spd/trusty/trusty.mk b/services/spd/trusty/trusty.mk
+index 5ceb6d04b..1ffe7099a 100644
+--- a/services/spd/trusty/trusty.mk
++++ b/services/spd/trusty/trusty.mk
+@@ -4,11 +4,11 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ #
+ 
+-ifneq (${PLAT},imx8mq)
++ifeq ($(filter imx8mq imx8mp, $(strip $(PLAT))), )
+ TRUSTY_SPD_WITH_SHARED_MEM ?= 1
+ endif
+ 
+-SPD_INCLUDES		:=	-Iservices/spd/trusty/include
++SPD_INCLUDES		:=
+ 
+ SPD_SOURCES		:=	services/spd/trusty/trusty.c		\
+ 				services/spd/trusty/trusty_helpers.S
+-- 
+2.34.1
+
