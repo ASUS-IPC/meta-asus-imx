@@ -105,7 +105,7 @@ do_kernel_configcheck[noexec] = "1"
 KERNEL_VERSION_SANITY_SKIP="1"
 COMPATIBLE_MACHINE = "(imx-nxp-bsp)"
 
-do_compile:append () {
+do_compile:append:mx8mq-nxp-bsp () {
     mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/boot/overlays
     mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a2g/boot/overlays
     mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a/boot/overlays
