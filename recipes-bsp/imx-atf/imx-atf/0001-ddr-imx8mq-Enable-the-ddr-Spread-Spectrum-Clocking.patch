@@ -1,0 +1,36 @@
+From e56f713fd0e85ea70aa6a691429e95021a5b8829 Mon Sep 17 00:00:00 2001
+From: Tzuhsuan_Chen <Tzuhsuan_Chen@asus.com>
+Date: Mon, 22 May 2023 17:20:12 +0800
+Subject: [PATCH] ddr: imx8mq: Enable the ddr Spread Spectrum Clocking.
+
+---
+ plat/imx/imx8m/ddr/clock.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/plat/imx/imx8m/ddr/clock.c b/plat/imx/imx8m/ddr/clock.c
+index 7eb989f99..321486927 100644
+--- a/plat/imx/imx8m/ddr/clock.c
++++ b/plat/imx/imx8m/ddr/clock.c
+@@ -59,12 +59,17 @@ void dram_pll_init(unsigned int drate)
+ 
+ 	switch (drate) {
+ 	case 3200:
+-		mmio_write_32(HW_DRAM_PLL_CFG2, 0x00ece580);
++		mmio_setbits_32(HW_DRAM_PLL_CFG1, 0x1);
++		//mmio_write_32(HW_DRAM_PLL_CFG2, 0x00ece580);
++		mmio_write_32(HW_DRAM_PLL_CFG2, 0x00e92580);
+ 		break;
+ 	case 1600:
+-		mmio_write_32(HW_DRAM_PLL_CFG2, 0x00ec6984);
++		mmio_setbits_32(HW_DRAM_PLL_CFG1, 0x1);
++		//mmio_write_32(HW_DRAM_PLL_CFG2, 0x00ec6984);
++		mmio_write_32(HW_DRAM_PLL_CFG2, 0x00e92582);
+ 		break;
+ 	case 667:
++		mmio_clrbits_32(HW_DRAM_PLL_CFG1, 0x1);
+ 		mmio_write_32(HW_DRAM_PLL_CFG2, 0x00f5a406);
+ 		break;
+ 	default:
+-- 
+2.34.1
+
