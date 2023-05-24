@@ -138,6 +138,7 @@ IMAGE_INSTALL:append = " \
 	docker-ce \
 	python3-docker-compose \
 	glibc-gconv-utf-16 \
+	phytool \
 "
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
