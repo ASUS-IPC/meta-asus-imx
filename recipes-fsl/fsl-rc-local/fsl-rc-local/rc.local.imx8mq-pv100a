@@ -42,5 +42,8 @@ echo "13" > /sys/class/gpio/unexport
 # gps-led-g init
 echo "1" > /sys/class/leds/ttymxc3-rxtx-g/brightness
 
+# Enable WOL function
+/etc/network/ethernet_wol.sh
+
 exit 0
 
