@@ -121,26 +121,6 @@ VOLATILE_LOG_DIR = "no"
 PACKAGECONFIG:append:pn-modemmanager = " at"
 PACKAGECONFIG:append:pn-networkmanager = " modemmanager ppp"
 
-IMAGE_INSTALL:append = " \
-	asus-overlay \
-	gptfdisk \
-	vim \
-	networkmanager \
-	networkmanager-nmcli \
-	networkmanager-nmtui \
-	networkmanager-wwan \
-	networkmanager-ppp \
-	bash-completion \
-	whiptail \
-	hdparm \
-	ntfs-3g \
-	docker \
-	docker-ce \
-	python3-docker-compose \
-	glibc-gconv-utf-16 \
-	phytool \
-"
-
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
 
 # IMAGE_FSTYPES = "wic.bz2"
