@@ -86,4 +86,4 @@ TEE_LOAD_ADDR = "0x56000000"
 VOLATILE_LOG_DIR = "no"
 
 # Add additional firmware
-MACHINE_FIRMWARE:append = " linux-firmware-ath10k"
+MACHINE_FIRMWARE:append = " linux-firmware-ath10k linux-firmware-rtw88"

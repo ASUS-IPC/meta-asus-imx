@@ -28,7 +28,10 @@ IMAGE_INSTALL:append:mx8mq-nxp-bsp = " \
 
 
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
-        asus-overlay \
+   	asus-overlay \
 	gptfdisk \
 	vim \
+	networkmanager \
+    networkmanager-nmcli \
+    networkmanager-nmtui \
 "
