@@ -31,6 +31,7 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	gptfdisk \
 	vim \
 	networkmanager \
-    networkmanager-nmcli \
-    networkmanager-nmtui \
+	networkmanager-nmcli \
+	networkmanager-nmtui \
+	phytool \
 "
