@@ -14,4 +14,5 @@ IMAGE_INSTALL += " \
 	networkmanager-nmtui \
 	vim \
 	phytool \
+	stress-ng \
 "

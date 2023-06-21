@@ -14,4 +14,5 @@ IMAGE_INSTALL += " \
 	vim \
 	glibc-gconv-utf-16 \
 	phytool \
+	stress-ng \
 "
