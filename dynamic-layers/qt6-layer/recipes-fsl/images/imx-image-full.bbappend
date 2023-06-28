@@ -50,3 +50,14 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	python3-docker-compose \
 	glibc-gconv-utf-16 \
 "
+
+do_prepare_ramdisk() {
+    if [ "${FOTA_ENABLED}" = "ENABLED" ]; then
+        install -d ${IMAGE_ROOTFS}/recovery
+        install -m 0755 ${DEPLOY_DIR_IMAGE}/Image ${IMAGE_ROOTFS}/recovery/Image
+        install -m 0755 ${DEPLOY_DIR_IMAGE}/${UBOOT_DTB_NAME} ${IMAGE_ROOTFS}/recovery/swupdate-image.dtb
+        install -m 0755 ${DEPLOY_DIR_IMAGE}/swupdate-image-${MACHINE}.cpio.gz.u-boot ${IMAGE_ROOTFS}/recovery/swupdate-image.img
+    fi
+}
+
+addtask do_prepare_ramdisk before do_image after do_rootfs

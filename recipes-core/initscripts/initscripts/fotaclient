@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "fotaclient start" > /dev/kmsg
+
+FILE=/data/recovery/Image
+if [ ! -f "$FILE" ]; then
+	mkdir -p /data/recovery
+	cp -a /recovery/. /data/recovery/
+fi
+
+echo "fotaclient end" > /dev/kmsg

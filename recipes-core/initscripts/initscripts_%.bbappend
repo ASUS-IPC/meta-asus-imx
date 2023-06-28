@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += "file://adbd.sh \
            file://overlayetc \
+           file://fotaclient \
 "
 
 do_install:append () {
@@ -11,5 +12,8 @@ do_install:append () {
 	if [ "${ROOTFS_OVERLAY_ENABLED}" = "ENABLED" ]; then
 		install -m 0755 ${WORKDIR}/overlayetc ${D}${sysconfdir}/init.d
 	fi
-}
 
+    if [ "${FOTA_ENABLED}" = "ENABLED" ]; then
+        install -m 0755 ${WORKDIR}/fotaclient ${D}${sysconfdir}/init.d
+    fi
+}
