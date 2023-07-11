@@ -24,6 +24,7 @@ IMAGE_INSTALL:append:mx8mq-nxp-bsp = " \
 	python3-docker-compose \
 	glibc-gconv-utf-16 \
 	phytool \
+	psplash \
 "
 
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
@@ -34,4 +35,5 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
 	phytool \
+	psplash \
 "
