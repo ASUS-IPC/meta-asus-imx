@@ -1,0 +1,27 @@
+From 277b8cf574bce121a8a70633d333c5b74210518d Mon Sep 17 00:00:00 2001
+From: bross1_kuo <bross1_kuo@asus.com>
+Date: Mon, 24 Jul 2023 17:10:17 +0800
+Subject: [PATCH] systemd: logind.conf: modify and enable HoldoffTimeoutSec
+ from 30s to 0s
+
+Signed-off-by: bross1_kuo <bross1_kuo@asus.com>
+---
+ src/login/logind.conf.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/login/logind.conf.in b/src/login/logind.conf.in
+index 37a46f9d1c..f4d57d664e 100644
+--- a/src/login/logind.conf.in
++++ b/src/login/logind.conf.in
+@@ -35,7 +35,7 @@
+ #HibernateKeyIgnoreInhibited=no
+ #LidSwitchIgnoreInhibited=yes
+ #RebootKeyIgnoreInhibited=no
+-#HoldoffTimeoutSec=30s
++HoldoffTimeoutSec=0s
+ #IdleAction=ignore
+ #IdleActionSec=30min
+ #RuntimeDirectorySize=10%
+-- 
+2.25.1
+
