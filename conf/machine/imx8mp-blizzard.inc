@@ -39,6 +39,7 @@ PREFERRED_PROVIDER_virtual/bootloader:asus  = "${ASUS_DEFAULT_UBOOT}"
 ASUS_DEFAULT_KERNEL = "linux-asus-imx"
 PREFERRED_PROVIDER_virtual/kernel:asus = "${ASUS_DEFAULT_KERNEL}"
 PREFERRED_VERSION_linux-asus-imx = "5.15"
+PREFERRED_RPROVIDER_kernel-module-imx-gpu-viv = "kernel-module-imx-gpu-viv"
 
 #IMX_DEFAULT_BOOTLOADER_use-nxp-bsp = "u-boot-imx"
 #IMX_DEFAULT_BOOTLOADER_use-mainline-bsp = "u-boot-fslc"
