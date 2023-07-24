@@ -14,7 +14,7 @@ SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 #UBOOT_SRC ?= "git://${TOPDIR}/../uboot-imx;protocol=file"
 UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 SRCBRANCH = "yocto-4.0-imx_8m"
-SRCREV = "c41f2a43f193d3a113c1cc99240a8e03a024ea4c"
+SRCREV = "79bbfa24d03abfc71035c587b746b36404a7ea95"
 LOCALVERSION = "-${SRCBRANCH}"
 
 DEPENDS += "gnutls-native xxd-native"
