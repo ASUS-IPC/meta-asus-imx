@@ -1,0 +1,5 @@
+#11-can-fixnames.rules
+KERNELS=="308c0000.can", ACTION=="add", NAME="can0"
+KERNELS=="308d0000.can", ACTION=="add", NAME="can1"
+KERNELS=="spi1.0", SUBSYSTEMS=="spi", DRIVERS=="mcp251xfd", ACTION=="add", NAME="can2"
+KERNELS=="spi2.0", SUBSYSTEMS=="spi", DRIVERS=="mcp251xfd", ACTION=="add", NAME="can3"
