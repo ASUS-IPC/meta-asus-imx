@@ -7,6 +7,8 @@ LICENSE = "MIT"
 IMAGE_INSTALL += " \
 	asus-overlay \
 	can-utils \
+	can-utils-cantest \
+	can-utils-access \
 	glibc-gconv-utf-16 \
 	gptfdisk \
 	networkmanager \

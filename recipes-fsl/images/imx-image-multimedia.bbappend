@@ -6,6 +6,8 @@ LICENSE = "MIT"
 
 IMAGE_INSTALL += " \
 	can-utils \
+	can-utils-cantest \
+	can-utils-access \
 	networkmanager \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
