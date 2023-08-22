@@ -25,6 +25,8 @@ IMAGE_INSTALL:append:mx8mq-nxp-bsp = " \
 	glibc-gconv-utf-16 \
 	phytool \
 	psplash \
+	can-utils-cantest \
+	can-utils-access \
 "
 
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
@@ -36,4 +38,6 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	networkmanager-nmtui \
 	phytool \
 	psplash \
+	can-utils-cantest \
+	can-utils-access \
 "
