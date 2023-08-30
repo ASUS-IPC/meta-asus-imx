@@ -40,4 +40,7 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	psplash \
 	can-utils-cantest \
 	can-utils-access \
+	docker \
+	docker-ce \
+	python3-docker-compose \
 "
