@@ -1,0 +1,4 @@
+recipes-bsp/asus-overlay/files/imx8mq-pe100a/boot/overlays
+recipes-bsp/asus-overlay/files/imx8mq-pe100a2g/boot/overlays
+recipes-bsp/asus-overlay/files/imx8mq-pv100a/boot/overlays
+recipes-bsp/asus-overlay/files/imx8mq-pv100a2g/boot/overlays
