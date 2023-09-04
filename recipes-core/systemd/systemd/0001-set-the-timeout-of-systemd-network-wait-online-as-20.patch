@@ -1,0 +1,28 @@
+From 659a5d2462debaeb1bfa6f6b84441e28adc811c5 Mon Sep 17 00:00:00 2001
+From: singhome1_lee <singhome1_lee@asus.com>
+Date: Fri, 1 Sep 2023 14:00:52 +0800
+Subject: [PATCH] set the timeout of systemd-network-wait-online as 20 seconds.
+
+---
+ units/systemd-networkd-wait-online.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ mode change 100644 => 100755 units/systemd-networkd-wait-online.service.in
+
+diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
+old mode 100644
+new mode 100755
+index 10d8b08c8e..905bc28401
+--- a/units/systemd-networkd-wait-online.service.in
++++ b/units/systemd-networkd-wait-online.service.in
+@@ -18,7 +18,7 @@ Before=network-online.target shutdown.target
+ 
+ [Service]
+ Type=oneshot
+-ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
++ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online --timeout=20
+ RemainAfterExit=yes
+ 
+ [Install]
+-- 
+2.25.1
+
