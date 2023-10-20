@@ -27,6 +27,10 @@ IMAGE_INSTALL:append:mx8mq-nxp-bsp = " \
 	psplash \
 	can-utils-cantest \
 	can-utils-access \
+	iotedge \
+	aziotd \
+	aziot-edged \
+	aziotctl \
 "
 
 
