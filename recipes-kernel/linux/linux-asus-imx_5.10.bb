@@ -18,7 +18,7 @@ LOCALVERSION = "-1.0.0"
 KERNEL_SRC = "git://github.com/ASUS-IPC/linux-imx.git;protocol=https"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
-SRCREV = "9c837713a39b787a0db3b0c5b715bd135cd18862"
+SRCREV = "a7aea20568cdff45c86c80c9824624e436f46fb6"
 
 LINUX_VERSION = "5.10.9"
 
