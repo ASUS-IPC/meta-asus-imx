@@ -1,0 +1,53 @@
+software =
+{
+
+   version = "1.0";
+   description = "Firmware update for test Project";
+   hardware-compatibility: [ "1.0", "1.2", "1.3"];
+   imx8mq-pe100a: {
+
+   images:  (
+                {
+                        filename = "boot_pt_85196K.mirror.gz";
+                        sha256;
+                        compressed = "zlib";
+                        device = "/dev/mmcblk0p1";
+                },
+                {
+                        filename = "imx-image-full-imx8mq-pe100a.ext4.gz";
+                        sha256;
+                        compressed = "zlib";
+                        device = "/dev/mmcblk0p3";
+                },
+                {
+                        filename = "imx-boot-imx8mq-pe100a-4G.bin-flash_evk";
+                        sha256;
+                        device = "/dev/mmcblk0boot0";
+                        offset = "33K";
+                }
+            );
+
+    scripts:(
+                {
+                        filename = "emmc_bootpart.sh";
+                        sha256;
+                        type = "postinstall";
+                }
+            );
+
+    bootenv:(
+                {
+                        name = "upgrade_available";
+                        value = "1";
+                },
+                {
+                        name = "bootslot";
+                        value = "dualA";
+                }
+            );
+
+    }
+}
+
+
+
