@@ -31,6 +31,9 @@ SYSTEMD_SERVICE:${PN}:imx8mp-blizzard4g = "resize-helper.service adbd.service"
 SYSTEMD_SERVICE:${PN}:imx8mp-blizzard2g = "resize-helper.service adbd.service"
 SYSTEMD_SERVICE:${PN}:imx8mq-pv100a = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service PruneDocker.timer"
 SYSTEMD_SERVICE:${PN}:imx8mq-pv100a2g = "resize-helper.service adbd.service asus_failover.service mm_keepalive.service ntpsync.service rtcsync.service EdgeX.service mcu_daemon.service PruneDocker.timer"
+
+SYSTEMD_SERVICE:${PN} += "${@bb.utils.contains_any('ROOTFS_OVERLAY_ENABLED', 'ENABLED', 'overlayetc.service', '', d)}"
+
 RDEPENDS:${PN} = "systemd e2fsprogs-resize2fs parted"
 
 do_install:append() {

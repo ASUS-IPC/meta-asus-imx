@@ -44,6 +44,7 @@ echo "1" > /sys/class/leds/ttymxc3-rxtx-g/brightness
 
 # Enable WOL function
 /etc/network/ethernet_wol.sh
+/sbin/resize-data.sh
 
 exit 0
 

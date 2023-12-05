@@ -4,7 +4,7 @@
 SUMMARY = "imx-image-full with a couple additions by Asus"
 LICENSE = "MIT"
 
-IMAGE_FSTYPES = "wic.bz2"
+IMAGE_FSTYPES = "${@bb.utils.contains_any('ROOTFS_OVERLAY_ENABLED', 'ENABLED', 'wic.bz2 ext4 ext4.gz wic.bmap wic.gz', 'wic.bz2', d)}"
 
 IMAGE_INSTALL:append:mx8mq-nxp-bsp = " \
 	asus-overlay \

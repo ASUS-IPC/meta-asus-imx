@@ -1,0 +1,15 @@
+[Unit]
+Description=Overlay rootfs Service
+DefaultDependencies=no
+Before=kmod-static-nodes.service
+Before=modprobe@configfs.service
+Before=modprobe@fuse.service
+Before=modprobe@drm.service
+
+[Service]
+Type=oneshot
+ExecStart=/etc/init.d/overlayetc start
+
+
+[Install]
+WantedBy=paths.target

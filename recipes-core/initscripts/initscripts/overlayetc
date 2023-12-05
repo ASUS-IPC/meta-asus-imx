@@ -1,0 +1,181 @@
+#!/bin/sh
+
+echo "overlayetc start" > /dev/kmsg
+#mkdir /data
+mount /dev/mmcblk0p4 /data
+
+#mv /data/overlay-etc/upper/rc0.d/* /etc/rc0.d
+#mv /data/overlay-etc/upper/rc1.d/* /etc/rc1.d
+#mv /data/overlay-etc/upper/rc2.d/* /etc/rc2.d
+#mv /data/overlay-etc/upper/rc3.d/* /etc/rc3.d
+#mv /data/overlay-etc/upper/rc4.d/* /etc/rc4.d
+#mv /data/overlay-etc/upper/rc5.d/* /etc/rc5.d
+#mv /data/overlay-etc/upper/rc6.d/* /etc/rc6.d
+#mv /data/overlay-etc/upper/rcS.d/* /etc/rcS.d
+
+/sbin/listfile.sh
+
+mkdir -p /data/overlay-bin/upper
+mkdir -p /data/overlay-bin/work
+
+mkdir -p /data/overlay-boot/upper
+mkdir -p /data/overlay-boot/work
+
+mkdir -p /data/overlay-etc/upper
+mkdir -p /data/overlay-etc/work
+
+mkdir -p /data/overlay-home/upper
+mkdir -p /data/overlay-home/work
+
+mkdir -p /data/overlay-lib/upper
+mkdir -p /data/overlay-lib/work
+
+mkdir -p /data/overlay-media/upper
+mkdir -p /data/overlay-media/work
+
+mkdir -p /data/overlay-mnt/upper
+mkdir -p /data/overlay-mnt/work
+
+mkdir -p /data/overlay-opt/upper
+mkdir -p /data/overlay-opt/work
+
+mkdir -p /data/overlay-run/upper
+mkdir -p /data/overlay-run/work
+
+mkdir -p /data/overlay-sbin/upper
+mkdir -p /data/overlay-sbin/work
+
+mkdir -p /data/overlay-srv/upper
+mkdir -p /data/overlay-srv/work
+
+mkdir -p /data/overlay-tmp/upper
+mkdir -p /data/overlay-tmp/work
+
+mkdir -p /data/overlay-usr/upper
+mkdir -p /data/overlay-usr/work
+
+mkdir -p /data/overlay-var/upper
+mkdir -p /data/overlay-var/work
+
+mkdir -p /data/overlay-root/upper
+mkdir -p /data/overlay-root/work
+
+
+#must create /data before test
+
+already_mount_overlay=$(mount | grep "\/data\/overlay-var\/upper " | head -n 1 | cut -c 1-23)
+if [ "$already_mount_overlay" == "/data/overlay-var/upper" ]; then
+    echo "overlayetc exit"
+    echo "overlayetc exit" > /dev/ttymxc0
+    exit 1
+fi
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-bin/upper \
+        -o lowerdir=/bin \
+        -o workdir=/data/overlay-bin/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-bin/upper /bin
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-boot/upper \
+        -o lowerdir=/boot \
+        -o workdir=/data/overlay-boot/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-boot/upper /boot
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-etc/upper \
+        -o lowerdir=/etc \
+        -o workdir=/data/overlay-etc/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-etc/upper /etc
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-home/upper \
+        -o lowerdir=/home \
+        -o workdir=/data/overlay-home/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-home/upper /home
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-lib/upper \
+        -o lowerdir=/lib \
+        -o workdir=/data/overlay-lib/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-lib/upper /lib
+
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-media/upper \
+        -o lowerdir=/media \
+        -o workdir=/data/overlay-media/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-media/upper /media
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-mnt/upper \
+        -o lowerdir=/mnt \
+        -o workdir=/data/overlay-mnt/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-mnt/upper /mnt
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-opt/upper \
+        -o lowerdir=/opt \
+        -o workdir=/data/overlay-opt/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-opt/upper /opt
+
+#mount -n -t overlay \
+#        -o upperdir=/data/overlay-run/upper \
+#        -o lowerdir=/run \
+#        -o workdir=/data/overlay-run/work \
+#        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+#        /data/overlay-run/upper /run
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-sbin/upper \
+        -o lowerdir=/sbin \
+        -o workdir=/data/overlay-sbin/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-sbin/upper /sbin
+
+mount -n -t overlay \
+       -o upperdir=/data/overlay-srv/upper \
+       -o lowerdir=/srv \
+       -o workdir=/data/overlay-srv/work \
+       -o index=off,xino=off,redirect_dir=off,metacopy=off \
+       /data/overlay-srv/upper /srv
+
+# mount -n -t overlay \
+#        -o upperdir=/data/overlay-tmp/upper \
+#        -o lowerdir=/tmp \
+#        -o workdir=/data/overlay-tmp/work \
+#        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+#        /data/overlay-tmp/upper /tmp
+
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-usr/upper \
+        -o lowerdir=/usr \
+        -o workdir=/data/overlay-usr/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-usr/upper /usr
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-var/upper \
+        -o lowerdir=/var \
+        -o workdir=/data/overlay-var/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-var/upper /var
+
+mount -n -t overlay \
+        -o upperdir=/data/overlay-root/upper \
+        -o lowerdir=/root \
+        -o workdir=/data/overlay-root/work \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        /data/overlay-root/upper /root
+
+mount -t tmpfs tmpfs /var/volatile
+echo "overlayetc end" > /dev/kmsg

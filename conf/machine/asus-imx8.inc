@@ -121,6 +121,7 @@ VOLATILE_LOG_DIR = "no"
 PACKAGECONFIG:append:pn-modemmanager = " at"
 PACKAGECONFIG:append:pn-networkmanager = " modemmanager ppp"
 
-SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
+#SOC_DEFAULT_WKS_FILE = "${@bb.utils.contains_any('ROOTFS_OVERLAY_ENABLED', 'enabled', 'asus-imx-boot-bootpart-overlay.wks.in', 'asus-imx-boot-bootpart.wks.in', d)}"
+SOC_DEFAULT_WKS_FILE:asus = "${@bb.utils.contains_any('ROOTFS_OVERLAY_ENABLED', 'ENABLED', 'asus-imx-boot-bootpart-overlay.wks.in', 'asus-imx-boot-bootpart.wks.in', d)}"
 
 # IMAGE_FSTYPES = "wic.bz2"
