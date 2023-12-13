@@ -48,7 +48,9 @@ if [ "$PART_TABLE_TYPE" = "gpt" ]; then
 	${PARTPROBE}
 fi
 echo "resize:strat resize" > /dev/kmsg
-umount /data
+umount ${DATA_DEVICE}
+umount ${DATA_DEVICE}
+umount ${DATA_DEVICE}
 
 ${PARTED} ${DEVICE} resizepart ${PART_ENTRY_NUMBER} 100%
 
