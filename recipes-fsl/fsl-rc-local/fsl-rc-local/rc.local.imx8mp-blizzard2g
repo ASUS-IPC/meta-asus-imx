@@ -32,5 +32,8 @@ echo 7 > /proc/sys/kernel/printk
 # Enable WOL function
 /etc/network/ethernet_wol.sh
 
+# auto-switch sound output device according HDMI status
+/usr/bin/drm-hotplug.sh
+
 exit 0
 
