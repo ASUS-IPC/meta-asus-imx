@@ -47,4 +47,5 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = " \
 	docker \
 	docker-ce \
 	python3-docker-compose \
+	glibc-gconv-utf-16 \
 "
