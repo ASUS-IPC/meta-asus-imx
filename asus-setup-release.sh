@@ -159,7 +159,7 @@ echo "# Switch to Debian packaging and include package-management in the image" 
 echo "PACKAGE_CLASSES = \"package_deb\"" >> conf/local.conf
 echo "EXTRA_IMAGE_FEATURES += \"package-management\"" >> conf/local.conf
 echo "ROOTFS_OVERLAY_ENABLED = \"$ROOTFS_OVERLAY\""  >> conf/local.conf
-
+echo "FOTA_ENABLED = \"$FOTA\""  >> conf/local.conf
 
 if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
     cp $BUILD_DIR/conf/bblayers.conf $BUILD_DIR/conf/bblayers.conf.org
@@ -185,12 +185,23 @@ echo "BBLAYERS += \"\${BSPDIR}/sources/meta-openembedded/meta-networking\"" >> $
 echo "BBLAYERS += \"\${BSPDIR}/sources/meta-openembedded/meta-filesystems\"" >> $BUILD_DIR/conf/bblayers.conf
 
 echo "BBLAYERS += \"\${BSPDIR}/sources/meta-qt6\"" >> $BUILD_DIR/conf/bblayers.conf
-
 # Enable docker for mx8 machines
 echo "BBLAYERS += \"\${BSPDIR}/sources/meta-virtualization\"" >> conf/bblayers.conf
 
 echo BSPDIR=$BSPDIR
 echo BUILD_DIR=$BUILD_DIR
+
+# Support FOTA
+if [ "$FOTA" == "ENABLED" ]; then
+    echo "IMAGE_INSTALL:append = \" swupdate swupdate-www swupdate-progress swupdate-client u-boot-fw-utils json-c\"" >> conf/local.conf
+    echo "INITRAMFS_IMAGE = \"swupdate-image\"" >> conf/local.conf
+    if [ "$VERSION" == "RELEASE" ]; then
+        echo "IMAGE_INSTALL:append = \" u-boot-asus-imx\"" >> conf/local.conf
+    else
+        echo "IMAGE_INSTALL:append = \" u-boot-asus-imx-local\"" >> conf/local.conf
+    fi
+    echo "BBLAYERS += \"\${BSPDIR}/sources/meta-swupdate\"" >> $BUILD_DIR/conf/bblayers.conf
+fi
 
 # Support integrating community meta-freescale instead of meta-fsl-arm
 if [ -d ../sources/meta-freescale ]; then
