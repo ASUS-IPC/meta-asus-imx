@@ -35,5 +35,8 @@ echo 7 > /proc/sys/kernel/printk
 # auto-switch sound output device according HDMI status
 /usr/bin/drm-hotplug.sh
 
+# replug HDMI cause of video playback framebuffer size
+/usr/bin/replug_hdmi.sh
+
 exit 0
 
