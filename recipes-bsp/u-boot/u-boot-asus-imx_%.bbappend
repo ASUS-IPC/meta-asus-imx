@@ -1,4 +1,7 @@
 FILES:${PN} += "/etc/*"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI:append = "${@bb.utils.contains('FOTA_ENABLED', 'ENABLED', ' file://0001-uboot-add-support.patch ', '', d)}"
 
 SWU_HW_REV ?= "1.0"
 
