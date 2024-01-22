@@ -4,8 +4,8 @@ Date: Tue, 31 Jan 2023 13:25:37 +0800
 Subject: [PATCH] rotate the log file
 
 ---
- examples/rsyslog | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ examples/rsyslog | 42 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
  create mode 100755 examples/rsyslog
 
 diff --git a/examples/rsyslog b/examples/rsyslog
@@ -13,11 +13,12 @@ new file mode 100755
 index 0000000..5022945
 --- /dev/null
 +++ b/examples/rsyslog
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,42 @@
 +/var/log/syslog
 +{
-+	rotate 7
-+	daily
++	rotate 6
++       daily
++	maxsize 50M
 +	missingok
 +	notifempty
 +	delaycompress
@@ -31,8 +32,9 @@ index 0000000..5022945
 +/var/log/daemon.log
 +/var/log/kern.log
 +{
-+	rotate 7
-+	daily
++	rotate 6
++       daily
++	maxsize 50M
 +	missingok
 +	notifempty
 +	delaycompress
@@ -46,7 +48,8 @@ index 0000000..5022945
 +/var/log/messages
 +{
 +	rotate 4
-+	weekly
++       daily
++	maxsize 50M
 +	missingok
 +	notifempty
 +	compress
