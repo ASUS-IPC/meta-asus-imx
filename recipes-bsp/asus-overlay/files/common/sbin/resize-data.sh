@@ -11,18 +11,33 @@ RESIZE2FS=$(which resize2fs) || { echo "E: You must have resize2fs" && exit 1; }
 
 echo "resize: start resize-date.sh" > /dev/kmsg
 
-# find data device
-PART_ENTRY_NUMBER=$(ls /sys/class/block/mmcblk0 | grep -c mmcblk0p)
+#find block device
+BLOCK_DEVICE_NUMBER=1
+BLOCK_DEVICE=$(mount | grep " \/ " | cut -c 1-12)
 
+echo "resize: BLOCK_DEVICE=$BLOCK_DEVICE"  > /dev/kmsg
+
+if [ "$BLOCK_DEVICE" = "/dev/mmcblk1" ]
+   then
+      BLOCK_DEVICE_NUMBER=1
+   else
+     BLOCK_DEVICE_NUMBER=0
+fi
+echo "resize: BLOCK_DEVICE_NUMBER=$BLOCK_DEVICE_NUMBER"  > /dev/kmsg
+
+# find data device
+PART_ENTRY_NUMBER=$(ls /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER | grep -c mmcblk"$BLOCK_DEVICE_NUMBER"p)
+echo "resize: /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER "  > /dev/kmsg
+echo "resize: PART_ENTRY_NUMBER=$PART_ENTRY_NUMBER"  > /dev/kmsg
 if [ "$PART_ENTRY_NUMBER" -le "3" ]; then
      echo "there is no data partition" > /dev/kmsg
      exit 1
 fi
 
-DATA_DEVICE="/dev/mmcblk0p$PART_ENTRY_NUMBER"
+DATA_DEVICE="/dev/mmcblk"$BLOCK_DEVICE_NUMBER"p$PART_ENTRY_NUMBER"
 echo "resize: DATA_DEVICE=$DATA_DEVICE" > /dev/kmsg
 
-PARTITION_SIZE=$(cat /sys/class/block/mmcblk0/mmcblk0p$PART_ENTRY_NUMBER/size)
+PARTITION_SIZE=$(cat /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER/mmcblk"$BLOCK_DEVICE_NUMBER"p$PART_ENTRY_NUMBER/size)
 echo "resize:PARTITION_SIZE=$PARTITION_SIZE" > /dev/kmsg
 
 if [ "$PARTITION_SIZE" -le "1048576" ]; then
@@ -54,7 +69,7 @@ umount ${DATA_DEVICE}
 
 ${PARTED} ${DEVICE} resizepart ${PART_ENTRY_NUMBER} 100%
 
-mount /dev/mmcblk0p$PART_ENTRY_NUMBER /data
+mount /dev/mmcblk"$BLOCK_DEVICE_NUMBER"p$PART_ENTRY_NUMBER /data
 
 ${PARTPROBE}
 ${RESIZE2FS} "${DATA_DEVICE}"
