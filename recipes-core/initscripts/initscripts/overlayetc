@@ -1,27 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "overlayetc start" > /dev/kmsg
-#mkdir /data
+echo "overlayetc start $1 $2" > /dev/kmsg
+
+#mount data partition
+MOUNT=$(mount)
+echo "overlayetc MOUNT = $MOUNT" > /dev/kmsg
 
 BLOCK_DEVICE=$(mount | grep " \/ " | cut -c 1-12)
+echo "overlayetc BLOCK_DEVICE = $BLOCK_DEVICE" > /dev/kmsg
+BLOCK_DEVICE_NUMBER=$(mount | grep " \/ " | cut -c 12-12)
+echo "overlayetc BLOCK_DEVICE_NUMBER = $BLOCK_DEVICE_NUMBER" > /dev/kmsg
+PART_ENTRY_NUMBER=$(ls /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER | grep -c mmcblk"$BLOCK_DEVICE_NUMBER"p)
+echo "overlayetc PART_ENTRY_NUMBER = $PART_ENTRY_NUMBER" > /dev/kmsg
+#mount "$BLOCK_DEVICE"p"$PART_ENTRY_NUMBER" /data
 
-if [ "$BLOCK_DEVICE" = "/dev/mmcblk1" ]
-   then
-      mount /dev/mmcblk1p4 /data
-   else
-     mount /dev/mmcblk0p4 /data
-fi
-
-#mv /data/overlay-etc/upper/rc0.d/* /etc/rc0.d
-#mv /data/overlay-etc/upper/rc1.d/* /etc/rc1.d
-#mv /data/overlay-etc/upper/rc2.d/* /etc/rc2.d
-#mv /data/overlay-etc/upper/rc3.d/* /etc/rc3.d
-#mv /data/overlay-etc/upper/rc4.d/* /etc/rc4.d
-#mv /data/overlay-etc/upper/rc5.d/* /etc/rc5.d
-#mv /data/overlay-etc/upper/rc6.d/* /etc/rc6.d
-#mv /data/overlay-etc/upper/rcS.d/* /etc/rcS.d
-
-/sbin/listfile.sh
+mount $2 /data
 
 mkdir -p /data/overlay-bin/upper
 mkdir -p /data/overlay-bin/work
@@ -67,16 +60,6 @@ mkdir -p /data/overlay-var/work
 
 mkdir -p /data/overlay-root/upper
 mkdir -p /data/overlay-root/work
-
-
-#must create /data before test
-
-already_mount_overlay=$(mount | grep "\/data\/overlay-var\/upper " | head -n 1 | cut -c 1-23)
-if [ "$already_mount_overlay" == "/data/overlay-var/upper" ]; then
-    echo "overlayetc exit"
-    echo "overlayetc exit" > /dev/ttymxc0
-    exit 1
-fi
 
 mount -n -t overlay \
         -o upperdir=/data/overlay-bin/upper \
@@ -185,5 +168,4 @@ mount -n -t overlay \
         -o index=off,xino=off,redirect_dir=off,metacopy=off \
         /data/overlay-root/upper /root
 
-mount -t tmpfs tmpfs /var/volatile
 echo "overlayetc end" > /dev/kmsg

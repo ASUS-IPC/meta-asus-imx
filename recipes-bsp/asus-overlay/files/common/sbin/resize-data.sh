@@ -30,7 +30,7 @@ PART_ENTRY_NUMBER=$(ls /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER | grep -c mmc
 echo "resize: /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER "  > /dev/kmsg
 echo "resize: PART_ENTRY_NUMBER=$PART_ENTRY_NUMBER"  > /dev/kmsg
 if [ "$PART_ENTRY_NUMBER" -le "3" ]; then
-     echo "there is no data partition" > /dev/kmsg
+    echo "there is no data partition" > /dev/kmsg
      exit 1
 fi
 
@@ -40,7 +40,14 @@ echo "resize: DATA_DEVICE=$DATA_DEVICE" > /dev/kmsg
 PARTITION_SIZE=$(cat /sys/class/block/mmcblk$BLOCK_DEVICE_NUMBER/mmcblk"$BLOCK_DEVICE_NUMBER"p$PART_ENTRY_NUMBER/size)
 echo "resize:PARTITION_SIZE=$PARTITION_SIZE" > /dev/kmsg
 
-if [ "$PARTITION_SIZE" -le "1048576" ]; then
+if [ -d "/data/already_resize" ]; then
+   echo "resize: already have /data/already_resize ,exit" > /dev/kmsg
+   exit 1
+fi
+
+
+the default total block number of the data partiton is 262144 blocks in asus-imx-boot-bootpart-pverlay.wks.in, block size is 512 byte
+if [ "$PARTITION_SIZE" -le "262144" ]; then
       echo "resize: need resize, PARTITION_SIZE=$PARTITION_SIZE" > /dev/kmsg
 else
       echo "resize: already resize,exit" > /dev/kmsg
@@ -75,9 +82,9 @@ ${PARTPROBE}
 ${RESIZE2FS} "${DATA_DEVICE}"
 echo "resize: resize-date.sh end" > /dev/kmsg
 
-if [ ! -d "/data/already_resize" ]; then
-    mkdir /data/already_resize
-    reboot
-fi
+#if [ ! -d "/data/already_resize" ]; then
+#   mkdir /data/already_resize
+#    reboot
+#fi
 
 

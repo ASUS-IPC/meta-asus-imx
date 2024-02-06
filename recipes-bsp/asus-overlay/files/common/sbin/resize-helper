@@ -51,3 +51,5 @@ fi
 ${PARTED} ${DEVICE} resizepart ${PART_ENTRY_NUMBER} 100%
 ${PARTPROBE}
 ${RESIZE2FS} "${ROOT_DEVICE}"
+
+/sbin/resize-data.sh
