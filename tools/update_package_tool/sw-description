@@ -37,10 +37,6 @@ software =
 
     bootenv:(
                 {
-                        name = "upgrade_available";
-                        value = "1";
-                },
-                {
                         name = "bootslot";
                         value = "dualA";
                 }
