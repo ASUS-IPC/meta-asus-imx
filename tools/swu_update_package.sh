@@ -3,7 +3,7 @@ CMD=`realpath $0`
 TOOLS_DIR=`dirname $CMD`
 TOP_DIR=$(realpath $TOOLS_DIR/../../..)
 
-BUILD_DIR=build_${TARGET_PRODUCT}_${VERSION}
+BUILD_DIR=$FOLDER
 EXT4_FILE=$IMAGE_TYPE-$TARGET_PRODUCT.ext4
 
 #copy related file
