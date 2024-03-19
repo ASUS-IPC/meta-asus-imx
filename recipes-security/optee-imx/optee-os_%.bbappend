@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 OPTEE_OS_SRC ?= "git://github.com/nxp-imx/imx-optee-os.git;protocol=https"
-SRCBRANCH = "lf-5.15.52_2.1.0"
+SRCBRANCH = "lf-5.15.71_2.2.0"
 SRC_URI = "${OPTEE_OS_SRC};branch=${SRCBRANCH} \
 "
 

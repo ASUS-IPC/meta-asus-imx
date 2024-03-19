@@ -1,17 +1,20 @@
-From b53b685c25a3f6d01573ea0362549359f24c0df7 Mon Sep 17 00:00:00 2001
-From: Tzuhsuan_Chen <Tzuhsuan_Chen@asus.com>
-Date: Thu, 7 Jul 2022 16:18:57 +0800
-Subject: [PATCH] [PATCH] imx-optee-os: imx8mq: add 2g support
+From 786e6aedb4be0bd129f9e27f9bd5a78d7b7c107b Mon Sep 17 00:00:00 2001
+From: singhome1_lee <singhome1_lee@asus.com>
+Date: Tue, 19 Mar 2024 13:31:13 +0800
+Subject: [PATCH] imx-optee-os: imx8mp: add 2g support
 
 ---
  core/arch/arm/plat-imx/conf.mk | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
+ mode change 100644 => 100755 core/arch/arm/plat-imx/conf.mk
 
 diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
-index 7ae0d64c..bc1f4579 100644
+old mode 100644
+new mode 100755
+index 433313a92..750c613b7
 --- a/core/arch/arm/plat-imx/conf.mk
 +++ b/core/arch/arm/plat-imx/conf.mk
-@@ -380,10 +380,8 @@ CFG_UART_BASE ?= UART2_BASE
+@@ -396,10 +396,8 @@ CFG_UART_BASE ?= UART2_BASE
  endif
  
  ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mpevk))
@@ -22,7 +25,7 @@ index 7ae0d64c..bc1f4579 100644
 -$(call force,CFG_CORE_ARM64_PA_BITS,36)
  endif
  
- ifneq (,$(filter $(PLATFORM_FLAVOR),mx8qxpmek mx8qmmek))
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mp_rsb3720_6g))
 -- 
 2.25.1
 
