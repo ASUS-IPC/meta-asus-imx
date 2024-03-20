@@ -24,7 +24,7 @@ KBRANCH = "${SRCBRANCH}"
 SRC_URI = "${KERNEL_SRC}"
 
 
-SRCREV = "9932b54469d890b9b3907ee8d0360af21e495478"
+SRCREV = "11156da96d112439c99dd33d8a3e28ab2036c6e9"
 # PV is defined in the base in linux-imx.inc file and uses the LINUX_VERSION definition
 # required by kernel-yocto.bbclass.
 #
