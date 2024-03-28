@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "fotaclient start" > /dev/kmsg
+echo "[FotaClient]: Start" > /dev/kmsg
 
 FILE=/data/recovery/Image
 if [ ! -f "$FILE" ]; then
@@ -8,25 +8,23 @@ if [ ! -f "$FILE" ]; then
 fi
 cp -a /recovery/. /data/recovery/
 
-UPG_FILE=/data/fota/misc/upg_OTA_status
-PKG_FILE=/data/recovery/update.swu
+UPG_FILE=/data/fota/upg_OTA_status
+PKG_FILE=/data/update.swu
 if [ -f "$UPG_FILE" ]&&[ -f "$PKG_FILE" ]; then
 	rm -rf $PKG_FILE
 fi
 
 if [ -d "/data/fota" ]; then
-    echo "[fotaclient]: /data/fota is existed"
+    echo "[FotaClient]: /data/fota is existed"
 else
-    echo "[fotaclient]: creating /data/fota folder"
+    echo "[FotaClient]: creating /data/fota folder"
     mkdir -p "/data/fota/"
 fi
 
 alived=$(ps -aux| grep -v 'grep' | grep 'ota_daemon.py')
 if [ "${alived}" != "" ]; then
-    echo "[fotaclient]: fota is running"
+    echo "[FotaClient]: Client is running"
 else
-    echo "[fotaclient]: fota is not running, restart"
-    /usr/bin/python3 /usr/share/AsusFota/FotaClient/ota_daemon.pyc
+    echo "[FotaClient]: Client is not running, restart"
+    /usr/bin/python3 /usr/share/FotaClient/ota_daemon.pyc
 fi
-
-echo "fotaclient end" > /dev/kmsg
