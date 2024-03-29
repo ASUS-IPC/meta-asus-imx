@@ -154,6 +154,16 @@ else
     cp $BUILD_DIR/conf/local.conf.org $BUILD_DIR/conf/local.conf
 fi
 
+if [ "${DISABLE_OVERLAY}" = "TRUE" ];then
+	ROOTFS_OVERLAY=DISABLED
+	FOTA=DISABLED
+elif [ "${MACHINE}" = "imx8mq-pe100a" ] || [ "${MACHINE}" = "imx8mq-pe100a2g" ];then
+	ROOTFS_OVERLAY=ENABLED
+	FOTA=ENABLED
+else
+	ROOTFS_OVERLAY=DISABLED
+	FOTA=DISABLED
+fi
 echo >> conf/local.conf
 echo "# Switch to Debian packaging and include package-management in the image" >> conf/local.conf
 echo "PACKAGE_CLASSES = \"package_deb\"" >> conf/local.conf
