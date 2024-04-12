@@ -53,18 +53,22 @@ IFS=' '
 temp=`sha256sum $WORK_DIR/boot_pt_85196K.mirror.gz`
 read -ra ADDR <<< "$temp"
 sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/1' $WORK_DIR/sw-description
+sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/5' $WORK_DIR/sw-description
 
 temp=`sha256sum $WORK_DIR/$EXT4_FILE.gz`
 read -ra ADDR <<< "$temp"
 sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/2' $WORK_DIR/sw-description
+sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/6' $WORK_DIR/sw-description
 
 temp=`sha256sum $WORK_DIR/imx-boot-$TARGET_PRODUCT-*.bin-flash_evk`
 read -ra ADDR <<< "$temp"
 sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/3' $WORK_DIR/sw-description
+sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/7' $WORK_DIR/sw-description
 
 temp=`sha256sum $WORK_DIR/emmc_bootpart.sh`
 read -ra ADDR <<< "$temp"
 sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/4' $WORK_DIR/sw-description
+sed -i ':a;N;$!ba; s/sha256/sha256 = "'"${ADDR[0]}"'"/8' $WORK_DIR/sw-description
 
 unset IFS
 

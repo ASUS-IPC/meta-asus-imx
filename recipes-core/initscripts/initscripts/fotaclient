@@ -2,6 +2,27 @@
 
 echo "[FotaClient]: Start" > /dev/kmsg
 
+if [ -d "/data/fota" ]; then
+	echo "[FotaClient]: /data/fota is existed" > /dev/kmsg
+else
+	echo "[FotaClient]: creating /data/fota folder" > /dev/kmsg
+	mkdir -p "/data/fota/"
+fi
+
+FILE=/data/fota/fw_env.config
+if [ ! -f "$FILE" ]; then
+	BLOCK_DEVICE=$(mount | grep " \/ " | cut -c 1-12)
+	if [ "$BLOCK_DEVICE" == "/dev/mmcblk1" ]; then
+		echo "[FotaClient]: Set fw_env.config for SD" > /dev/kmsg
+		echo "/dev/mmcblk1 0x400000 0x2000" > /data/fota/fw_env.config
+		echo "/dev/mmcblk1 0x402000 0x2000" >> /data/fota/fw_env.config
+	else
+		echo "[FotaClient]: Set fw_env.config for EMMC" > /dev/kmsg
+		echo "/dev/mmcblk0 0x400000 0x2000" > /data/fota/fw_env.config
+		echo "/dev/mmcblk0 0x402000 0x2000" >> /data/fota/fw_env.config
+	fi
+fi
+
 FILE=/data/recovery/Image
 if [ ! -f "$FILE" ]; then
 	mkdir -p /data/recovery
@@ -12,13 +33,6 @@ UPG_FILE=/data/fota/upg_OTA_status
 PKG_FILE=/data/update.swu
 if [ -f "$UPG_FILE" ]&&[ -f "$PKG_FILE" ]; then
 	rm -rf $PKG_FILE
-fi
-
-if [ -d "/data/fota" ]; then
-    echo "[FotaClient]: /data/fota is existed"
-else
-    echo "[FotaClient]: creating /data/fota folder"
-    mkdir -p "/data/fota/"
 fi
 
 alived=$(ps -aux| grep -v 'grep' | grep 'ota_daemon.py')

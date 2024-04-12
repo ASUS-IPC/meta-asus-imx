@@ -1,49 +1,79 @@
 software =
 {
+    version = "1.0";
+    description = "Firmware update for test Project";
+    hardware-compatibility: [ "1.0", "1.2", "1.3"];
+    imx8mq-pe100a: {
+        stable: {
+            emmc:{
+                images:  (
+                            {
+                                    filename = "boot_pt_85196K.mirror.gz";
+                                    sha256;
+                                    compressed = "zlib";
+                                    device = "/dev/mmcblk0p1";
+                            },
+                            {
+                                    filename = "imx-image-full-imx8mq-pe100a.ext4.gz";
+                                    sha256;
+                                    compressed = "zlib";
+                                    device = "/dev/mmcblk0p3";
+                            },
+                            {
+                                    filename = "imx-boot-imx8mq-pe100a-4G.bin-flash_evk";
+                                    sha256;
+                                    device = "/dev/mmcblk0boot0";
+                                    offset = "33K";
+                            }
+                );
 
-   version = "1.0";
-   description = "Firmware update for test Project";
-   hardware-compatibility: [ "1.0", "1.2", "1.3"];
-   imx8mq-pe100a: {
+                scripts:(
+                            {
+                                    filename = "emmc_bootpart.sh";
+                                    sha256;
+                                    type = "postinstall";
+                            }
+                );
 
-   images:  (
-                {
-                        filename = "boot_pt_85196K.mirror.gz";
-                        sha256;
-                        compressed = "zlib";
-                        device = "/dev/mmcblk0p1";
-                },
-                {
-                        filename = "imx-image-full-imx8mq-pe100a.ext4.gz";
-                        sha256;
-                        compressed = "zlib";
-                        device = "/dev/mmcblk0p3";
-                },
-                {
-                        filename = "imx-boot-imx8mq-pe100a-4G.bin-flash_evk";
-                        sha256;
-                        device = "/dev/mmcblk0boot0";
-                        offset = "33K";
-                }
-            );
+                bootenv:(
+                            {
+                                    name = "bootslot";
+                                    value = "singlenormal";
+                            }
+                );
 
-    scripts:(
-                {
-                        filename = "emmc_bootpart.sh";
-                        sha256;
-                        type = "postinstall";
-                }
-            );
+            };
 
-    bootenv:(
-                {
-                        name = "bootslot";
-                        value = "dualA";
-                }
-            );
+            sd:{
+                images:  (
+                            {
+                                    filename = "boot_pt_85196K.mirror.gz";
+                                    sha256;
+                                    compressed = "zlib";
+                                    device = "/dev/mmcblk1p1";
+                            },
+                            {
+                                    filename = "imx-image-full-imx8mq-pe100a.ext4.gz";
+                                    sha256;
+                                    compressed = "zlib";
+                                    device = "/dev/mmcblk1p3";
+                            },
+                            {
+                                    filename = "imx-boot-imx8mq-pe100a-4G.bin-flash_evk";
+                                    sha256;
+                                    device = "/dev/mmcblk1";
+                                    offset = "33K";
+                            }
+                );
 
+                bootenv:(
+                            {
+                                    name = "bootslot";
+                                    value = "singlenormal";
+                            }
+                );
+
+            };
+        };
     }
 }
-
-
-
