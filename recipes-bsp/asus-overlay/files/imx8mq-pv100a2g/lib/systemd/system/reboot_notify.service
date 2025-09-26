@@ -1,0 +1,15 @@
+[Unit]
+Description=Power off notify service
+DefaultDependencies=no
+Conflicts=poweroff.target halt.target
+Before=reboot.target shutdown.target
+Requires=reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/mcu_notify reboot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=shutdown.target
+

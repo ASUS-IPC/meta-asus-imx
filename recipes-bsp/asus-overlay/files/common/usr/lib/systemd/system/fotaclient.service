@@ -1,0 +1,11 @@
+[Unit]
+Description=Fota Client Service
+DefaultDependencies=no
+After=resize-helper.service
+
+[Service]
+Type=oneshot
+ExecStart=/etc/init.d/fotaclient start
+
+[Install]
+WantedBy=paths.target

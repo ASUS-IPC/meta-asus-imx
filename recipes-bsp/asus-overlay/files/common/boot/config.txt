@@ -1,0 +1,7 @@
+##### Driver Config #####
+
+conf:eth_wakeup=on
+
+##### List of device tree overlays to load. Format: overlay=<dtbo name, no extension> <dtbo2> ... #####
+
+overlay=

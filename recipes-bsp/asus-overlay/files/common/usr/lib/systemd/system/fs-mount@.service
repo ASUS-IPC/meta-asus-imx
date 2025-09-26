@@ -1,0 +1,8 @@
+[unit]
+Description=Mount Removable Drive on %i
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/etc/udev/scripts/mount_fs.sh add %i
+ExecStop=/etc/udev/scripts/mount_fs.sh remove %i

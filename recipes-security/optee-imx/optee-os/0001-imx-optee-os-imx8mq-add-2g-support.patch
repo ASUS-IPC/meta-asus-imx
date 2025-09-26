@@ -1,0 +1,25 @@
+From b67f07de269cc849ed95868ffe8c719ff42c9928 Mon Sep 17 00:00:00 2001
+From: andy3_kuo <andy3_kuo@asus.com>
+Date: Mon, 27 Sep 2021 13:42:25 +0800
+Subject: [PATCH] imx-optee-os: imx8mq: add 2g support
+
+---
+ core/arch/arm/plat-imx/conf.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/arch/arm/plat-imx/conf.mk b/core/arch/arm/plat-imx/conf.mk
+index c1907500..779ee9d8 100644
+--- a/core/arch/arm/plat-imx/conf.mk
++++ b/core/arch/arm/plat-imx/conf.mk
+@@ -333,7 +333,7 @@ CFG_UART_BASE ?= UART7_BASE
+ endif
+ 
+ ifneq (,$(filter $(PLATFORM_FLAVOR),mx8mqevk))
+-CFG_DDR_SIZE ?= 0xc0000000
++CFG_DDR_SIZE ?= 0x80000000
+ CFG_UART_BASE ?= UART1_BASE
+ endif
+ 
+-- 
+2.25.1
+
