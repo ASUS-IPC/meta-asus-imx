@@ -109,4 +109,4 @@ SERIAL_CONSOLES = "115200;ttymxc0"
 
 SOC_DEFAULT_WKS_FILE:asus = "asus-imx-boot-bootpart.wks.in"
 
-IMAGE_FSTYPES = "wic.bz2"
+# IMAGE_FSTYPES = "wic.bz2"
