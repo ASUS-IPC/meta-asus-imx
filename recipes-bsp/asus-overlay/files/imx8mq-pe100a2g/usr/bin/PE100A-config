@@ -102,7 +102,7 @@ Current Resolution: \
             sed -i '15s/^.//' $Weston_PATH
             sed -i '16s/^.//' $Weston_PATH
         fi
-        sed -i "9cmode=$Resolution_Rate" $Weston_PATH
+        #sed -i "9csize=$Resolution_Rate" $Weston_PATH
         sed -i "16cmode=$Resolution_Rate" $Weston_PATH
         systemctl restart weston
     fi
