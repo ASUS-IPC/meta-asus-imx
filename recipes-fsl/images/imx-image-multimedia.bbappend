@@ -9,4 +9,6 @@ IMAGE_INSTALL:append = " \
 	cmocka \
 	tpm2-tss \
 	tpm2-tools \
+	can-utils-cantest \
+	can-utils-access \
 "
