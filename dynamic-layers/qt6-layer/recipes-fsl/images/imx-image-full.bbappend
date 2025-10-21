@@ -5,4 +5,7 @@ IMAGE_INSTALL:append = " \
 	gptfdisk \
 	vim \
 	whiptail \
+	cmocka \
+	tpm2-tss \
+	tpm2-tools \
 "
