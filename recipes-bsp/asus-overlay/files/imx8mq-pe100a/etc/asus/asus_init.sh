@@ -5,10 +5,10 @@ echo 7 > /proc/sys/kernel/printk
 
 /sbin/hwclock -s
 
-# Enable WOL for LAN1
-/usr/sbin/ethtool -s eth0 wol g
 #/sbin/resize-data.sh
 
+# Enable WOL function
+/etc/network/ethernet_wol.sh
 # Fix eth0 mac address
 /etc/network/ethernet_mac.sh
 
