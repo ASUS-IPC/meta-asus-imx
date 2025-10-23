@@ -20,4 +20,5 @@ IMAGE_INSTALL:append = " \
 	phytool \
 	pipewire \
 	wireplumber \
+	glibc-gconv-utf-16 \
 "
