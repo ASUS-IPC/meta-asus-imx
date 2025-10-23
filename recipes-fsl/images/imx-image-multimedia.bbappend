@@ -12,4 +12,7 @@ IMAGE_INSTALL:append = " \
 	can-utils-cantest \
 	can-utils-access \
 	aziot-edged \
+	networkmanager \
+	networkmanager-nmcli \
+	networkmanager-nmtui \
 "
