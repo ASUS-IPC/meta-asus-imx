@@ -128,3 +128,14 @@ imx_kernel_devicetree_32bit_compatibility_update[eventmask] = "bb.event.RecipePa
 KERNEL_VERSION_SANITY_SKIP="1"
 COMPATIBLE_MACHINE = "(imx-nxp-bsp)"
 COMPATIBLE_MACHINE:mx91p-nxp-bsp = "(^$)"
+
+do_compile:append () {
+    mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/boot/overlays
+    mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a2g/boot/overlays
+    mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a/boot/overlays
+    mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a2g/boot/overlays
+    cp ${B}/arch/arm64/boot/dts/freescale/imx8mq-pe100a*.dtbo ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/boot/overlays/
+    cp ${B}/arch/arm64/boot/dts/freescale/imx8mq-pe100a*.dtbo ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a2g/boot/overlays/
+    cp ${B}/arch/arm64/boot/dts/freescale/imx8mq-pv100a*.dtbo ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a/boot/overlays/
+    cp ${B}/arch/arm64/boot/dts/freescale/imx8mq-pv100a*.dtbo ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pv100a2g/boot/overlays/
+}
