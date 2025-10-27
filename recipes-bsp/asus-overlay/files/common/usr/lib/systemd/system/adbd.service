@@ -1,13 +1,12 @@
 [Unit]
-Description=Adbd for linux
-Before=network.target
+Description=Manage USB device functions
+After=network.target
 
 [Service]
 Type=oneshot
-RemainAfterExit=yes
 ExecStart=/etc/asus/adbd.sh start
 ExecStop=/etc/asus/adbd.sh stop
-ExecReload=/etc/asus/adbd.sh reload
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
