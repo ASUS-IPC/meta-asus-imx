@@ -11,4 +11,5 @@ IMAGE_INSTALL:append = " \
 	tpm2-tools \
 	can-utils-cantest \
 	can-utils-access \
+	aziot-edged \
 "
