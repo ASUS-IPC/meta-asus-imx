@@ -15,4 +15,5 @@ IMAGE_INSTALL:append = " \
 	networkmanager \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
+	phytool \
 "
