@@ -19,5 +19,9 @@ echo "1" > /sys/class/leds/ttymxc3-rxtx-g/brightness
 # Enable WOL function
 /etc/network/ethernet_wol.sh
 #/sbin/resize-data.sh
+
+# Default sound output device: HDMI
+/etc/audio/switch_sound_device.sh
+
 exit 0
 

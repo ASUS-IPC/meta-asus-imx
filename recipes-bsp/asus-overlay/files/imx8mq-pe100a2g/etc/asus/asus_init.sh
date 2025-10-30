@@ -12,5 +12,8 @@ echo 7 > /proc/sys/kernel/printk
 # Fix eth0 mac address
 /etc/network/ethernet_mac.sh
 
+# Default sound output device: HDMI
+/etc/audio/switch_sound_device.sh
+
 exit 0
 
