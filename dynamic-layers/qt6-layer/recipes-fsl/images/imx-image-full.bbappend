@@ -15,4 +15,6 @@ IMAGE_INSTALL:append = " \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
 	phytool \
+	pipewire \
+	wireplumber \
 "
