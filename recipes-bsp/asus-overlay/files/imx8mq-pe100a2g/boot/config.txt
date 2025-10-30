@@ -6,10 +6,6 @@
 #intf:pwm4=off
 #intf:sai2=off
 
-##### Driver Config #####
-
-conf:eth_wakeup=on
-
 ##### List of device tree overlays to load. Format: overlay=<dtbo name, no extension> <dtbo2> ... #####
 
 overlay=imx8mq-pe100a-rs232

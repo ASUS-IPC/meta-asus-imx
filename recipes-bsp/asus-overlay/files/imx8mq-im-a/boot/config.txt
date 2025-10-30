@@ -8,10 +8,6 @@ intf:uart1=on
 #intf:sai2=off
 #intf:ecspi2=off
 
-##### Driver Config #####
-
-conf:eth_wakeup=on
-
 ##### List of device tree overlays to load. Format: overlay=<dtbo name, no extension> <dtbo2> ... #####
 
 overlay=
