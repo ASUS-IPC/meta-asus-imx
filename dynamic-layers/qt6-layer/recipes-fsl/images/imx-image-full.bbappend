@@ -14,6 +14,8 @@ IMAGE_INSTALL:append = " \
 	networkmanager \
 	networkmanager-nmcli \
 	networkmanager-nmtui \
+	networkmanager-wwan \
+	bash-completion \
 	phytool \
 	pipewire \
 	wireplumber \

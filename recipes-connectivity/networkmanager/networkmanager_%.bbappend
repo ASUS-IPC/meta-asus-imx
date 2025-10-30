@@ -1,2 +1,2 @@
-PACKAGECONFIG:append = "nmtui "
+PACKAGECONFIG:append = " nmtui "
 
