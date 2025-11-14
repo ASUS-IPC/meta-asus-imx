@@ -15,8 +15,6 @@ require recipes-kernel/linux/linux-imx.inc
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-DEPENDS += "lzop-native bc-native"
-
 SRC_URI = "${KERNEL_SRC}"
 # KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
 KERNEL_SRC = "git://${TOPDIR}/../linux-imx;protocol=file;branch=${SRCBRANCH}"
@@ -32,7 +30,7 @@ LOCALVERSION = "-lts-next"
 #
 # LINUX_VERSION define should match to the kernel version referenced by SRC_URI and
 # should be updated once patchlevel is merged.
-LINUX_VERSION = "6.6.23"
+LINUX_VERSION = "6.6.52"
 
 KERNEL_CONFIG_COMMAND = "oe_runmake_call -C ${S} CC="${KERNEL_CC}" O=${B} olddefconfig"
 
@@ -99,35 +97,7 @@ do_merge_delta_config() {
 }
 addtask merge_delta_config before do_kernel_localversion after do_copy_defconfig
 
-do_kernel_configcheck[noexec] = "1"
-
-IMX_KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE ?= "1"
-
-python imx_kernel_devicetree_32bit_compatibility_update() {
-    import os.path
-    import re
-    if d.getVar('IMX_KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE') != "1":
-        return
-    new = ""
-    expanded = False
-    for devicetree in d.getVar('KERNEL_DEVICETREE').split():
-        if re.match("^imx[67]", devicetree):
-            expanded = True
-            new_devicetree = os.path.join("nxp/imx", devicetree)
-            new += new_devicetree + " "
-            bb.note("Devicetrees are moved to sub-folder nxp/imx, please fix KERNEL_DEVICETREE: %s -> %s" % (devicetree, new_devicetree))
-        else:
-            new += devicetree + " "
-    if expanded:
-        bb.warn("Updating KERNEL_DEVICETREE for move to sub-folder nxp/imx. Set IMX_KERNEL_DEVICETREE_32BIT_COMPATIBILITY_UPDATE = \"0\" to disable this.")
-        d.setVar('KERNEL_DEVICETREE', new)
-}
-addhandler imx_kernel_devicetree_32bit_compatibility_update
-imx_kernel_devicetree_32bit_compatibility_update[eventmask] = "bb.event.RecipeParsed"
-
-KERNEL_VERSION_SANITY_SKIP="1"
 COMPATIBLE_MACHINE = "(imx-nxp-bsp)"
-COMPATIBLE_MACHINE:mx91p-nxp-bsp = "(^$)"
 
 do_compile:append () {
     mkdir -p ${B}/../../../../../../../sources/meta-asus-imx/recipes-bsp/asus-overlay/files/imx8mq-pe100a/boot/overlays
