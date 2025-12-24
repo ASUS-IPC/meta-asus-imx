@@ -11,11 +11,10 @@ require u-boot-imx-common_${PV}.inc
 #LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
-UBOOT_SRC = "git://${TOPDIR}/../uboot-imx;protocol=file"
+UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 SRCBRANCH = "yocto-5.0-imx_8m"
-SRCREV = "${AUTOREV}"
+SRCREV = "850eadf484f5b819c2a6d9efc934389c58036210"
 
-#UBOOT_SRC ?= "git://github.com/ASUS-IPC/uboot-imx.git;protocol=https"
 
 LOCALVERSION = "-${SRCBRANCH}"
 

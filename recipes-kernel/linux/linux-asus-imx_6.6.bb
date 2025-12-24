@@ -16,12 +16,10 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 SRC_URI = "${KERNEL_SRC}"
-# KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
-KERNEL_SRC = "git://${TOPDIR}/../linux-imx;protocol=file;branch=${SRCBRANCH}"
+KERNEL_SRC ?= "git://github.com/ASUS-IPC/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
 KBRANCH = "${SRCBRANCH}"
 SRCBRANCH = "yocto-5.0-imx_8m"
-#SRCREV = "b586a521770e508d1d440ccb085c7696b9d6d387"
-SRCREV = "${AUTOREV}"
+SRCREV = "1b4a6d5170406f00383603ded92d783442b3cb0d"
 
 LOCALVERSION = "-lts-next"
 
